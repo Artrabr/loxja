@@ -69,3 +69,11 @@ nomear assim
 ## CSS:
 
 a discutir
+
+### css reset/base:
+
+pelo menos por enquanto, usar a base de css [MVP.css](../Public/MVP.css) .
+
+linkar para ele como primeiro stylesheet da pagina, fazendo eventuais modificações no arquivo específico para a página atual. usar sempre caminhos relativos para os arquivos.
+
+qualquer duvida estou a disposição
