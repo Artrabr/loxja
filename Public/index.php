@@ -1,10 +1,7 @@
 <?php
 
+?>
 
-/**
-só um placeholder
-*/
-echo <<<HTML
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
@@ -15,8 +12,6 @@ echo <<<HTML
         <link href="style_index.css" rel="stylesheet">
     </head>
     <body>
-    
+        <h1>rabello gay</h1>
     </body>
 </html>
-
-HTML;
