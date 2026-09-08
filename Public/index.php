@@ -13,11 +13,19 @@
     </head>
     <body>
         <header>
-            <p>cafe</p> <!--- logo + nome da loja --->
-            <p>produtos</p> <!--- leva pra outra página --->
-            <p>sobre nós</p> <!--- leva pra outra página --->
-            <p><!-- verificar se usuário já está logado para
-                definir entre registrar/logar ou deslogar --></p>
+            <nav>
+                <a href=""></a> <!--- logo + nome da loja --->
+                <ul>
+                    <li>produtos</li> <!--- leva pra outra página --->
+                    <li>sobre nos</li> <!--- leva pra outra página --->
+                    <li>logar/deslogar</li>
+                    <!-- verificar se usuário já está logado para
+                    definir entre registrar/logar ou deslogar -->
+                </ul>
+            <nav>
         </header>
+        <main>
+            
+        </main>
     </body>
 </html>
