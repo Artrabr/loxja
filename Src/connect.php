@@ -3,7 +3,6 @@
 class Conexao
 {
     private static $pdo;
-
     public static function conectar()
     {
         if (!self::$pdo) {
@@ -13,7 +12,6 @@ class Conexao
                 ""
             );
         }
-
         return self::$pdo;
     }
 }
