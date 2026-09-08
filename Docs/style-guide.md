@@ -14,6 +14,16 @@ ex: UserLogin.php,UserLogout.php
 Espaçamento:
 4 espaços por nível de identação, não use tabs (pode usar a tecla de tab, apenas não o caractere; pesquise como fazer isso no seu editor de codigo)
 
+blocos de código separados por chaves devem ter as chaves "sozinhas".
+
+ex positivo:
+``` php
+function exemplo()
+{
+  //codigo fazendo algo
+}
+```
+
 Classes em PascalCase
 
 ex positivo:
