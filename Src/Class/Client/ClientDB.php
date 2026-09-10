@@ -17,7 +17,7 @@ class ClientDB
 
     public function getClientByID(int $id): ?Client
     {
-        $stmt = $this->pdo->prepare("SELECT clt_email,clt_name,clt_id FROM Client WHERE id = ?");
+        $stmt = $this->pdo->prepare("SELECT clt_email,clt_name,clt_id FROM Client WHERE clt_id = ?");
         $stmt->execute([$id]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -39,18 +39,6 @@ class ClientDB
 
         return null;
     }
-    public function getClientByName(string $name): ?Client
-    {
-        $stmt = $this->pdo->prepare("SELECT clt_email,clt_name,clt_id FROM Client WHERE clt_name = ?");
-        $stmt->execute([$name]);
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($row) {
-            return new Client($row['clt_id'], $row['clt_name'], $row['clt_email']);
-        }
-
-        return null;
-    }
     public function createClient(string $name, string $email, string $password): ?Client
     {
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
@@ -60,7 +48,7 @@ class ClientDB
                 'name' => $name,
                 'email' => $email,
                 'password' => $hashedPassword]);
-            $id = $this->pdo->lastInsertId();
+            $id = (int) $this->pdo->lastInsertId();
 
             return new Client($id, $name, $email);
         } catch (PDOException $e) {
@@ -76,9 +64,9 @@ class ClientDB
         try {
             $stmt = $this->pdo->prepare("
                 UPDATE Client
-                SET clt_name = ':name'
-                SET clt_email = ':email'
-                WHERE user_id = :id;
+                SET clt_name = :name,
+                    clt_email = :email
+                WHERE clt_id = :id;
                 ");
             $stmt->execute([
                 'name' => $client->getName(),

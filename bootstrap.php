@@ -14,7 +14,7 @@ if (session_status() === PHP_SESSION_NONE) {
 date_default_timezone_set('America/Sao_Paulo');
 
 //você pode definir as suas constantes pessoais para a db aqui. não de commit nesse arquivo (db_constants.php)! adicione ao git ignore
-if (file_exists("db_constants.php")) {
+if (file_exists(PROJECT_ROOT . "/db_constants.php")) {
     require_once "db_constants.php";
 }
 //constantes padrão
