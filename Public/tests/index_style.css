@@ -1,0 +1,58 @@
+:root {
+  --fail-close-color: #C52F21;
+  --fail-active-color: #EE402E;
+  --fail-open-color: #EE402E;
+
+  --pass-close-color: #33790F;
+  --pass-active-color: #4EB31B;
+  --pass-open-color: #4EB31B;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {}
+}
+
+[data-theme="light"],
+:root {}
+
+[data-theme="dark"] {}
+
+summary {
+  &.fail {
+    --pico-accordion-close-summary-color: var(--fail-close-color);
+    --pico-accordion-active-summary-color: var(--fail-active-color);
+    --pico-accordion-open-summary-color: var(--fail-open-color);
+  }
+
+  &.pass {
+    --pico-accordion-close-summary-color: var(--pass-close-color);
+    --pico-accordion-active-summary-color: var(--pass-active-color);
+    --pico-accordion-open-summary-color: var(--pass-open-color);
+  }
+}
+
+span {
+  color: var(--pico-color);
+
+  &.fail {
+    --pico-color: var(--fail-close-color);
+  }
+
+  &.pass {
+    --pico-color: var(--pass-close-color);
+  }
+}
+
+article.affected:has(span.fail),
+article.affected:has(span.pass) {
+  border-width: 3px;
+  border-style: solid;
+}
+
+article.affected:has(span.fail) {
+  border-color: var(--fail-close-color);
+}
+
+article.affected:has(span.pass) {
+  border-color: var(--pass-close-color);
+}
