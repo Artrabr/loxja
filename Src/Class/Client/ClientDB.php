@@ -6,7 +6,7 @@ class DuplicateEmail extends Exception
 {
 }
 
-class ConsumerDB
+class ClientDB
 {
     private $pdo;
 
