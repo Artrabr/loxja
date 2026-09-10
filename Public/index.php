@@ -14,6 +14,9 @@
     <body>
         <header>
             <nav>
+                <header>
+                    logo
+                </header>
                 <a href=""><img src="" alt=""></a> <!--- logo + nome da loja --->
                 <ul>
                     <li>cafés</li> <!--- leva pra outra página --->
