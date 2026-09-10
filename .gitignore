@@ -1,2 +1,3 @@
 /.ddev/config.yaml
 /db_consts.php
+/db_constants.php
