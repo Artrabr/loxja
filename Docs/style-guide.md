@@ -9,6 +9,15 @@ Uma classe por arquivo;
 nome de classes e seus arquivos em PascalCase.
 ex: UserLogin.php,UserLogout.php
 
+sempre usar `__DIR__ . "/caminho"` ao invés de simplesmente `"/caminho"` quando for utilizar require_once
+
+ex positivo:
+``` php
+//caminho do arquivo atual até a classe Client
+require_once __DIR__ . "/../Src/Class/Client/Client.php";
+```
+sempre usar `/` no inicio da string que é concatenada com `__DIR__`. a não inclusão dela gera caminhos errados, ou seja, que não carregam os devidos arquivos, e que podem ser difíceis de identificar
+
 ### código:
 
 Espaçamento:
