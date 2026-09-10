@@ -13,10 +13,10 @@
     </head>
     <body>
         <header>
+            <header>
+                logo
+            </header>
             <nav>
-                <header>
-                    logo
-                </header>
                 <a href=""><img src="" alt=""></a> <!--- logo + nome da loja --->
                 <ul>
                     <li>cafés</li> <!--- leva pra outra página --->
@@ -28,16 +28,18 @@
                     definir entre registrar/logar ou deslogar -->
                 </ul>
             <nav>
-            <div><!--banner do site com propagandas-->
+            <!--
+            <div> banner do site com propagandas
                 
             </div>
             <main>
-                <div><!-- navegação de produtos -->
-                    <a>cafés</a> <!--- filtro --->
-                    <a>doces</a> <!--- filtro --->
-                    <a>organicos</a> <!--- filtro --->
+                <div>navegação de produtos
+                    <a>cafés</a> filtro
+                    <a>doces</a> filtro
+                    <a>organicos</a> filtro
                 </div>
             </main>
+            -->
         </header>
         <main>
             <?php?>
