@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . "./Client.php";
+require_once __DIR__ . "/Client.php";
 
 class DuplicateEmail extends Exception
 {
