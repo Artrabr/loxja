@@ -11,6 +11,7 @@ class ProductDB
         $this->pdo = $pdo;
     }
 
+    //comentário por: Davi. pessoa responsavel por essa classe, por favor terminar o mais rápido possível para que eu possa testar o carrinho.
     public function getProductByID(int $id): Product
     {
         $stmt = $this->pdo->prepare("SELECT pdt_name,pdt_price,pdt_category,pdt_id FROM Product WHERE pdt_id = ?");
