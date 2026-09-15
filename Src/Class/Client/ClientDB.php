@@ -54,7 +54,7 @@ class ClientDB
             return new Client($id, $name, $email);
         } catch (PDOException $e) {
             //error for when the email already exists
-            if ($e->getCode() == '23000') {
+            if ($e->getCode() == '23000' && ($e->errorInfo[1] ?? null) === 1062) {
                 throw new DuplicateEmail("Email already used", 409);
             }
             throw $e;
@@ -67,7 +67,7 @@ class ClientDB
                 UPDATE Client
                 SET clt_name = :name,
                     clt_email = :email
-                WHERE clt_id = :id;
+                WHERE clt_id = :id
                 ");
             $stmt->execute([
                 'name' => $client->getName(),
@@ -76,7 +76,7 @@ class ClientDB
             ]);
         } catch (PDOException $e) {
             //error for when the email already exists
-            if ($e->getCode() == '23000') {
+            if ($e->getCode() == '23000' && ($e->errorInfo[1] ?? null) === 1062) {
                 throw new DuplicateEmail("Email already used", 409);
             }
             throw $e;

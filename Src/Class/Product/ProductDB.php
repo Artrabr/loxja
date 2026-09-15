@@ -11,7 +11,7 @@ class ProductDB
         $this->pdo = $pdo;
     }
 
-    public function getProductByID(int $id)
+    public function getProductByID(int $id): Product
     {
         $stmt = $this->pdo->prepare("SELECT pdt_name,pdt_price,pdt_category,pdt_id FROM Product WHERE pdt_id = ?");
         $stmt->execute([$id]);
