@@ -1,0 +1,12 @@
+@media (max-width: 600px) {
+  nav.full-width-nav ul {
+    justify-content: center;
+    padding-left: 0;
+    width: 100%;
+  }
+
+  nav.full-width-nav ul li {
+    flex: 1;
+    text-align: center;
+  }
+}
