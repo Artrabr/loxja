@@ -13,13 +13,13 @@ $t = microtime(true);
 
 $results = [
     "Classes" => [
-        "Client" => [
-            "getId" => false,
-            "getName" => false,
-            "setName" => false,
-            "getEmail" => false,
-            "setEmail" => false
-        ],
+        // "Client" => [
+        //     "getId" => false,
+        //     "getName" => false,
+        //     "setName" => false,
+        //     "getEmail" => false,
+        //     "setEmail" => false
+        // ],
         "ClientDB" => [
             "getClientByID" => false,
             "getClientByEmail" => false,
@@ -73,20 +73,20 @@ if ($errorCount == 0) {
       <section id="errors">
         <article id="error_list">
           <?php foreach ($results['Classes'] as $Class => $methods) : ?>
-            <?php if (passedAll($results['Classes'][$Class])) : ?>
+                <?php if (passedAll($results['Classes'][$Class])) : ?>
               <h2><?=$Class?> <span class="pass">passed</span></h2>
-            <?php else : ?>
+                <?php else : ?>
               <h2><?=$Class?> <span class="fail">failed</span></h2>
               <ul>
-                <?php foreach ($methods as $method => $failed) : ?>
-                  <?php if ($failed) : ?>
+                    <?php foreach ($methods as $method => $failed) : ?>
+                        <?php if ($failed) : ?>
                 <li><h4><?=$method?>: <span class="fail">failed</span></h4></li>
-                  <?php else : ?>
+                        <?php else : ?>
                 <li><h4><?=$method?>: <span class="pass">passed</span></h4></li>
-                  <?php endif; ?>
-                <?php endforeach; ?>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
               </ul>
-              <?php endif; ?>
+                <?php endif; ?>
           <?php endforeach; ?>
         </article>
       </section>
