@@ -36,3 +36,5 @@ if (!defined('DB_USERNAME')) {
 if (!defined('DB_PASSWORD')) {
     define('DB_PASSWORD', '');
 }
+
+define('ADMIN_EMAIL', file_get_contents('admin_email.txt'));
