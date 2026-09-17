@@ -17,7 +17,7 @@ class Connection
     private static PDO $pdo;
     public static function conectar(): PDO
     {
-        if (!self::$pdo) {
+        if (!isset(self::$pdo)) {
             self::$pdo = new PDO("mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET, DB_USERNAME, DB_PASSWORD);
             self::$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         }
