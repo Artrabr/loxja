@@ -71,7 +71,7 @@ class ShoppingCart
             return;
         }
 
-        $pdo = new ProductDB(Connection::conectar());
+        $pdo = Connection::conectar();
         $productDB = new ProductDB($pdo);
         $product = $productDB->getProductByID($productId);
         if (is_null($product)) {

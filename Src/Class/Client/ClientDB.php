@@ -9,9 +9,9 @@ class DuplicateEmail extends Exception
 class ClientDB
 {
     //TODO: BY:DAVI lembrar de colocar mais throws em lugares onde isso faça sentido
-    private $pdo;
+    private PDO $pdo;
 
-    public function __construct($pdo)
+    public function __construct(PDO $pdo)
     {
         $this->pdo = $pdo;
     }

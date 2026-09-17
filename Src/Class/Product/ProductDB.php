@@ -4,9 +4,9 @@ require_once __DIR__ . "/Product.php";
 
 class ProductDB
 {
-    private $pdo;
+    private PDO $pdo;
 
-    public function __construct($pdo)
+    public function __construct(PDO $pdo)
     {
         $this->pdo = $pdo;
     }
