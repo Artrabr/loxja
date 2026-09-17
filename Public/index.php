@@ -16,39 +16,91 @@ require_once __DIR__ . "/../Src/Class/Product/ProductDB.php";
 // --- quantos produtos mostrar por página ---
 const PRODUTOS_POR_PAGINA = 6;
 
-$produtos = [];
+$produtos     = [];
+$categorias   = [];
 $totalPaginas = 1;
-$paginaAtual = 1;
-$erroBanco = null;
+$paginaAtual  = 1;
+$erroBanco    = null;
+
+// ===== H2PI - Filtragem =====
+// ?busca=...     -> filtra por nome (LIKE)
+// ?categoria=... -> pré-filtro por categoria exata
+$busca     = trim((string) ($_GET['busca']     ?? ''));
+$categoria = trim((string) ($_GET['categoria'] ?? ''));
+
+/**
+ * Reconstrói a URL atual preservando os filtros ativos.
+ * Use $overrides pra trocar parâmetros (ex.: trocar a página).
+ */
+function urlComFiltros(array $overrides = []): string
+{
+    $params = [
+        'busca'     => $_GET['busca']     ?? '',
+        'categoria' => $_GET['categoria'] ?? '',
+        'pagina'    => $_GET['pagina']    ?? '',
+    ];
+    foreach ($overrides as $k => $v) {
+        $params[$k] = $v;
+    }
+    // remove vazios pra URL ficar limpa
+    $params = array_filter($params, static fn($v) => $v !== '' && $v !== null);
+    return '?' . http_build_query($params) . '#produtos';
+}
 
 try {
     $pdo = Connection::conectar();
 
-    // página atual vem da URL (?pagina=2). Se não vier, ou vier inválida, usamos 1.
+    // ---- categorias para os pré-filtros ----
+    $categorias = $pdo->query(
+        "SELECT DISTINCT pdt_category
+           FROM Product
+          WHERE pdt_category IS NOT NULL AND pdt_category <> ''
+          ORDER BY pdt_category"
+    )->fetchAll(PDO::FETCH_COLUMN);
+
+    // ---- página atual ----
     $paginaAtual = isset($_GET['pagina']) ? (int) $_GET['pagina'] : 1;
     if ($paginaAtual < 1) {
         $paginaAtual = 1;
     }
 
-    $offset = ($paginaAtual - 1) * PRODUTOS_POR_PAGINA;
+    // ---- monta WHERE conforme filtros ativos ----
+    $where  = [];
+    $params = [];
 
-    // total de produtos no banco, pra saber quantas páginas existem
-    $totalProdutos = (int) $pdo->query("SELECT COUNT(*) FROM Product")->fetchColumn();
-    $totalPaginas = (int) max(1, ceil($totalProdutos / PRODUTOS_POR_PAGINA));
+    if ($busca !== '') {
+        $where[]          = 'pdt_name LIKE :busca';
+        $params[':busca'] = '%' . $busca . '%';
+    }
+    if ($categoria !== '') {
+        $where[]              = 'pdt_category = :categoria';
+        $params[':categoria'] = $categoria;
+    }
+    $whereSql = $where ? ('WHERE ' . implode(' AND ', $where)) : '';
+
+    // ---- total (respeitando os filtros) ----
+    $stmtCount = $pdo->prepare("SELECT COUNT(*) FROM Product $whereSql");
+    $stmtCount->execute($params);
+    $totalProdutos = (int) $stmtCount->fetchColumn();
+    $totalPaginas  = (int) max(1, (int) ceil($totalProdutos / PRODUTOS_POR_PAGINA));
 
     // se a página pedida passar do total, volta pra última válida
     if ($paginaAtual > $totalPaginas) {
         $paginaAtual = $totalPaginas;
-        $offset = ($paginaAtual - 1) * PRODUTOS_POR_PAGINA;
     }
+    $offset = ($paginaAtual - 1) * PRODUTOS_POR_PAGINA;
 
-    // busca só a "fatia" de produtos desta página (LIMIT/OFFSET)
+    // ---- busca a fatia da página, já filtrada ----
     $stmt = $pdo->prepare(
         "SELECT pdt_id, pdt_name, pdt_price, pdt_description, pdt_amount, pdt_category
-         FROM Product
-         ORDER BY pdt_id
-         LIMIT :limite OFFSET :offset"
+           FROM Product
+           $whereSql
+          ORDER BY pdt_id
+          LIMIT :limite OFFSET :offset"
     );
+    foreach ($params as $k => $v) {
+        $stmt->bindValue($k, $v);
+    }
     $stmt->bindValue(':limite', PRODUTOS_POR_PAGINA, PDO::PARAM_INT);
     $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
     $stmt->execute();
@@ -64,7 +116,6 @@ try {
         );
     }
 } catch (PDOException $e) {
-    // se o banco falhar, a página continua funcionando, só sem produtos
     $erroBanco = "Não foi possível carregar os produtos no momento.";
 }
 
@@ -272,6 +323,64 @@ function formatarPreco(float $preco): string
                 padding: 24px;
                 opacity: 0.8;
             }
+
+            /* ===== H2PI - filtros ===== */
+            .pre-filters {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                margin-bottom: 24px;
+            }
+
+            .filter-chip {
+                display: inline-flex;
+                align-items: center;
+                padding: 6px 14px;
+                border-radius: 999px;
+                border: 1px solid var(--sage);
+                background: var(--white);
+                color: var(--muted);
+                text-decoration: none;
+                font-size: 0.9rem;
+                font-weight: 600;
+                transition: background .15s ease, color .15s ease, border-color .15s ease;
+            }
+
+            .filter-chip:hover,
+            .filter-chip:focus {
+                color: var(--ink);
+                background: var(--cream-green);
+                border-color: var(--cream-green);
+            }
+
+            .filter-chip.is-active {
+                background: var(--caramel);
+                border-color: var(--caramel);
+                color: var(--white);
+            }
+
+            .filter-chip.is-active:hover {
+                background: var(--caramel);
+                color: var(--white);
+            }
+
+            .filter-status {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 12px;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 20px;
+                padding: 10px 14px;
+                border-radius: 12px;
+                background: var(--cream-green);
+                color: var(--muted);
+                font-size: 0.92rem;
+            }
+
+            .filter-status strong {
+                color: var(--ink);
+            }
         </style>
     </head>
     <body>
@@ -292,7 +401,11 @@ function formatarPreco(float $preco): string
                 <form class="search-form" action="#produtos" method="get">
                     <label for="busca">O que vai deixar seu dia mais gostoso?</label>
                     <div class="search-control">
-                        <input id="busca" name="busca" type="search" placeholder="Busque por cafe, doce...">
+                        <input id="busca" name="busca" type="search"
+                            value="<?= htmlspecialchars($busca) ?>"
+                            placeholder="Busque por cafe, doce...">
+                        <!-- mantém a categoria ativa quando o usuário busca por texto -->
+                        <input type="hidden" name="categoria" value="<?= htmlspecialchars($categoria) ?>">
                         <button type="submit">Buscar</button>
                     </div>
                 </form>
@@ -315,10 +428,48 @@ function formatarPreco(float $preco): string
                     </div>
                 </div>
 
+                <?php if (!empty($categorias)): ?>
+                    <div class="pre-filters" role="group" aria-label="Pré-filtros por categoria">
+                        <a class="filter-chip <?= $categoria === '' ? 'is-active' : '' ?>"
+                        href="<?= htmlspecialchars(urlComFiltros(['categoria' => '', 'pagina' => 1])) ?>">
+                            Todas as categorias
+                        </a>
+                        <?php foreach ($categorias as $cat): ?>
+                            <a class="filter-chip <?= $categoria === $cat ? 'is-active' : '' ?>"
+                            href="<?= htmlspecialchars(urlComFiltros(['categoria' => $cat, 'pagina' => 1])) ?>">
+                                <?= htmlspecialchars($cat) ?>
+                            </a>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+
+                <?php if ($busca !== '' || $categoria !== ''): ?>
+                    <div class="filter-status">
+                        <span>
+                            <?php
+                                $partes = [];
+                                if ($busca !== '')     $partes[] = 'busca: <strong>' . htmlspecialchars($busca) . '</strong>';
+                                if ($categoria !== '') $partes[] = 'categoria: <strong>' . htmlspecialchars($categoria) . '</strong>';
+                                echo implode(' &middot; ', $partes);
+                            ?>
+                            &mdash; <?= (int) $totalProdutos ?> resultado(s)
+                        </span>
+                        <a class="text-link" href="?pagina=1#produtos">Limpar filtros</a>
+                    </div>
+                <?php endif; ?>
+
                 <?php if ($erroBanco): ?>
                     <p class="empty-state"><?= htmlspecialchars($erroBanco) ?></p>
                 <?php elseif (empty($produtos)): ?>
-                    <p class="empty-state">Nenhum produto cadastrado ainda.</p>
+                    <p class="empty-state">
+                        <?php if ($busca !== '' || $categoria !== ''): ?>
+                            Nenhum produto encontrado com os filtros atuais.
+                            <br>
+                            <a class="text-link" href="<?= htmlspecialchars(urlComFiltros(['pagina' => 1])) ?>">Limpar filtros</a>
+                        <?php else: ?>
+                            Nenhum produto cadastrado ainda.
+                        <?php endif; ?>
+                    </p>
                 <?php else: ?>
                     <div class="product-grid">
                         <?php foreach ($produtos as $produto): ?>
@@ -341,7 +492,7 @@ function formatarPreco(float $preco): string
                         <?php endforeach; ?>
                     </div>
 
-                    <?php if ($totalPaginas > 1): ?>
+                    <?php $urlTemplatePagina = htmlspecialchars(urlComFiltros(['pagina' => '__PAGINA__'])); ?>
                         <div class="pagination-control">
                             <?php // ---- Primeira página ---- ?>
                             <?php if ($paginaAtual > 1): ?>
@@ -357,7 +508,7 @@ function formatarPreco(float $preco): string
                             <?php // ---- Página anterior ---- ?>
                             <?php if ($paginaAtual > 1): ?>
                                 <a class="pagination-arrow"
-                                   href="?pagina=<?= $paginaAtual - 1 ?>#produtos"
+                                   href="<?= htmlspecialchars(urlComFiltros(['pagina' => $paginaAtual - 1])) ?>"
                                    aria-label="Página anterior"
                                    title="Página anterior">&larr;</a>
                             <?php else: ?>
@@ -403,16 +554,15 @@ function formatarPreco(float $preco): string
                                         event.preventDefault();
                                         var v = parseInt(this.value, 10);
                                         if (v >= 1 && v <= <?= $totalPaginas ?>) {
-                                            window.location.href = '?pagina=' + v + '#produtos';
+                                            window.location.href = '<?= $urlTemplatePagina ?>'.replace('__PAGINA__', v);
                                         }
                                     }"
-                                >
                             <?php endif; ?>
 
                             <?php // ---- Próxima página ---- ?>
                             <?php if ($paginaAtual < $totalPaginas): ?>
                                 <a class="pagination-arrow"
-                                   href="?pagina=<?= $paginaAtual + 1 ?>#produtos"
+                                   href="<?= htmlspecialchars(urlComFiltros(['pagina' => $i])) ?>"
                                    aria-label="Próxima página"
                                    title="Próxima página">&rarr;</a>
                             <?php else: ?>
@@ -423,7 +573,7 @@ function formatarPreco(float $preco): string
                             <?php // ---- Última página ---- ?>
                             <?php if ($paginaAtual < $totalPaginas): ?>
                                 <a class="pagination-arrow is-jump"
-                                   href="?pagina=<?= $totalPaginas ?>#produtos"
+                                   href="<?= htmlspecialchars(urlComFiltros(['pagina' => $totalPaginas])) ?>"
                                    aria-label="Última página"
                                    title="Última página">&raquo;</a>
                             <?php else: ?>
@@ -480,5 +630,43 @@ function formatarPreco(float $preco): string
                 <span>Loxja <small>cafe</small></span></a><p>&copy; 2026 Loxja Cafe. Todos os direitos reservados.</p>
             <a href="#inicio" class="back-top" aria-label="Voltar ao inicio">&uarr;</a>
         </footer>
+        <script>
+        // H2PI - filtro "dinâmico" enquanto digita.
+        // Isto filtra apenas os produtos já carregados na página atual.
+        // A busca "de verdade" (que varre todas as páginas) continua sendo a do
+        // formulário, disparada ao apertar Enter ou clicar em "Buscar".
+        (function () {
+            var input = document.getElementById('busca');
+            var grid  = document.querySelector('.product-grid');
+            if (!input || !grid) return;
+
+            var cards = Array.prototype.slice.call(grid.querySelectorAll('.product-card'));
+            var names = cards.map(function (card) {
+                var h3 = card.querySelector('h3');
+                return h3 ? h3.textContent.toLowerCase() : '';
+            });
+
+            var notice = document.createElement('p');
+            notice.className = 'empty-state';
+            notice.style.display = 'none';
+            notice.textContent = 'Nenhum produto nesta página corresponde à busca. Aperte Enter para buscar em todas as páginas.';
+            grid.parentNode.insertBefore(notice, grid.nextSibling);
+
+            var timer = null;
+            input.addEventListener('input', function () {
+                clearTimeout(timer);
+                timer = setTimeout(function () {
+                    var q = input.value.trim().toLowerCase();
+                    var visiveis = 0;
+                    cards.forEach(function (card, i) {
+                        var match = q === '' || names[i].indexOf(q) !== -1;
+                        card.style.display = match ? '' : 'none';
+                        if (match) visiveis++;
+                    });
+                    notice.style.display = visiveis === 0 ? '' : 'none';
+                }, 120);
+            });
+        })();
+        </script>
     </body>
 </html>
