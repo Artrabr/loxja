@@ -26,7 +26,7 @@ class ShoppingCartItem
         return $this->product;
     }
 
-    public function setAmount(int $amount, bool $deleteIfNone = false)
+    public function setAmount(int $amount)
     {
         $this->amount = $amount;
         if ($amount <= 1) {
