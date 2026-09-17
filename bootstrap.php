@@ -37,4 +37,10 @@ if (!defined('DB_PASSWORD')) {
     define('DB_PASSWORD', '');
 }
 
-define('ADMIN_EMAIL', file_get_contents('admin_email.txt'));
+$adminEmailFile = PROJECT_ROOT . '/admin_email.txt';
+if(is_readable($adminEmailFile)) {
+    $adminEmailContents = trim(file_get_contents($adminEmailFile));
+    define('ADMIN_EMAIL', $adminEmailContents);
+} else {
+    define('ADMIN_EMAIL', '');
+}
