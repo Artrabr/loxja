@@ -13,6 +13,15 @@ class ProductDB
 
     public function getProductByID(int $id)
     {
+        $stmt = $this->pdo->prepare("SELECT pdt_name,pdt_price,pdt_category,pdt_id FROM Product WHERE pdt_id = ?");
+        $stmt->execute([$id]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($row) {
+            return new Product($row['pdt_id'], $row['pdt_name'], $row['pdt_price'], $row['pdt_category']);
+        }
+
+        return null;
     }
 
     public function createProduct(string $name, float $price, string $description, int $amountAvailable, string $category)
