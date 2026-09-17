@@ -37,5 +37,5 @@ if (!defined('DB_PASSWORD')) {
     define('DB_PASSWORD', '');
 }
 
-// usa caminho fixo da root, só pra garantir
+// usa caminho fixo da root, só pra garantir - igoroara
 define('ADMIN_EMAIL',file_get_contents(__DIR__ . "/admin_email.txt"));
