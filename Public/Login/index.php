@@ -20,7 +20,7 @@
                 <input id="senha" name="senha" type="password" autocomplete="current-password" required>
                 <button type="submit">Entrar</button>
             </form>
-            <p class="switch-page">Ainda nao tem conta? <a href="../registration/index.php">Cadastre-se</a></p>
+            <p class="switch-page">Ainda nao tem conta? <a href="../Registration/index.php">Cadastre-se</a></p>
             <a class="back-link" href="../index.php">&larr; Voltar para a loja</a>
         </section>
     </main>
