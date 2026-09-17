@@ -13,7 +13,7 @@
             <p class="eyebrow">Que bom ter voce por aqui</p>
             <h1 id="login-title">Entre na sua conta</h1>
             <p class="intro">Acompanhe seus pedidos e torne sua proxima pausa ainda mais gostosa.</p>
-            <form action="#" method="post">
+            <form action="../../Src/LoginProcess.php" method="post">
                 <label for="email">E-mail</label>
                 <input id="email" name="email" type="email" autocomplete="email" required>
                 <label for="senha">Senha</label>

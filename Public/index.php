@@ -284,6 +284,7 @@ function formatarPreco(float $preco): string
                     <li><a href="#contato">Contato</a></li>
                 </ul>
                 <a class="login-button" href="Login/index.php">Login</a>
+                <a class="login-button" href="Client/index.php">Area do Cliente</a>
             </nav>
         </header>
         <main>
