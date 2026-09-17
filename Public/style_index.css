@@ -377,6 +377,7 @@ h2 {
 .contact-section .primary-button {
 	flex-shrink: 0;
 	background: var(--ink);
+	color: var(--white);
 }
 
 footer {
