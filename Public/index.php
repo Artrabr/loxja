@@ -13,7 +13,6 @@
             <nav class="topbar" aria-label="Navegacao principal">
                 <a class="brand" href="#inicio" aria-label="Loxja Cafe, inicio"><span class="brand-mark">L</span><span>Loxja <small>cafe</small></span></a>
                 <ul class="nav-links">
-                    <li><a href="#inicio">Inicio</a></li>
                     <li><a href="#produtos">Produtos</a></li>
                     <li><a href="#sobre">Sobre</a></li>
                     <li><a href="#contato">Contato</a></li>
