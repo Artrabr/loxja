@@ -38,10 +38,4 @@ if (!defined('DB_PASSWORD')) {
 }
 
 // usa caminho fixo da root, só pra garantir
-$adminEmailFile = PROJECT_ROOT . '/admin_email.txt';
-    if(is_readable($adminEmailFile)) {
-        $adminEmailContents = trim(file_get_contents($adminEmailFile));
-        define('ADMIN_EMAIL', $adminEmailContents);
-    } else {
-        define('ADMIN_EMAIL', '');
-}
+define('ADMIN_EMAIL',file_get_contents(__DIR__ . "/admin_email.txt"));
