@@ -12,14 +12,14 @@ class ProductDB
     }
 
     //comentário por: Davi. pessoa responsavel por essa classe, por favor terminar o mais rápido possível para que eu possa testar o carrinho.
-    public function getProductByID(int $id): Product
+    public function getProductByID(int $id): ?Product
     {
-        $stmt = $this->pdo->prepare("SELECT pdt_name,pdt_price,pdt_category,pdt_id FROM Product WHERE pdt_id = ?");
+        $stmt = $this->pdo->prepare("SELECT pdt_id,pdt_name,pdt_price,pdt_description,pdt_amount,pdt_category FROM Product WHERE pdt_id = ?");
         $stmt->execute([$id]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($row) {
-            return new Product($row['pdt_id'], $row['pdt_name'], $row['pdt_price'], $row['pdt_category']);
+            return new Product($row['pdt_id'], $row['pdt_name'], $row['pdt_price'], $row['pdt_description'], $row['pdt_amount'], $row['pdt_category']);
         }
 
         return null;
