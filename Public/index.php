@@ -461,6 +461,18 @@ function formatarPreco(float $preco): string
                 </div>
                 <a class="primary-button eyebrow" href="mailto:oi@loxjacafe.com">Contate-nos<span aria-hidden="true">&rarr;</span></a>
             </section>
+            <section class="about-section" id="sobre" aria-labelledby="about-title">
+                <div class="about-image"
+                     role="img"
+                     aria-label="Interior aconchegante da Loxja Cafe, com mesas de madeira e luz suave"></div>
+                <div class="about-copy">
+                    <p class="eyebrow">Sobre nós</p>
+                    <h2 id="about-title">Um cantinho feito à mão, xícara por xícara.</h2>
+                    <p>A Loxja nasceu do desejo de desacelerar. Em 2026 abrimos nossas portas com uma ideia simples: servir cafés especiais e doces delicados em um ambiente onde o tempo passa mais devagar.</p>
+                    <p>Cada grão é escolhido a dedo entre pequenos produtores brasileiros, torrado em pequenos lotes e preparado com o cuidado de quem acredita que um bom café é, antes de tudo, um gesto de carinho.</p>
+                    <a class="primary-button" href="#produtos">Conheça nosso cardápio <span aria-hidden="true">&rarr;</span></a>
+                </div>
+            </section>
         </main>
         <footer>
             <a class="brand footer-brand" href="#inicio">

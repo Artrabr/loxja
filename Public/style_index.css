@@ -349,6 +349,7 @@ h2 {
 	grid-template-columns: .9fr 1.1fr;
 	align-items: center;
 	gap: 70px;
+	border-radius: 0, 0, 25px, 25px;
 	background: var(--cream-green);
 }
 
