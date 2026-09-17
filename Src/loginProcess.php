@@ -2,15 +2,7 @@
 
 require_once __DIR__ . "/Connection.php";
 require_once __DIR__ . "../Class/Client/ClientDB.php";
-
-function validateData($post, array $input){
-    for($i = 0; $i < count($input); $i++){
-        if(!isset($post[$input[$i]]) || empty($post[$input[$i]])){
-            return false;
-        }
-    }
-    return true;
-}
+require_once __DIR__ . "../Validation.php";
 
 function connectToDatabase()
 {
@@ -23,15 +15,15 @@ function disconnectFromDatabase($pdo)
     $pdo = null;
 }
 
-function getPassword($cliente){ //retorna a senha do banco de dados do cliente
-    $id = $client::getId();
+function getPassword(Client $client){ //retorna a senha do banco de dados do cliente
+    $id = $client->getId();
+    global $pdo;
     $smt = $pdo->prepare("SELECT clt_password FROM Client WHERE clt_id = :id");
     $smt->execute(['id' => $id]);
     return $smt->fetchColumn();
 }
 
 function ClientSession($cliente){
-    session_start();
     $_SESSION["client_object"] = $cliente;
 }
 
@@ -40,7 +32,7 @@ function ClientSession($cliente){
 //--------------------------------
 
 //verifica chegada de dados via POST
-if(!validateData($_POST, ["email", "senha"])){
+if(!Validation::isValidPassword($password) || !Validation::isValidEmail($email)){
     header("Location: ../Public/Login/index.php?error=invalid_data");
     exit();
 }
@@ -51,11 +43,12 @@ $password = $_POST["senha"];
 
 $pdo = connectToDatabase();
 //                                                                                              ___________
+$clientDB = new ClientDB($pdo);
 //pega o cliente pelo email                                                                     \_supreme_I______      
-$cliente = ClientDB::getClientByEmail($login); //funcao da classe clientDB (linha 4)              /------\
+$cliente = $clientDB->getClientByEmail($login); //funcao da classe clientDB (linha 4)              /------\
 //                                                                                               I o  o  I
 //verifica se o cliente existe                                                                   \  v   /
-if(!$cliente){//                                                                                  -----
+if(is_null($cliente)){//                                                                                  -----
     header("Location: ../Public/Login/index.php?error=nonexistent_user");//                        /I\
     exit();//                                                                                     / I \ 
 }//                                                                                              /  I  \
