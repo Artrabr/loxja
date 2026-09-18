@@ -493,11 +493,14 @@ function formatarPreco(float $preco): string
                     </div>
 
                     <?php $urlTemplatePagina = htmlspecialchars(urlComFiltros(['pagina' => '__PAGINA__'])); ?>
+                                            <?php $urlTemplatePagina = htmlspecialchars(urlComFiltros(['pagina' => '__PAGINA__'])); ?>
+
+                    <?php if ($totalPaginas > 1): ?>
                         <div class="pagination-control">
                             <?php // ---- Primeira página ---- ?>
                             <?php if ($paginaAtual > 1): ?>
                                 <a class="pagination-arrow is-jump"
-                                   href="?pagina=1#produtos"
+                                   href="<?= htmlspecialchars(urlComFiltros(['pagina' => 1])) ?>"
                                    aria-label="Primeira página"
                                    title="Primeira página">&laquo;</a>
                             <?php else: ?>
@@ -518,9 +521,6 @@ function formatarPreco(float $preco): string
 
                             <div class="pagination-pages">
                                 <?php
-                                // Janela de até 3 números:
-                                //   - se tem 3 páginas ou menos, mostra todas;
-                                //   - senão, mostra 3 centradas na página atual, sem passar dos limites.
                                 if ($totalPaginas <= 3) {
                                     $inicio = 1;
                                     $fim    = $totalPaginas;
@@ -535,7 +535,7 @@ function formatarPreco(float $preco): string
                                               aria-current="page"><?= $i ?></span>
                                     <?php else: ?>
                                         <a class="pagination-number"
-                                           href="?pagina=<?= $i ?>#produtos"
+                                           href="<?= htmlspecialchars(urlComFiltros(['pagina' => $i])) ?>"
                                            aria-label="Ir para a página <?= $i ?>"><?= $i ?></a>
                                     <?php endif;
                                 endfor; ?>
@@ -557,12 +557,13 @@ function formatarPreco(float $preco): string
                                             window.location.href = '<?= $urlTemplatePagina ?>'.replace('__PAGINA__', v);
                                         }
                                     }"
+                                >
                             <?php endif; ?>
 
                             <?php // ---- Próxima página ---- ?>
                             <?php if ($paginaAtual < $totalPaginas): ?>
                                 <a class="pagination-arrow"
-                                   href="<?= htmlspecialchars(urlComFiltros(['pagina' => $i])) ?>"
+                                   href="<?= htmlspecialchars(urlComFiltros(['pagina' => $paginaAtual + 1])) ?>"
                                    aria-label="Próxima página"
                                    title="Próxima página">&rarr;</a>
                             <?php else: ?>
