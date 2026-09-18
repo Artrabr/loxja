@@ -393,7 +393,7 @@ function formatarPreco(float $preco): string
                     <li><a href="#contato">Contato</a></li>
                 </ul>
                 <?php
-                    if(logado){
+                    if($logado){
                         echo "<a class='login-button' href='Client/index.php'>Area do Cliente</a>";
                     } else {
                         echo "<a class='login-button' href='Login/index.php'>Login</a>";
