@@ -588,7 +588,6 @@ function formatarPreco(float $preco): string
                                       aria-disabled="true">&raquo;</span>
                             <?php endif; ?>
                         </div>
-                    <?php endif; ?>
 
                     <?php foreach ($produtos as $produto): ?>
                         <div class="product-detail-overlay" id="produto-<?= $produto->getId() ?>">

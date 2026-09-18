@@ -5,9 +5,11 @@
         exit();
     }
     require_once __DIR__ . "/../../Src/Connection.php";
+    require_once __DIR__ . "/../../Src/Class/ClientAddress/ClientAddress.php";
 
     $cliente = $_SESSION["client_object"];
     $id = $cliente->getId();
+    $pdo = Connection::conectar();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -40,43 +42,32 @@
             <p>Aqui você pode visualizar e atualizar suas informações de envio.</p>
             <?php
 
-                
+                $ClientLocateData = new ClientAddress($pdo, $_SESSION['client_object']);
 
-            //===================================
-                if ($shipping_info):
+                $CEP          = $ClientLocateData->getCEP();
+                $road         = $ClientLocateData->getRoad();
+                $number       = $ClientLocateData->getNumber();
+                $neighborhood = $ClientLocateData->getNeighborhood();
+                $city         = $ClientLocateData->getCity();
+                $state        = $ClientLocateData->getState();
+                $contry       = $ClientLocateData->getCountry();
+                $fullAddress  = $ClientLocateData->getFull();
             ?>
             <div>
-                <form action="update_shipping.php" method="post">
-                    <label for="address">Endereço</label>
-                    <input type="text" id="address" name="address" placeholder=<?php?>"
-                    
-                    Digite seu endereço
-                    
-                    " required>
-                    <label for="city">Cidade</label>
-                    <input type="text" id="city" name="city" placeholder="
-                    
-                    Digite sua cidade
-                    
-                    " required>
+                <form action="<?//enviar os dados à ClientAddress?>" method="post">
+                    <label for="contry">Pais</label>
+                    <input type="text" id="contry" name="contry" value="<?=htmlspecialchars($contry)?>" required>
                     <label for="state">Estado</label>
-                    <input type="text" id="state" name="state" placeholder="
-                    
-                    Digite seu estado
-                    
-                    "  required>
-                    <label for="zip">CEP</label>
-                    <input type="text" id="zip" name="zip" placeholder="
-                    
-                    Digite seu CEP
-                    
-                    " required>
+                    <input type="text" id="state" name="state" value="<?=htmlspecialchars($state)?>" required>
+                    <label for="city">Cidade</label>
+                    <input type="text" id="city" name="city" value="<?=htmlspecialchars($city)?>" required>
+                    <label for="cep">CEP</label>
+                    <input type="text" id="cep" name="cep" value="<?=htmlspecialchars($CEP)?>" required>
+                    <label for="address">Endereço</label>
+                    <input type="text" id="address" name="address" value="<?=htmlspecialchars($fullAddress)?>" required>
                     <button type="submit">Atualizar informações</button>
                 </form>
             </div>
-            <?php
-                endif;
-            ?>
         </section>
     </main>
 </body>

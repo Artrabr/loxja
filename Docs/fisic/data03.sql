@@ -1,8 +1,8 @@
 
-================================
-             NOTAS
-================================
-tabela de localização adicionado
+-- ================================
+--              NOTAS
+-- ================================
+-- tabela de localização adicionada
 
 
 
@@ -71,9 +71,11 @@ CREATE TABLE LocationData (
 	ld_number         INT,
     ld_road           VARCHAR(70),
     ld_neighborhood   VARCHAR(70),
-    lb_city           VARCHAR(70),
+    ld_city           VARCHAR(70),
     ld_state          VARCHAR(70),
     ld_contry         VARCHAR(70),
+
+    PRIMARY KEY (clt_id),
     
     CONSTRAINT fk_client_location
         FOREIGN KEY (clt_id) REFERENCES Client(clt_id)
