@@ -382,7 +382,12 @@ function formatarPreco(float $preco): string
                 color: var(--ink);
             }
         </style>
-    </head>
+    </head> 
+    
+<!--===================[APAGAR]========================-->
+    <a href="Administration/index.php" style='padding:5px; background-color:rgb(64, 171, 77);'>got to administration</a>
+<!--===================[------]========================-->
+
     <body>
         <header class="site-header" id="inicio">
             <nav class="topbar" aria-label="Navegacao principal">
@@ -588,6 +593,8 @@ function formatarPreco(float $preco): string
                                       aria-disabled="true">&raquo;</span>
                             <?php endif; ?>
                         </div>
+
+                    <?php endif; ?>
 
                     <?php foreach ($produtos as $produto): ?>
                         <div class="product-detail-overlay" id="produto-<?= $produto->getId() ?>">

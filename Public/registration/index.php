@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Cadastro | Loxja Cafe</title>
-	<link rel="stylesheet" href="cadastro.css">
+	<link rel="stylesheet" href="register.css">
 </head>
 <body>
 	<main class="auth-page">
@@ -13,7 +13,7 @@
 			<p class="eyebrow">Seu cafe, do seu jeito</p>
 			<h1 id="signup-title">Crie sua conta</h1>
 			<p class="intro">Faca parte da nossa mesa e receba novidades fresquinhas.</p>
-			<form action="#" method="post">
+			<form action="../../Src/registerProcess.php" method="POST">
 				<label for="nome">Nome</label>
 				<input id="nome" name="nome" type="text" autocomplete="name" required>
 				<label for="email">E-mail</label>

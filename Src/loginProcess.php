@@ -31,6 +31,8 @@ function ClientSession($cliente){
 //            CODIGO
 //--------------------------------
 
+$admlogin = 'adm@cafe.com';
+
 //verifica chegada de dados via POST
 if(!Validation::isValidPassword($password) || !Validation::isValidEmail($email)){
     header("Location: ../Public/Login/index.php?error=invalid_data");
@@ -48,7 +50,7 @@ $clientDB = new ClientDB($pdo);
 $cliente = $clientDB->getClientByEmail($login); //funcao da classe clientDB (linha 4)              /------\
 //                                                                                               I o  o  I
 //verifica se o cliente existe                                                                   \  v   /
-if(is_null($cliente)){//                                                                                  -----
+if(is_null($cliente)){//                                                                          -----
     header("Location: ../Public/Login/index.php?error=nonexistent_user");//                        /I\
     exit();//                                                                                     / I \ 
 }//                                                                                              /  I  \
@@ -64,6 +66,10 @@ ClientSession($cliente);
 
 //disconecta do banco de dados
 disconnectFromDatabase($pdo);
+
+if($login == $admlogin){
+    
+}
 
 header("Location: ../Public/index.php?success=login_success");
 exit();

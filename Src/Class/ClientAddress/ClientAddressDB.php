@@ -40,8 +40,8 @@ class ClientAddressDB
     ): ClientAddress {
         $stmt = $this->pdo->prepare(
             "INSERT INTO LocationData
-                (clt_id, ld_number, ld_road, ld_neighborhood, ld_city, ld_state, ld_contry, ld_cep)
-             VALUES (:clientId, :number, :road, :neighborhood, :city, :state, :country, :cep)"
+            (clt_id, ld_number, ld_road, ld_neighborhood, ld_city, ld_state, ld_contry, ld_cep)
+            VALUES (:clientId, :number, :road, :neighborhood, :city, :state, :country, :cep)"
         );
         $stmt->execute([
             'clientId' => $clientId,
