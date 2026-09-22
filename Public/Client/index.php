@@ -5,7 +5,7 @@
         exit();
     }
     require_once __DIR__ . "/../../Src/Connection.php";
-    require_once __DIR__ . "/../../Src/Class/ClientAddress/ClientAddress.php";
+    require_once __DIR__ . "/../../Src/Class/ClientAddress/ClientAddressDB.php";
 
     $cliente = $_SESSION["client_object"];
     $id = $cliente->getId();
@@ -42,16 +42,17 @@
             <p>Aqui você pode visualizar e atualizar suas informações de envio.</p>
             <?php
 
-                $ClientLocateData = new ClientAddress($pdo, $_SESSION['client_object']);
+                $clientAddressDB = new ClientAddressDB($pdo);
+                $ClientLocateData = $clientAddressDB->getAddressByClientID($id);
 
-                $CEP          = $ClientLocateData->getCEP();
-                $road         = $ClientLocateData->getRoad();
-                $number       = $ClientLocateData->getNumber();
-                $neighborhood = $ClientLocateData->getNeighborhood();
-                $city         = $ClientLocateData->getCity();
-                $state        = $ClientLocateData->getState();
-                $contry       = $ClientLocateData->getCountry();
-                $fullAddress  = $ClientLocateData->getFull();
+                $CEP          = $ClientLocateData?->getCEP() ?? '';
+                $road         = $ClientLocateData?->getRoad() ?? '';
+                $number       = $ClientLocateData?->getNumber() ?? '';
+                $neighborhood = $ClientLocateData?->getNeighborhood() ?? '';
+                $city         = $ClientLocateData?->getCity() ?? '';
+                $state        = $ClientLocateData?->getState() ?? '';
+                $contry       = $ClientLocateData?->getCountry() ?? '';
+                $fullAddress  = $ClientLocateData?->getFull() ?? '';
             ?>
             <div>
                 <form action="<?//enviar os dados à ClientAddress?>" method="post">

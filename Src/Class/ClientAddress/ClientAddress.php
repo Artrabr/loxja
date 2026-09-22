@@ -1,87 +1,90 @@
 <?php
 
-use PDO;
 class ClientAddress
 {
-    private ?array $data = null; //ou é definido como array ou como null pra evitar bug
-    private PDO $pdo;
-    private $client;
+    private int $clientID;
+    private int $number;
+    private string $road;
+    private string $neighborhood;
+    private string $city;
+    private string $state;
+    private string $contry;
+    private int $CEP;
 
-    public function __construct(PDO $pdo, $client)
+    public function __construct(
+        int $clientID,
+        int $number,
+        string $road,
+        string $neighborhood,
+        string $city,
+        string $state,
+        string $contry,
+        int $CEP
+    ) {
+        $this->clientID = $clientID;
+        $this->number = $number;
+        $this->road = $road;
+        $this->neighborhood = $neighborhood;
+        $this->city = $city;
+        $this->state = $state;
+        $this->contry = $contry;
+        $this->CEP = $CEP;
+    }
+
+    public function getId(): int
     {
-        $this->pdo = $pdo;
-        $this->client = $client;
+        return $this->clientID;
     }
 
-    private function row(): array
+    public function getClientId(): int
     {
-        if ($this->data === null) {
-            $stmt = $this->pdo->prepare(
-                "SELECT ld_number, ld_road, ld_neighborhood, ld_city,
-                ld_state, ld_contry, ld_cep
-                FROM LocationData WHERE clt_id = :id"
-            );
-            $stmt->execute(['id' => $this->client->getId()]);
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            $this->data = $result ?: []; // linha ausente => array vazio; so pra nao dar um erro ele da um vazio dai nao popa na tela
-        }
-
-        return $this->data;
+        return $this->clientID;
     }
 
-    private function field(string $key): string
+    public function getNumber(): int
     {
-        return $this->row()[$key] ?? "Não informado";
+        return $this->number;
     }
 
-    public function getNumber(): string       
-    { 
-        return $this->field('ld_number');
-    }
-
-    public function getRoad(): string         
+    public function getRoad(): string
     {
-         return $this->field('ld_road');
+        return $this->road;
     }
 
-    public function getNeighborhood(): string 
+    public function getNeighborhood(): string
     {
-         return $this->field('ld_neighborhood'); 
+        return $this->neighborhood;
     }
 
-    public function getCity(): string         
-    { 
-        return $this->field('ld_city'); 
+    public function getCity(): string
+    {
+        return $this->city;
     }
 
-    public function getState(): string        
-    { 
-        return $this->field('ld_state'); 
+    public function getState(): string
+    {
+        return $this->state;
     }
 
-    public function getCountry(): string      
-    { 
-        return $this->field('ld_contry'); 
+    public function getCountry(): string
+    {
+        return $this->contry;
     }
 
-    public function getCEP(): string          
-    { 
-        return $this->field('ld_cep'); 
+    public function getCEP(): int
+    {
+        return $this->CEP;
     }
 
     public function getFull(): string
     {
         return implode(', ', [
-            $this->getRoad(),
-            $this->getNumber(),
-            $this->getNeighborhood(),
-            $this->getCity(),
-            $this->getState(),
-            $this->getCountry(),
+            $this->road,
+            $this->number,
+            $this->neighborhood,
+            $this->city,
+            $this->state,
+            $this->contry,
         ]);
     }
-    //======================================================
-    //         Fazer funções de atualizar dados
-    //======================================================
 }
