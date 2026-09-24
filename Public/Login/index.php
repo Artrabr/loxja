@@ -17,7 +17,7 @@ $error = $_GET['error'] ?? null;
 <main class="auth-page">
 
     <a class="brand" href="../index.php">
-        <span class="brand-mark">L</span>
+        <img src="../logo.png" alt="Loxja Cafe" class="brand-mark">
         <span>Loxja <small>cafe</small></span>
     </a>
     <?php if ($error === 'not_logged_in'): ?>
