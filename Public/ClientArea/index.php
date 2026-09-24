@@ -1,4 +1,7 @@
 <?php
+  require_once __DIR__ . "/../../Src/Class/Client/Client.php";
+  session_start();
+
     if (!isset($_SESSION['client_object'])) {
         header("Location: ../Client/index.php");
         exit();

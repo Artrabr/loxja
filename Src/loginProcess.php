@@ -1,8 +1,10 @@
 <?php
 
 require_once __DIR__ . "/Connection.php";
-require_once __DIR__ . "../Class/Client/ClientDB.php";
-require_once __DIR__ . "../Validation.php";
+require_once __DIR__ . "/Class/Client/ClientDB.php";
+require_once __DIR__ . "/Validation.php";
+
+session_start();
 
 function connectToDatabase()
 {
@@ -33,15 +35,15 @@ function ClientSession($cliente){
 
 $admlogin = 'adm@cafe.com';
 
+//setar variaveis
+$login = trim((string) ($_POST["email"] ?? ''));
+$password = (string) ($_POST["senha"] ?? '');
+
 //verifica chegada de dados via POST
-if(!Validation::isValidPassword($password) || !Validation::isValidEmail($email)){
+if(!Validation::isValidPassword($password) || !Validation::isValidEmail($login)){
     header("Location: ../Public/Login/index.php?error=invalid_data");
     exit();
 }
-
-//setar variaveis
-$login = $_POST["email"];
-$password = $_POST["senha"];
 
 $pdo = connectToDatabase();
 //                                                                                              ___________
