@@ -385,7 +385,7 @@ function formatarPreco(float $preco): string
     </head> 
     
 <!--===================[APAGAR]========================-->
-    <a href="Administration/index.php" style='padding:5px; background-color:rgb(64, 171, 77);'>got to administration</a>
+    <a href="Administration/index.php" style='padding:5px; background-color:rgb(64, 171, 77);'>got to administration</a>  ||  <a href="Client/index.php" style='padding:5px; background-color:rgb(64, 171, 77);'>got to client area</a>
 <!--===================[------]========================-->
 
     <body>

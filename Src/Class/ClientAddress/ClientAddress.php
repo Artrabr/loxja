@@ -19,7 +19,7 @@ class ClientAddress
         string $city,
         string $state,
         string $contry,
-        int $CEP
+        int    $CEP
     ) {
         $this->clientID = $clientID;
         $this->number = $number;
@@ -32,11 +32,6 @@ class ClientAddress
     }
 
     public function getId(): int
-    {
-        return $this->clientID;
-    }
-
-    public function getClientId(): int
     {
         return $this->clientID;
     }

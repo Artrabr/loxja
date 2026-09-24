@@ -1,11 +1,12 @@
 <?php
-    session_start();
     if (!isset($_SESSION['client_object'])) {
-        header("Location: login.php?error=not_logged_in");
+        header("Location: ../Login/index.php?error=not_logged_in");
         exit();
     }
     require_once __DIR__ . "/../../Src/Connection.php";
     require_once __DIR__ . "/../../Src/Class/ClientAddress/ClientAddressDB.php";
+    require_once __DIR__ . "/../../Src/Class/Client/Client.php";
+
 
     $cliente = $_SESSION["client_object"];
     $id = $cliente->getId();

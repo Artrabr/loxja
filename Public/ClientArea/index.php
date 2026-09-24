@@ -1,3 +1,14 @@
+<?php
+    if (!isset($_SESSION['client_object'])) {
+        header("Location: ../Client/index.php");
+        exit();
+    }
+
+    function dataGetter($obj, $getter){
+        if($obj === null){return null;}
+        return $obj->$getter();
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,6 +22,7 @@
     <section>
         <div>
           <?php
+          require_once __DIR__ . "/../../Src/Class/Connection.php";
           //------------conectar--------------+
             $pdo = Connection::conectar();#   |
           //----------------------------------+
@@ -19,7 +31,7 @@
             $CEP = 'Não registrado';
             //-------------------------------
 
-            $db = new ClientAddressDB($pdo);
+            $db = new ClientAddressDB($pdo); //
             $clientAddress = $db->getAddressByClientID($_SESSION['client_object']->getId());
             if ($clientAddress !== null) {
               $CEP = $clientAddress->getCEP();
