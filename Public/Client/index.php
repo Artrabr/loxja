@@ -57,7 +57,7 @@
                 $fullAddress  = $ClientLocateData?->getFull() ?? '';
             ?>
             <div>
-                <form action="<?//enviar os dados à ClientAddress?>" method="post">
+                <form action="../../Src/ClientAddress/ClientAddress.php" method="POST">
                     <label for="country">Pais</label>
                     <input type="text" id="country" name="country" value="<?=htmlspecialchars($country)?>" required>
                     <label for="state">Estado</label>
@@ -66,8 +66,7 @@
                     <input type="text" id="city" name="city" value="<?=htmlspecialchars($city)?>" required>
                     <label for="cep">CEP</label>
                     <input type="text" id="cep" name="cep" value="<?=htmlspecialchars($CEP)?>" required>
-                    <label for="address">Endereço</label>
-                    <input type="text" id="address" name="address" value="<?=htmlspecialchars($fullAddress)?>" required>
+                    <p><?=htmlspecialchars($fullAddress)?></p>
                     <button type="submit">Atualizar informações</button>
                 </form>
             </div>
