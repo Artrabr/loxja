@@ -23,3 +23,38 @@ button { width: 100%; margin-top: 25px; padding: 14px; border: 0; border-radius:
 .switch-page a, .back-link { color: #9b6736; font-weight: 700; }
 .back-link { display: inline-block; margin-top: 18px; text-decoration: none; }
 @media (max-width: 520px) { .brand { position: static; align-self: start; } .auth-page { display: flex; flex-direction: column; gap: 28px; } .auth-card { padding: 32px 24px; } }
+
+
+.popup {
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.popup-box {
+    position: relative;
+
+    width: 350px;
+    padding: 30px;
+
+    background: white;
+    border-radius: 15px;
+
+    text-align: center;
+}
+
+.fechar {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    text-decoration: none;
+
+    font-size: 28px;
+    text-decoration: none;
+    color: black;
+}
