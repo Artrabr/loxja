@@ -392,7 +392,7 @@ function formatarPreco(float $preco): string
         <header class="site-header" id="inicio">
             <nav class="topbar" aria-label="Navegacao principal">
                 <a class="brand" href="#inicio" aria-label="Loxja Cafe, inicio">
-                <img src="logo.png" class="brand-mark">
+                <img src="logo.png" alt="Loxja Cafe" class="brand-mark">
                 <span>Loxja <small>cafe</small></span></a>
 
                 <ul class="nav-links">
