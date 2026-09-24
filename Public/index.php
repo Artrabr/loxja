@@ -401,10 +401,14 @@ function formatarPreco(float $preco): string
                     <li><a href="#contato">Contato</a></li>
                 </ul>
                 <?php
-                    if ($success = "login_success"){
-                        echo "<img src='perfilsemfoto.png' alt='User' class='user-icon'>";
-                    } else {
-                        echo "<a class='login-button' href='Login/index.php'>Login</a>";
+                    if(isset($_SESSION['client_object'])){
+                ?>
+                    <p class='login-button'>logado</p> 
+                <?php //                       ^  trocar pela foto de perfil
+                    }else{
+                ?>
+                    <a class='login-button' href='Login/index.php'>Login</a>
+                <?php
                     }
                 ?>
             </nav>
