@@ -4,9 +4,7 @@ require_once __DIR__ . "/../../Class/Client/ClientDB.php";
 require_once __DIR__ . "/../ConnectionTests.php";
 require_once __DIR__ . "/../../../bootstrap.php";
 
-ConnectionTests::deleteDBIfItExists();
-$pdo = ConnectionTests::InitializeScheme();
-
+$pdo = ConnectionTests::connect();
 
 $testResults = [
     "getClientByID" => false,
