@@ -8,7 +8,7 @@ $error = $_GET['error'] ?? null;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | Loxja Cafe</title>
-    <link rel="stylesheet" href="../login/login.css">
+    <link rel="stylesheet" href="login.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css">
 </head>
 
@@ -20,7 +20,7 @@ $error = $_GET['error'] ?? null;
         <img src="../logo.png" alt="Loxja Cafe" class="brand-mark">
         <span>Loxja <small>cafe</small></span>
     </a>
-    <?php if ($error === 'not_logged_in'): ?>
+    <?php if ($error === 'not_logged_in') : ?>
         <section class="auth-card" aria-labelledby="login-title">
             <div class="popup">
                 <div class="popup-box">
@@ -32,7 +32,7 @@ $error = $_GET['error'] ?? null;
                 </div>
             </div>
         </section>
-    <?php else:?>
+    <?php else :?>
         <section class="auth-card" aria-labelledby="login-title">
             <p class="eyebrow">Que bom ter voce por aqui</p>
             <h1 id="login-title">Entre na sua conta</h1>
