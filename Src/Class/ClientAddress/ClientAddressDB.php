@@ -15,7 +15,7 @@ class ClientAddressDB
     {
         $stmt = $this->pdo->prepare(
             "SELECT clt_id, ld_number, ld_road, ld_neighborhood, ld_city,
-            ld_state, ld_contry, ld_cep
+            ld_state, ld_country, ld_cep
             FROM LocationData   
             WHERE clt_id = :id"
         );
@@ -62,7 +62,7 @@ class ClientAddressDB
         $stmt = $this->pdo->prepare(
             "UPDATE LocationData
              SET ld_number = :number, ld_road = :road, ld_neighborhood = :neighborhood,
-                 ld_city = :city, ld_state = :state, ld_contry = :country, ld_cep = :cep
+                 ld_city = :city, ld_state = :state, ld_country = :country, ld_cep = :cep
              WHERE clt_id = :clientId"
         );
         $stmt->execute([
@@ -73,7 +73,7 @@ class ClientAddressDB
             'state' => $address->getState(),
             'country' => $address->getCountry(),
             'cep' => $address->getCEP(),
-            'clientId' => $address->getClientId(),
+            'clientId' => $address->getId(),
         ]);
     }
 

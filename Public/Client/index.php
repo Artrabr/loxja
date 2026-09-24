@@ -53,13 +53,13 @@
                 $neighborhood = $ClientLocateData?->getNeighborhood() ?? '';
                 $city         = $ClientLocateData?->getCity() ?? '';
                 $state        = $ClientLocateData?->getState() ?? '';
-                $contry       = $ClientLocateData?->getCountry() ?? '';
+                $country      = $ClientLocateData?->getCountry() ?? '';
                 $fullAddress  = $ClientLocateData?->getFull() ?? '';
             ?>
             <div>
                 <form action="<?//enviar os dados à ClientAddress?>" method="post">
-                    <label for="contry">Pais</label>
-                    <input type="text" id="contry" name="contry" value="<?=htmlspecialchars($contry)?>" required>
+                    <label for="country">Pais</label>
+                    <input type="text" id="country" name="country" value="<?=htmlspecialchars($country)?>" required>
                     <label for="state">Estado</label>
                     <input type="text" id="state" name="state" value="<?=htmlspecialchars($state)?>" required>
                     <label for="city">Cidade</label>

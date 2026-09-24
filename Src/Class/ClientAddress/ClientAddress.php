@@ -18,7 +18,7 @@ class ClientAddress
         string $neighborhood,
         string $city,
         string $state,
-        string $contry,
+        string $country,
         int    $CEP
     ) {
         $this->clientID = $clientID;
@@ -27,7 +27,7 @@ class ClientAddress
         $this->neighborhood = $neighborhood;
         $this->city = $city;
         $this->state = $state;
-        $this->contry = $contry;
+        $this->country = $country;
         $this->CEP = $CEP;
     }
 
@@ -63,7 +63,7 @@ class ClientAddress
 
     public function getCountry(): string
     {
-        return $this->contry;
+        return $this->country;
     }
 
     public function getCEP(): int
@@ -79,7 +79,7 @@ class ClientAddress
             $this->neighborhood,
             $this->city,
             $this->state,
-            $this->contry,
+            $this->country,
         ]);
     }
 }
