@@ -78,6 +78,14 @@ footer {
 	font-size: 1.8rem;
 }
 
+.user-icon {
+	display: grid;
+	place-items: center;
+	width: auto;
+	height: 60px;
+	font-size: 1.8rem;
+}
+
 .nav-links {
 	display: flex;
 	flex: 1;
