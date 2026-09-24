@@ -50,6 +50,11 @@ $results = [
             "getProductByID" => false,
             "createProduct" => false,
         ],
+        "ShoppingCartItem" => [
+            "getProduct" => false,
+            "SetAmount" => false,
+            "GetAmount" => false,
+        ],
         // "ShoppingCart" => [
         //     "getId" => false,
         //     "getName" => false,
@@ -67,6 +72,7 @@ $results = [
 $results['Classes']['ClientDB'] = require_once __DIR__ . "/../../Src/Tests/Client/TestsClientDB.php";
 $results['Classes']['Product'] = require_once __DIR__ . "/../../Src/Tests/Product/TestProduct.php";
 $results['Classes']['ProductDB'] = require_once __DIR__ . "/../../Src/Tests/Product/TestProductDB.php";
+$results['Classes']['ShoppingCartItem'] = require_once __DIR__ . "/../../Src/Tests/ShoppingCart/TestShoppingCartItem.php";
 
 $testAmount = 0;
 $errorCount = 0;
