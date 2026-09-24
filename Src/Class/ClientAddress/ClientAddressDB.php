@@ -16,7 +16,7 @@ class ClientAddressDB
         $stmt = $this->pdo->prepare(
             "SELECT clt_id, ld_number, ld_road, ld_neighborhood, ld_city,
             ld_state, ld_contry, ld_cep
-            FROM LocationData
+            FROM LocationData   
             WHERE clt_id = :id"
         );
         $stmt->execute(['id' => $clientId]);
@@ -40,7 +40,7 @@ class ClientAddressDB
     ): ClientAddress {
         $stmt = $this->pdo->prepare(
             "INSERT INTO LocationData
-            (clt_id, ld_number, ld_road, ld_neighborhood, ld_city, ld_state, ld_contry, ld_cep)
+            (clt_id, ld_number, ld_road, ld_neighborhood, ld_city, ld_state, ld_country, ld_cep)
             VALUES (:clientId, :number, :road, :neighborhood, :city, :state, :country, :cep)"
         );
         $stmt->execute([
@@ -86,7 +86,7 @@ class ClientAddressDB
             $row['ld_neighborhood'],
             $row['ld_city'],
             $row['ld_state'],
-            $row['ld_contry'],
+            $row['ld_country'],
             (int) $row['ld_cep']
         );
     }

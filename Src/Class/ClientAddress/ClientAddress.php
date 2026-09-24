@@ -8,8 +8,8 @@ class ClientAddress
     private string $neighborhood;
     private string $city;
     private string $state;
-    private string $contry;
-    private int $CEP;
+    private string $country;
+    private string $CEP;
 
     public function __construct(
         int $clientID,
