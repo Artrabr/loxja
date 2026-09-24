@@ -8,7 +8,8 @@
 </head>
 <body>
 	<main class="auth-page">
-		<a class="brand" href="../index.php"><span class="brand-mark">L</span><span>Loxja <small>cafe</small></span></a>
+		<a class="brand" href="../index.php">
+			<img src="../logo.png" alt="Loxja Cafe" class="brand-mark"><span>Loxja <small>cafe</small></span></a>
 		<section class="auth-card" aria-labelledby="signup-title">
 			<p class="eyebrow">Seu cafe, do seu jeito</p>
 			<h1 id="signup-title">Crie sua conta</h1>
