@@ -33,8 +33,6 @@ function ClientSession($cliente){
 //            CODIGO
 //--------------------------------
 
-$admlogin = 'adm@cafe.com';
-
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header("Location: ../Public/Registration/index.php");
     exit();
