@@ -1,4 +1,10 @@
 <?php
+require_once __DIR__ . "/../../Src/Tests/ConnectionTests.php";
+
+ConnectionTests::deleteDBIfItExists();
+ConnectionTests::createDBIfNeededAndConnect();
+ConnectionTests::InitializeScheme();
+
 function passedAll($input)
 {
     array_walk_recursive($input, function ($value) {
@@ -27,8 +33,46 @@ $results = [
             "updateClient" => false,
             "isRightPassword" => false
         ],
+        "Product" => [
+            "getId" => false,
+            "getName" => false,
+            "setName" => false,
+            "getPrice" => false,
+            "setPrice" => false,
+            "getDescription" => false,
+            "setDescription" => false,
+            "getAmountAvailable" => false,
+            "setAmountAvailable" => false,
+            "getCategory" => false,
+            "setCategory" => false
+        ],
+        "ProductDB" => [
+            "getProductByID" => false,
+            "createProduct" => false,
+        ],
+        "ShoppingCartItem" => [
+            "getProduct" => false,
+            "SetAmount" => false,
+            "GetAmount" => false,
+        ],
+        // "ShoppingCart" => [
+        //     "getId" => false,
+        //     "getName" => false,
+        //     "setName" => false,
+        //     "getEmail" => false,
+        //     "setEmail" => false
+        // ],
+        // "ShoppingCartDB" => [
+        //     "getShoppingCartByClientId" => false,
+        //     "setShoppingCartByClientId" => false,
+        // ],
     ],
 ];
+
+$results['Classes']['ClientDB'] = require_once __DIR__ . "/../../Src/Tests/Client/TestsClientDB.php";
+$results['Classes']['Product'] = require_once __DIR__ . "/../../Src/Tests/Product/TestProduct.php";
+$results['Classes']['ProductDB'] = require_once __DIR__ . "/../../Src/Tests/Product/TestProductDB.php";
+$results['Classes']['ShoppingCartItem'] = require_once __DIR__ . "/../../Src/Tests/ShoppingCart/TestShoppingCartItem.php";
 
 $testAmount = 0;
 $errorCount = 0;
@@ -39,7 +83,6 @@ array_walk_recursive($results, function ($value, $key) use (&$errorCount, &$test
     }
 });
 
-$results['Classes']['ClientDB'] = require_once __DIR__ . "/../../Src/Tests/Client/TestsClientDB.php";
 
 if ($errorCount == 0) {
     $class_header = "pass";

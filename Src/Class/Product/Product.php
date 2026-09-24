@@ -34,12 +34,12 @@ class Product
         $this->name = $name;
     }
 
-    public function getPrice(): string
+    public function getPrice(): float
     {
         return $this->price;
     }
 
-    public function setPrice(string $price)
+    public function setPrice(float $price)
     {
         $this->price = $price;
     }
@@ -54,12 +54,12 @@ class Product
         $this->description = $description;
     }
 
-    public function getAmountAvailable(): string
+    public function getAmountAvailable(): int
     {
         return $this->amountAvailable;
     }
 
-    public function setAmountAvailable(string $amountAvailable)
+    public function setAmountAvailable(int $amountAvailable)
     {
         $this->amountAvailable = $amountAvailable;
     }

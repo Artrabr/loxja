@@ -25,7 +25,7 @@ class ProductDB
         return null;
     }
 
-    public function createProduct(string $name, float $price, string $description, int $amountAvailable, string $category)
+    public function createProduct(string $name, float $price, string $description, int $amountAvailable, string $category): Product
     {
         $stmt = $this->pdo->prepare("INSERT INTO Product (pdt_name,pdt_price,pdt_description,pdt_amount,pdt_category) VALUES (:name,:price,:description,:amountAvailable,:category)");
         $stmt->execute([
