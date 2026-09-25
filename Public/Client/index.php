@@ -43,7 +43,7 @@
             <h2>Informações de envio</h2>
             <p>Aqui você pode visualizar e atualizar suas informações de envio.</p>
             <?php
-
+                /*
                 $clientAddressDB = new ClientAddressDB($pdo);
                 $ClientLocateData = $clientAddressDB->getAddressByClientID($id);
 
@@ -54,19 +54,24 @@
                 $city         = $ClientLocateData?->getCity() ?? '';
                 $state        = $ClientLocateData?->getState() ?? '';
                 $country      = $ClientLocateData?->getCountry() ?? '';
-                $fullAddress  = $ClientLocateData?->getFull() ?? '';
+                $fullAddress  = $ClientLocateData?->getFull() ?? '';*/
+                $id = $_SESSION['client_object']->getId();
             ?>
             <div>
-                <form action="../../Src/ClientAddress/ClientAddress.php" method="POST">
-                    <label for="country">Pais</label>
-                    <input type="text" id="country" name="country" value="<?=htmlspecialchars($country)?>" required>
-                    <label for="state">Estado</label>
-                    <input type="text" id="state" name="state" value="<?=htmlspecialchars($state)?>" required>
-                    <label for="city">Cidade</label>
-                    <input type="text" id="city" name="city" value="<?=htmlspecialchars($city)?>" required>
+                <form action="../../Src/ClientAddressProcess.php" method="POST">
+                    <input type="hidden" id="id" name="id" value="<?=$id?>">
                     <label for="cep">CEP</label>
-                    <input type="text" id="cep" name="cep" value="<?=htmlspecialchars($CEP)?>" required>
-                    <p><?=htmlspecialchars($fullAddress)?></p>
+                    <input type="text" id="cep" name="cep">
+                    <label for="road">Rua/Avenida</label>
+                    <input type="text" id="road" name="road">
+                    <label for="number">Número</label>
+                    <input type="text" id="number" name="number">
+                    <label for="neighborhood">Bairro</label>
+                    <input type="text" id="neighborhood" name="neighborhood">
+                    <label for="state">Estado</label>
+                    <input type="text" id="state" name="state">
+                    <label for="country">País</label>
+                    <input type="text" id="country" name="country">
                     <button type="submit">Atualizar informações</button>
                 </form>
             </div>
