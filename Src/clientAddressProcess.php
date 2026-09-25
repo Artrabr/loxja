@@ -1,5 +1,14 @@
 <?php
 
+//  O arquivo envia os dados ao banco de dados com o ID do usuario
+// para indentificação do usuario que esta alterando as informações
+// e cruzamento de dados. Atualmente o código apenas envia os dados
+// para o banco de dados através da classe ClientAddressDB mas ele
+// NÃO ALTERA AS LINHAS ele apenas adiciona, sua função como 
+// desenvolvedor é antes de enviar os dados para o banco (linha 39)
+// verificar se já existe um ID igual ao ID recebido e caso exista
+// apagar a linha e adicionar uma nova linha com os novos dados.
+
 require_once __DIR__ . "/Connection.php";
 require_once __DIR__ . "/Class/ClientAddress/ClientAddressDB.php";
 
