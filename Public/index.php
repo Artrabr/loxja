@@ -402,8 +402,8 @@ function formatarPreco(float $preco): string
                 </ul>
                 <?php
                     if(isset($_SESSION['client_object'])){
-                ?>
-                    <p class='login-button'>logado</p> 
+                ?> 
+                    <img src="perfilsemfoto.png" alt="Loxja Cafe" class="brand-mark">
                 <?php //                       ^  trocar pela foto de perfil
                     }else{
                 ?>
