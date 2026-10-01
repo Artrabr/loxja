@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <link href="../MVP.css" rel="stylesheet">
+    <link href="ShoppingCart.css" rel="stylesheet">
+  </head>
+  <body class="scroll">
+    <form action="post" class="shopping_cart">
+
+      <div>
+        <input type="number" name="quantities[]" class="amount_of_products" value="0">
+        <input type="text" name="item_ids[]" class="id_of_products" value="1" hidden>
+        <button type="button" class="increase"></button>
+        <button type="button" class="decrease"></button>
+        <button type="button" class="remove">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash preview-icon"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        </button>
+      </div>
+  
+    <script src="script.js"></script>
+  </body>
+</html>
