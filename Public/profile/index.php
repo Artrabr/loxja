@@ -18,6 +18,13 @@ echo "oi fdp";
     <title>Document</title>
 </head>
 <body>
-    
+    <?php
+        if(!isset($SESSION["cliente_objeto"])) {
+            header("../index.php");
+        } else {
+            echo <a href="deleteSession.php">deslogar brutalmente</a>
+        }
+    ?>
 </body>
+
 </html>
