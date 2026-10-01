@@ -77,6 +77,42 @@ class ClientAddressDB
         ]);
     }
 
+    public function addressExistsByID(int $clientId): bool
+    {
+        $stmt = $this->pdo->prepare(
+            "SELECT COUNT(*) FROM LocationData WHERE clt_id = :id"
+        );
+        $stmt->execute(['id' => $clientId]);
+        return $stmt->fetchColumn() > 0;
+    }
+
+    public function addressExistsByEmail(string $email): bool
+    {
+        $stmt = $this->pdo->prepare(
+            "SELECT COUNT(*) FROM LocationData WHERE clt_email = :email"
+        );
+        $stmt->execute(['email' => $email]);
+        return $stmt->fetchColumn() > 0;
+    }
+
+    public function catchNullAddressFields(array $fields, array $addressData): array //by Rabello
+    {
+        // $addressData são TODOS os dados do banco de dados
+        // $fields são os campos que você quer verificar se estão nulos 
+
+        if(empty($addressData)){
+            throw new InvalidArgumentException("O array de dados do endereço não pode estar vazio.");
+        };
+
+        if(empty($fields)){
+            $fields = array_keys($addressData);//se etiver vazio pega todos os dados
+        };
+
+        return array_filter($fields, function($field) use ($addressData) {
+            return empty($addressData[$field]);
+        });
+    }
+
     private function fromRow(array $row): ClientAddress
     {
         return new ClientAddress(
