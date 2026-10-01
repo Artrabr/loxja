@@ -403,7 +403,10 @@ function formatarPreco(float $preco): string
                 <?php
                     if(isset($_SESSION['client_object'])){
                 ?> 
-                    <img src="perfilsemfoto.png" alt="Loxja Cafe" class="brand-mark">
+                    <a href="profile/index.php">
+                        <img src="perfilsemfoto.png" alt="Loxja Cafe" class="brand-mark">
+                    </a>
+                    
                 <?php //                       ^  trocar pela foto de perfil
                     }else{
                 ?>
