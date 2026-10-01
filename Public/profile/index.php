@@ -56,9 +56,11 @@ $foto = '../../perfilsemfoto.png';
     </div>
 
     <div class="profile-actions">
-        <a href="../../Src/logoutProcess.php" class="btn-logout">Sair</a>
+        <a href="deleteSession.php" class="btn-logout">Sair</a>
     </div>
 </div>
 
+    
 </body>
+
 </html>
