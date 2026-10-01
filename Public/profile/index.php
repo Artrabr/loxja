@@ -1,22 +1,22 @@
 <?php
 
-require_once __DIR__ . '/../../Src/Connection.php';
 require_once __DIR__ . '/../../Src/Class/Client/Client.php';
+require_once __DIR__ . '/../../Src/Connection.php';
 require_once __DIR__ . '/../../Src/Class/Client/ClientDB.php';
-
+require_once __DIR__ . '/../../Src/Validation.php';
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-if (!isset($_SESSION['client_id'])) {
+if (!isset($_SESSION['client_object'])) {
     header('Location: ../Login/index.php?error=not_logged');
     exit;
 }
 
 $pdo = Connection::conectar();
 $clientDB = new ClientDB($pdo);
-$client = $clientDB->getClientByID((int) $_SESSION['client_object']);
+$client = $clientDB->getClientByID((int) $_SESSION['client_object']->getId());
 
 if (!$client) {
     session_destroy();
@@ -53,11 +53,10 @@ $foto = '../../perfilsemfoto.png';
     </div>
 
     <div class="profile-actions">
-            echo '<a href="deleteSession.php" class="btn-logout">Sair</a>';
+            <a href="deleteSession.php" class="btn-logout">Sair</a>
     </div>
 </div>
 
-    
 </body>
 
 </html>
