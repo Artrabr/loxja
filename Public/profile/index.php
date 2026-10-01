@@ -1,21 +1,19 @@
 <?php
-// 1. Carrega as classes ANTES de qualquer coisa de sessão
+
 require_once __DIR__ . '/../../Src/Connection.php';
 require_once __DIR__ . '/../../Src/Class/Client/Client.php';
 require_once __DIR__ . '/../../Src/Class/Client/ClientDB.php';
 
-// 2. Inicia a sessão (só se ainda não estiver ativa)
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// 3. Verifica se está logado
 if (!isset($_SESSION['client_id'])) {
     header('Location: ../Login/index.php?error=not_logged');
     exit;
 }
 
-// 4. Busca o cliente no banco
 $pdo = Connection::conectar();
 $clientDB = new ClientDB($pdo);
 $client = $clientDB->getClientByID((int) $_SESSION['client_id']);
@@ -26,7 +24,6 @@ if (!$client) {
     exit;
 }
 
-// 5. Foto padrão (enquanto não tem upload)
 $foto = '../../perfilsemfoto.png';
 ?>
 <!DOCTYPE html>
