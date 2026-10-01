@@ -1,5 +1,5 @@
 <?php
-echo "oi";
+echo "oi fdp";
     session_start();
     if(!isset($_SESSION['client_object'])){
         header("Location: ../Login/login.php");
@@ -7,8 +7,12 @@ echo "oi";
     }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
+    
+    <link href="../MVP.css" rel="stylesheet">
+    <link href="../style_index.css" rel="stylesheet">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
