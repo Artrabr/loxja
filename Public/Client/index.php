@@ -43,35 +43,25 @@
             <h2>Informações de envio</h2>
             <p>Aqui você pode visualizar e atualizar suas informações de envio.</p>
             <?php
-                /*
-                $clientAddressDB = new ClientAddressDB($pdo);
-                $ClientLocateData = $clientAddressDB->getAddressByClientID($id);
-
-                $CEP          = $ClientLocateData?->getCEP() ?? '';
-                $road         = $ClientLocateData?->getRoad() ?? '';
-                $number       = $ClientLocateData?->getNumber() ?? '';
-                $neighborhood = $ClientLocateData?->getNeighborhood() ?? '';
-                $city         = $ClientLocateData?->getCity() ?? '';
-                $state        = $ClientLocateData?->getState() ?? '';
-                $country      = $ClientLocateData?->getCountry() ?? '';
-                $fullAddress  = $ClientLocateData?->getFull() ?? '';*/
                 $id = $_SESSION['client_object']->getId();
             ?>
             <div>
                 <form action="../../Src/ClientAddressProcess.php" method="POST">
-                    <input type="hidden" id="id" name="id" value="<?=$id?>">
+                    <input type="hidden" id="id" name="id" value="<?=$id?>" required>
                     <label for="cep">CEP</label>
-                    <input type="text" id="cep" name="cep">
+                    <input type="text" id="cep" name="cep" required>
                     <label for="road">Rua/Avenida</label>
-                    <input type="text" id="road" name="road">
+                    <input type="text" id="road" name="road" required>
                     <label for="number">Número</label>
-                    <input type="text" id="number" name="number">
+                    <input type="text" id="number" name="number" required>
                     <label for="neighborhood">Bairro</label>
-                    <input type="text" id="neighborhood" name="neighborhood">
+                    <input type="text" id="neighborhood" name="neighborhood" required>
+                    <label for="city">Cidade</label>
+                    <input type="text" id="city" name="city" required>
                     <label for="state">Estado</label>
-                    <input type="text" id="state" name="state">
+                    <input type="text" id="state" name="state" required>
                     <label for="country">País</label>
-                    <input type="text" id="country" name="country">
+                    <input type="text" id="country" name="country" required>
                     <button type="submit">Atualizar informações</button>
                 </form>
             </div>
