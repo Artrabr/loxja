@@ -9,14 +9,14 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-if (!isset($_SESSION['client_id'])) {
+if (!isset($_SESSION['client_object'])) {
     header('Location: ../Login/index.php?error=not_logged');
     exit;
 }
 
 $pdo = Connection::conectar();
 $clientDB = new ClientDB($pdo);
-$client = $clientDB->getClientByID((int) $_SESSION['client_id']);
+$client = $clientDB->getClientByID((int) $_SESSION['client_object']);
 
 if (!$client) {
     session_destroy();
@@ -54,7 +54,7 @@ $foto = '../../perfilsemfoto.png';
 
     <div class="profile-actions">
         <?php
-        if(!isset($_SESSION['cliente_objeto'])) {
+        if(!isset($_SESSION['client_object'])) {
             header('Location: ../Login/index.php?error=not_logged');
             exit;
         } else {
