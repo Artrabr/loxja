@@ -53,8 +53,14 @@ $foto = '../../perfilsemfoto.png';
     </div>
 
     <div class="profile-actions">
-        <a href="deleteSession.php" class="btn-logout">Sair</a>
-    </div>
+        <?php
+        if(!isset($_SESSION['cliente_objeto'])) {
+            header('Location: ../Login/index.php?error=not_logged');
+            exit;
+        } else {
+            echo '<a href="deleteSession.php" class="btn-logout">Sair</a>';
+        }
+        ?>
 </div>
 
     
