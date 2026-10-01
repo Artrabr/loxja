@@ -14,23 +14,27 @@
     $pdo = Connection::conectar();
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Area do cliente</title>
     <link href="../MVP.css" rel="stylesheet">
     <link href="../style_index.css" rel="stylesheet">
+    <link href="client.css" rel="stylesheet">
 </head>
-<body>
+<body class="client-page">
     <header class="site-header" id="inicio">
         <nav class="topbar" aria-label="Navegacao principal">
-            <a class="brand" href="#inicio" aria-label="Loxja Cafe, inicio"><span class="brand-mark">L</span><span>Loxja <small>cafe</small></span></a>
+            <a class="brand" href="../index.php#inicio" aria-label="Loxja Cafe, inicio">
+                <img src="../logo.png" alt="" class="brand-mark">
+                <span>Loxja <small>cafe</small></span>
+            </a>
             <ul class="nav-links">
-                <li><a href="#inicio">Inicio</a></li>
-                <li><a href="#produtos">Produtos</a></li>
-                <li><a href="#sobre">Sobre</a></li>
-               <li><a href="#contato">Contato</a></li>
+                <li><a href="../index.php#inicio">Inicio</a></li>
+                <li><a href="../index.php#produtos">Produtos</a></li>
+                <li><a href="../index.php#sobre">Sobre</a></li>
+                <li><a href="../index.php#contato">Contato</a></li>
             </ul>
         </nav>
     </header>
@@ -42,6 +46,7 @@
         <section>
             <h2>Informações de envio</h2>
             <p>Aqui você pode visualizar e atualizar suas informações de envio.</p>
+            <!-- NÃO MECHE NESSA MERDA PELO AMOR DE DEUS Formulário para atualizar informações de envio -->
             <?php
                 $id = $_SESSION['client_object']->getId();
             ?>
@@ -65,7 +70,18 @@
                     <button type="submit">Atualizar informações</button>
                 </form>
             </div>
+        <!----------------------------------  NAO OUSE TOCAR NO CODIGO A CIMA -------------------------->
         </section>
     </main>
+    <footer>
+        <a class="brand footer-brand" href="../index.php#inicio">
+            <span class="brand-mark">
+                <img src="../logo.png" alt="" class="brand-mark">
+            </span>
+            <span>Loxja <small>cafe</small></span>
+        </a>
+        <p>&copy; 2026 Loxja Cafe. Todos os direitos reservados.</p>
+        <a href="#inicio" class="back-top" aria-label="Voltar ao inicio">&uarr;</a>
+    </footer>
 </body>
 </html>
