@@ -7,11 +7,11 @@ ConnectionTests::InitializeScheme();
 
 function passedAll($input)
 {
-    array_walk_recursive($input, function ($value) {
-        if ($value === false) {
+    foreach (new RecursiveIteratorIterator(new RecursiveArrayIterator($input)) as $value) {
+        if ($value === true) {
             return false;
         }
-    });
+    }
     return true;
 }
 
@@ -55,16 +55,16 @@ $results = [
             "SetAmount" => false,
             "GetAmount" => false,
         ],
+        "ShoppingCartDB" => [
+            "getShoppingCartByClientId" => false,
+            "setShoppingCartByClientId" => false,
+        ],
         // "ShoppingCart" => [
         //     "getId" => false,
         //     "getName" => false,
         //     "setName" => false,
         //     "getEmail" => false,
         //     "setEmail" => false
-        // ],
-        // "ShoppingCartDB" => [
-        //     "getShoppingCartByClientId" => false,
-        //     "setShoppingCartByClientId" => false,
         // ],
     ],
 ];
@@ -73,6 +73,7 @@ $results['Classes']['ClientDB'] = require_once __DIR__ . "/../../Src/Tests/Clien
 $results['Classes']['Product'] = require_once __DIR__ . "/../../Src/Tests/Product/TestProduct.php";
 $results['Classes']['ProductDB'] = require_once __DIR__ . "/../../Src/Tests/Product/TestProductDB.php";
 $results['Classes']['ShoppingCartItem'] = require_once __DIR__ . "/../../Src/Tests/ShoppingCart/TestShoppingCartItem.php";
+$results['Classes']['ShoppingCartDB'] = require_once __DIR__ . "/../../Src/Tests/ShoppingCart/TestShoppingCartDB.php";
 
 $testAmount = 0;
 $errorCount = 0;
