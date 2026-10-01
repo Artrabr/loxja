@@ -30,14 +30,18 @@ function checkIfDataExists($pdo, $clientId)
     return $db->addressExistsByID($clientId);
 }
 
+function removeHyphenFromCEP(string $cep): string
+{
+    return str_replace('-', '', $cep);
+}
+
 function convertValueToCorrectType($value, $type)
 {//é presuposto que tu nao vai ser um maluco e por um bool nessa coisa aqui pq tbm é papo de largar o curso
 
     switch($type){
         case 'int':
-            if (preg_match('/^[0-9]+$/', $value)){ //caso a variavel contenha letras da erro e retorna o valor inicial
+            if (!preg_match('/^[0-9]+$/', (string) $value)) {
                 throw new InvalidArgumentException("01ERRO DE CONVERCAO: variavel contém letras");
-                return $value;
             }
             return (int)$value;
         case 'string':
@@ -63,6 +67,7 @@ try {
 
     //conversao de valores para seu tipo correto
 
+    $cep          = removeHyphenFromCEP($cep);
     $clientId     = convertValueToCorrectType($clientId, 'int');
     $number       = convertValueToCorrectType($number, 'int');
     $cep          = convertValueToCorrectType($cep, 'int');
@@ -80,57 +85,7 @@ try {
         'ld_cep' => $cep
     ];
 
-    $fieldsToCheck = [
-        'ld_number',
-        'ld_road',
-        'ld_neighborhood',
-        'ld_city',
-        'ld_state',
-        'ld_country',
-        'ld_cep'
-    ];
-
-    $nullFields = $db->catchNullAddressFields(
-        $fieldsToCheck,
-        $addressData
-    );
-
-    if (!empty($nullFields)) {
-        throw new InvalidArgumentException(
-            "Existem campos obrigatórios vazios: " . implode(', ', $nullFields)
-        );
-    }
-/*
-foreach ($addressData as $key => $value) {
-                    if (is_null($value) || !isset($value)) {
-                        switch ($key) {
-                            case is_string($value):
-                                $value = 'Não informado';
-                                break;
-                            case is_int($value):
-                                $value = 0;
-                                break;
-                            default:
-                                $value = 'Não informado';
-                        }
-                    }
-                }
-*/
-    if (checkIfDataExists($pdo, $clientId)) {
-        foreach ($addressData as $key => $value) {
-            if (is_null($value) || !isset($value)) {
-                switch ($key) {
-                    case is_string($value):
-                        $value = 'Não informado';
-                        break;
-                    case is_int($value):
-                        $value = 0;
-                        break;
-                    default:
-                        $value = 'Não informado';
-                }
-            }
-        }
+    if (checkIfDataExists($pdo, $clientId)){
         $db->updateAddress(
             new ClientAddress(
                 $clientId,

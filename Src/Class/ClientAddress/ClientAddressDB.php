@@ -95,7 +95,7 @@ class ClientAddressDB
         return $stmt->fetchColumn() > 0;
     }
 
-    public function catchNullAddressFields(array $fields, array $addressData): array //by Rabello
+    public function catchNullAddressFields(array $addressData, array $fields): array //by Rabello
     {
         // $addressData são TODOS os dados do banco de dados
         // $fields são os campos que você quer verificar se estão nulos 
