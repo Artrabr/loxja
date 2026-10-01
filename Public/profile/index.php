@@ -9,7 +9,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-if (!isset($_SESSION['client_object'])) {
+if (!isset($_SESSION['client_id'])) {
     header('Location: ../Login/index.php?error=not_logged');
     exit;
 }
@@ -53,14 +53,8 @@ $foto = '../../perfilsemfoto.png';
     </div>
 
     <div class="profile-actions">
-        <?php
-        if(!isset($_SESSION['client_object'])) {
-            header('Location: ../Login/index.php?error=not_logged');
-            exit;
-        } else {
             echo '<a href="deleteSession.php" class="btn-logout">Sair</a>';
-        }
-        ?>
+    </div>
 </div>
 
     
