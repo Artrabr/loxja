@@ -46,7 +46,6 @@ $foto = '../../perfilsemfoto.png';
     <div class="profile-info">
         <h2>Informações do Usuário</h2>
         <ul>
-            <li><strong>ID:</strong> <?= htmlspecialchars($client->getId()) ?></li>
             <li><strong>Nome:</strong> <?= htmlspecialchars($client->getName()) ?></li>
             <li><strong>E-mail:</strong> <?= htmlspecialchars($client->getEmail()) ?></li>
         </ul>
