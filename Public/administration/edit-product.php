@@ -19,23 +19,16 @@ require_once __DIR__ . "/../../Src/Class/Product/ProductDB.php";
             $db = new ProductDB($pdo);
             $products = $db->getAllProducts();
             foreach ($products as $product):
-/*
-<h2><?php echo htmlspecialchars($product->getName()); ?></h2>
-<p>Preço: <?php echo htmlspecialchars($product->getPrice()); ?></p>
-<p>Descrição: <?php echo htmlspecialchars($product->getDescription()); ?></p>
-<p>Quantidade Disponível: <?php echo htmlspecialchars($product->getAmountAvailable()); ?></p>
-<p>Categoria: <?php echo htmlspecialchars($product->getCategory()); ?></p>
-<a href="edit-product-form.php?id=<?php echo $product->getId(); ?>">Editar</a>
-*/
+
         ?>
             <div>
-                <form action="edit-product-form.php" method="POST">
+                <form action="../../Src/editProduct.php" method="POST">
                     <input type="hidden" name="id" value="<?php echo htmlspecialchars($product->getId()); ?>">
-                    <input type="text" name="name" value="<?php echo htmlspecialchars($product->getName()); ?>">
-                    <input type="number" name="price" value="<?php echo htmlspecialchars($product->getPrice()); ?>">
+                    <input type="text" name="name" value="<?php echo htmlspecialchars($product->getName()); ?>" required>
+                    <input type="number" name="price" value="<?php echo htmlspecialchars($product->getPrice()); ?>" step="0.01">
                     <input type="text" name="description" value="<?php echo htmlspecialchars($product->getDescription()); ?>">
-                    <input type="number" name="amount_available" value="<?php echo htmlspecialchars($product->getAmountAvailable()); ?>">
-                    <input type="text" name="category" value="<?php echo htmlspecialchars($product->getCategory()); ?>">
+                    <input type="number" name="quantity" value="<?php echo htmlspecialchars($product->getAmountAvailable()); ?>" min="0" required>
+                    <input type="text" name="category" value="<?php echo htmlspecialchars($product->getCategory()); ?>" required>
                     <button type="submit">Editar</button>
                 </form>
             </div>
