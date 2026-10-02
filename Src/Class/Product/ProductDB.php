@@ -46,6 +46,14 @@ class ProductDB
         $stmt->execute([$price, $description, $amountAvailable, $category, $name]);
     }
 
+    public function updateProductByID(int $id, string $name, float $price, string $description, int $amountAvailable, string $category): void
+    {
+        $stmt = $this->pdo->prepare(
+            "UPDATE Product SET pdt_name = ?, pdt_price = ?, pdt_description = ?, pdt_amount = ?, pdt_category = ? WHERE pdt_id = ?"
+        );
+        $stmt->execute([$name, $price, $description, $amountAvailable, $category, $id]);
+    }
+
     public function getAllProducts(): array
     {
         $stmt = $this->pdo->query("SELECT pdt_id,pdt_name,pdt_price,pdt_description,pdt_amount,pdt_category FROM Product ORDER BY pdt_id ASC");

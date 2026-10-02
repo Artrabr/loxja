@@ -57,10 +57,11 @@ function disconnectFromDatabase(&$pdo)
     $productDescription = trim((string) $_POST['description']);
     $productCategory = trim((string) $_POST['category']);
 
-    $existingProduct = $db->getProductByName($productName);
+    $existingProduct = $db->getProductByID((int)$_POST['id']);
 
     if ($existingProduct !== null) { //adiciona quantidade ao produto existente
-        $db->updateProductByName(
+        $db->updateProductByID(
+            (int)$_POST['id'],
             $productName,
             $price,
             $productDescription,
