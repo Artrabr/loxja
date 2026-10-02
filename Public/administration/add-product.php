@@ -20,7 +20,7 @@
     <title>Adicionar Produto</title>
 </head>
 <body>
-    <form action="../../scripts/adicionar-produto.php" method="POST">
+    <form action="../../Src/addProduct.php" method="POST">
         <label for="name">Nome</label>
         <input type="text" id="name" name="name" required>
 
@@ -30,8 +30,8 @@
         <label for="description">Descrição</label>
         <textarea id="description" name="description" required></textarea>
 
-        <label for="amountAvailable">Quantidade Disponível</label>
-        <input type="number" id="amountAvailable" name="amountAvailable" required>
+        <label for="quantity">Quantidade Disponível</label>
+        <input type="number" id="quantity" name="quantity" min="0" required>
 
         <label for="category">Categoria</label>
         <input type="text" id="category" name="category" required>

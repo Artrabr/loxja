@@ -25,6 +25,27 @@ class ProductDB
         return null;
     }
 
+    public function getProductByName(string $name): ?Product
+    {
+        $stmt = $this->pdo->prepare("SELECT pdt_id,pdt_name,pdt_price,pdt_description,pdt_amount,pdt_category FROM Product WHERE pdt_name = ? LIMIT 1");
+        $stmt->execute([$name]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($row) {
+            return new Product($row['pdt_id'], $row['pdt_name'], $row['pdt_price'], $row['pdt_description'], $row['pdt_amount'], $row['pdt_category']);
+        }
+
+        return null;
+    }
+
+    public function updateProductByName(string $name, float $price, string $description, int $amountAvailable, string $category): void
+    {
+        $stmt = $this->pdo->prepare(
+            "UPDATE Product SET pdt_price = ?, pdt_description = ?, pdt_amount = ?, pdt_category = ? WHERE pdt_name = ?"
+        );
+        $stmt->execute([$price, $description, $amountAvailable, $category, $name]);
+    }
+
     public function createProduct(string $name, float $price, string $description, int $amountAvailable, string $category): Product
     {
         $stmt = $this->pdo->prepare("INSERT INTO Product (pdt_name,pdt_price,pdt_description,pdt_amount,pdt_category) VALUES (:name,:price,:description,:amountAvailable,:category)");
