@@ -46,6 +46,26 @@ class ProductDB
         $stmt->execute([$price, $description, $amountAvailable, $category, $name]);
     }
 
+    public function getAllProducts(): array
+    {
+        $stmt = $this->pdo->query("SELECT pdt_id,pdt_name,pdt_price,pdt_description,pdt_amount,pdt_category FROM Product ORDER BY pdt_id ASC");
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $products = [];
+        foreach ($rows as $row) {
+            $products[] = new Product(
+                (int) $row['pdt_id'],
+                $row['pdt_name'],
+                (float) $row['pdt_price'],
+                $row['pdt_description'],
+                (int) $row['pdt_amount'],
+                $row['pdt_category']
+            );
+        }
+
+        return $products;
+    }
+
     public function createProduct(string $name, float $price, string $description, int $amountAvailable, string $category): Product
     {
         $stmt = $this->pdo->prepare("INSERT INTO Product (pdt_name,pdt_price,pdt_description,pdt_amount,pdt_category) VALUES (:name,:price,:description,:amountAvailable,:category)");
