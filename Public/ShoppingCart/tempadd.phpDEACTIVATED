@@ -1,0 +1,44 @@
+<?php
+
+require_once __DIR__ . "/../../Src/Class/Product/ProductDB.php";
+require_once __DIR__ . "/../../Src/Connection.php";
+require_once __DIR__ . "/../../Src/Class/Client/ClientDB.php";
+
+$pdo = Connection::conectar();
+$ProductDB = new ProductDB($pdo);
+
+$testProducts = [
+    ["Café Expresso Clássico", 8.50, "Dose única de 50ml, moído na hora, torra média.", 120, "Cafés"],
+    ["Latte de Baunilha", 12.90, "Espresso com leite vaporizado e xarope de baunilha.", 80, "Cafés"],
+    ["Cappuccino Tradicional", 11.00, "Espresso, leite e espuma densa polvilhada com canela.", 90, "Cafés"],
+    ["Mocha Belga", 14.50, "Chocolate belga meio amargo 70%, espresso e creme de leite.", 60, "Cafés Especiais"],
+    ["Café Coado na Haja", 7.00, "Café coado no pano, 250ml, em xícara de porcelana.", 200, "Cafés"],
+    ["Cold Brew 350ml", 16.00, "Extração a frio por 18 horas, suave e pouco ácido.", 45, "Cafés Especiais"],
+    ["Affogato de Caramelo", 15.90, "Sorvete de creme afogado em espresso e calda de caramelo.", 35, "Cafés Especiais"],
+    ["Chocolate Quente", 13.50, "Chocolate meio amargo derretido com leite, 300ml.", 70, "Bebidas"],
+    ["Chá de Hortelã", 8.00, "Folhas frescas de hortelã infundidas, ideal para a tarde.", 100, "Bebidas"],
+    ["Chá Preto Orgânico", 9.50, "Folhas de assam orgânicas certificadas.", 95, "Bebidas"],
+    ["Chá de Hibisco 500ml", 16.90, "Infusão gelada de hibisco com casca de maracujá.", 40, "Bebidas"],
+    ["Suco de Laranja 400ml", 12.50, "Espremido na hora, sem açúcar, servido com gelo.", 60, "Bebidas"],
+    ["Caldo Verde 500ml", 15.00, "Creme de batata, couve e linguiça calabresa.", 30, "Bebidas"],
+    ["Croissant de Manteiga", 7.50, "Massa folhada assada diariamente, 65g de manteiga.", 75, "Padaria"],
+    ["Pão de Queijo (3 un)", 12.00, "Trio de pães de queijo cremosos, forno a lenha.", 85, "Padaria"],
+    ["Bolo de Fubá", 18.00, "Fatia generosa de bolo de fubá cremoso com erva-doce.", 25, "Padaria"],
+    ["Waffle com Morango", 17.50, "Waffle crocante com morangos, chantilly e baunilha.", 30, "Padaria"],
+    ["Cookie de Chocolate", 8.50, "Cookie com gotas de chocolate meio amargo.", 110, "Doces"],
+    ["Brigadeiro Gourmet (4 un)", 14.00, "Quatro brigadeiros de chocolate 54% e granulado.", 50, "Doces"],
+    ["Brownie com Doce de Leite", 13.00, "Brownie úmido de chocolate com doce de leite.", 40, "Doces"],
+    ["Torta de Limão", 22.00, "Base de biscoito, creme de limão e merengue maçaricado.", 15, "Doces"],
+    ["Beijinho de Coco (3 un)", 11.50, "Trio de beijinhos de coco frescos.", 65, "Doces"],
+    ["Espresso em Grãos 250g", 39.90, "Grãos inteiros, torra média, notas de castanha.", 55, "Grãos e Insumos"],
+    ["Grãos Specialty 1kg", 89.00, "Origem única, pontuação 86+, direct trade.", 20, "Grãos e Insumos"],
+    ["Kit Torra em Casa 500g", 74.90, "Grãos selecionados com roteiro de degaste e filtros.", 12, "Grãos e Insumos"],
+];
+
+foreach ($testProducts as [$name, $price, $description, $amountAvailable, $category]) {
+    $product = $ProductDB->createProduct($name, $price, $description, $amountAvailable, $category);
+    echo "id " . $product->getId() . " - " . $product->getName() . "\n";
+}
+
+$ClientDB = new ClientDB($pdo);
+$ClientDB->createClient("admin", "admin@admin.com", "admin");
