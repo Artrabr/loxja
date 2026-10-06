@@ -87,4 +87,16 @@ class ProductDB
 
         return new Product($id, $name, $price, $description, $amountAvailable, $category);
     }
+
+    public function deleteProductByID(int $id): bool //retorna true se apoagou o objeto
+    {
+        try{
+            $stmt = $this->pdo->prepare("DELETE FROM Product WHERE pdt_id = ?");
+            $stmt->execute([$id]);
+        }catch (\Exception $e){
+            error_log($e->getMessage());
+            return false;
+        };
+        return true;
+    }
 }

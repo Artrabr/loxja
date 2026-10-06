@@ -1,5 +1,15 @@
 <?php
 require_once __DIR__ . "/../../bootstrap.php";
+
+if(!isset($_SESSION['client_object'])) {
+    header("Location: ../Login/index.php?error=not_logged_in");
+    exit();
+}
+/*if(!isset($_SESSION['adm'] == true)) {                              ADICIONAR APÓS O SISTEMA DE LOGIN DE ADM FICAR PRONTO!!!!!!!!!!!!
+    header("Location: ../Login/index.php?error=notadm");
+    exit();
+}*/
+
 require_once __DIR__ . "/../../Src/Connection.php";
 require_once __DIR__ . "/../../Src/Class/Product/ProductDB.php";
 ?>
@@ -48,6 +58,10 @@ require_once __DIR__ . "/../../Src/Class/Product/ProductDB.php";
                             </tr>
                         </tbody>
                     </table>
+                </form>
+                <form action="../../Src/deleteProduct.php" method="POST">
+                    <input type="hidden" name="id" value="<?=$product->getId();?>">
+                    <input type="submit" value="Delete">
                 </form>
             </div>
         <?php

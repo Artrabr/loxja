@@ -1,16 +1,13 @@
 <?php
     require_once __DIR__ . "/../../bootstrap.php";
-    if(isset($_SESSION['client_object'])) {
-        session_destroy();
+    if(!isset($_SESSION['client_object'])) {
+        header("Location: ../Login/index.php?error=not_logged_in");
+        exit();
     }
-    /*    
-    protected int $id;
-    protected string $name;
-    protected float $price;
-    protected string $description;
-    protected int $amountAvailable;
-    protected string $category;
-    */
+    /*if(!isset($_SESSION['adm'] == true)) {                              ADICIONAR APÓS O SISTEMA DE LOGIN DE ADM FICAR PRONTO!!!!!!!!!!!!
+        header("Location: ../Login/index.php?error=notadm");
+        exit();
+    }*/
 ?>
 <!DOCTYPE html>
 <html lang="en">
