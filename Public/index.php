@@ -8,10 +8,35 @@
     $pdo = Connection::conectar();
     $db = new ProductDB($pdo);
 
-    $busca     = trim($_GET['busca']     ?? '');
-    $categoria = trim($_GET['categoria'] ?? '');
+    $search     = trim($_GET['search']     ?? '');
+    $category = trim($_GET['category'] ?? '');
 
-    $allProducts = $db->getAllProducts();  
+    $allProducts = $db->getAllProducts();
+
+    $filteredProducts = [];
+
+    foreach($product as $allProducts) {
+        $lwr_search   = mb_strtolower($busca, 'UTF-8');
+        $lwr_name     = mb_strtolower($product->getName(), 'UTF-8');
+        $lwr_desc     = mb_strtolower($product->getDescription(), 'UTF-8');
+        $lwr_ctgr     = mb_strtolower($product->getCategory(), 'UTF-8');
+    
+        if(!empty($search)){
+            if(str_contains($lwr_name, $lwr_search) ||
+               str_contains($lwr_desc, $lwr_search) ||
+               str_contains($lwr_ctgr, $lwr_search)) {
+            
+               $filteredProducts[] = $product;
+            }
+        } elseif (!empty($category) && $category !== 'all') {
+            if(mb_strtolower($category, 'UTF-8') === $lwr_ctgr){
+                $filteredProducts[] = $product;
+            }
+        } else {
+            $filteredProducts = $allProducts;
+            break;
+        }
+    }
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -60,13 +85,13 @@
         <main>
             <section class="search-strip" aria-label="Pesquisa e utilidades">
                 <form class="search-form" action="#produtos" method="get">
-                    <label for="busca">O que vai deixar seu dia mais gostoso?</label>
+                    <label for="search">O que vai deixar seu dia mais gostoso?</label>
                     <div class="search-control">
-                        <input id="busca" name="busca" type="search"
-                            value="<?= htmlspecialchars($busca) ?>"
+                        <input id="search" name="search" type="search"
+                            value="<?= htmlspecialchars($search) ?>"
                             placeholder="Busque por cafe, doce...">
-                        <!-- mantém a categoria ativa quando o usuário busca por texto -->
-                        <input type="hidden" name="categoria" value="<?= htmlspecialchars($categoria) ?>">
+                        <!-- mantém a category ativa quando o usuário busca por texto -->
+                        <input type="hidden" name="category" value="<?= htmlspecialchars($category) ?>">
                         <button type="submit">Buscar</button>
                     </div>
                 </form>
@@ -127,7 +152,7 @@
         // A busca "de verdade" (que varre todas as páginas) continua sendo a do
         // formulário, disparada ao apertar Enter ou clicar em "Buscar".
         (function () {
-            var input = document.getElementById('busca');
+            var input = document.getElementById('search');
             var grid  = document.querySelector('.product-grid');
             if (!input || !grid) return;
 
