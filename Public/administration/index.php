@@ -45,7 +45,6 @@ require_once __DIR__ . '/../../Src/Connection.php';
           <ul>
             <li><a href="add-product.php"><b>Adicionar Produto</b></a></li>
             <li><a href="edit-product.php"><b>Editar Produto</b></a></li>
-            <li><a href="remove-product.php"><b>Remover Produto</b></a></li>
           </ul>
         </nav>
       </section>
