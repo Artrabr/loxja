@@ -1,7 +1,17 @@
 <?php
+    require_once __DIR__ . "/../bootstrap.php";
+
     require_once __DIR__ . "/../Src/Connection.php";
     require_once __DIR__ . "/../Src/Class/Product/Product.php";
     require_once __DIR__ . "/../Src/Class/Product/ProductDB.php";
+
+    $pdo = Connection::conectar();
+    $db = new ProductDB($pdo);
+
+    $busca     = trim($_GET['busca']     ?? '');
+    $categoria = trim($_GET['categoria'] ?? '');
+
+    $allProducts = $db->getAllProducts();  
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
