@@ -1,130 +1,121 @@
 <?php
-/**
- * H1PI - Visitação
- * "eu como visitante quero conseguir visualizar todos os itens e inspecionar eles"
- *
- * Tudo que foi adicionado para este requisito está isolado neste bloco PHP
- * no topo do arquivo, e no bloco <style> logo abaixo do <head>. O resto do
- * arquivo (header, hero, contato, footer) continua igual ao original.
- */
+    require_once __DIR__ . "/../Src/Connection.php";
+    require_once __DIR__ . "/../Src/Class/Product/Product.php";
+    require_once __DIR__ . "/../Src/Class/Product/ProductDB.php";
 
-require_once __DIR__ . "/../Src/Connection.php";
-require_once __DIR__ . "/../Src/Class/Product/Product.php";
-require_once __DIR__ . "/../Src/Class/Product/ProductDB.php";
+    // --- quantos produtos mostrar por página ---
+    const PRODUTOS_POR_PAGINA = 6;
 
-// --- quantos produtos mostrar por página ---
-const PRODUTOS_POR_PAGINA = 6;
+    $produtos     = [];
+    $categorias   = [];
+    $totalPaginas = 1;
+    $paginaAtual  = 1;
+    $erroBanco    = null;
 
-$produtos     = [];
-$categorias   = [];
-$totalPaginas = 1;
-$paginaAtual  = 1;
-$erroBanco    = null;
+    // ===== H2PI - Filtragem =====
+    // ?busca=...     -> filtra por nome (LIKE)
+    // ?categoria=... -> pré-filtro por categoria exata
+    $busca     = trim((string) ($_GET['busca']     ?? ''));
+    $categoria = trim((string) ($_GET['categoria'] ?? ''));
 
-// ===== H2PI - Filtragem =====
-// ?busca=...     -> filtra por nome (LIKE)
-// ?categoria=... -> pré-filtro por categoria exata
-$busca     = trim((string) ($_GET['busca']     ?? ''));
-$categoria = trim((string) ($_GET['categoria'] ?? ''));
-
-/**
- * Reconstrói a URL atual preservando os filtros ativos.
- * Use $overrides pra trocar parâmetros (ex.: trocar a página).
- */
-function urlComFiltros(array $overrides = []): string
-{
-    $params = [
-        'busca'     => $_GET['busca']     ?? '',
-        'categoria' => $_GET['categoria'] ?? '',
-        'pagina'    => $_GET['pagina']    ?? '',
-    ];
-    foreach ($overrides as $k => $v) {
-        $params[$k] = $v;
-    }
-    // remove vazios pra URL ficar limpa
-    $params = array_filter($params, static fn($v) => $v !== '' && $v !== null);
-    return '?' . http_build_query($params) . '#produtos';
-}
-
-try {
-    $pdo = Connection::conectar();
-
-    // ---- categorias para os pré-filtros ----
-    $categorias = $pdo->query(
-        "SELECT DISTINCT pdt_category
-           FROM Product
-          WHERE pdt_category IS NOT NULL AND pdt_category <> ''
-          ORDER BY pdt_category"
-    )->fetchAll(PDO::FETCH_COLUMN);
-
-    // ---- página atual ----
-    $paginaAtual = isset($_GET['pagina']) ? (int) $_GET['pagina'] : 1;
-    if ($paginaAtual < 1) {
-        $paginaAtual = 1;
+    /**
+     * Reconstrói a URL atual preservando os filtros ativos.
+     * Use $overrides pra trocar parâmetros (ex.: trocar a página).
+     */
+    function urlComFiltros(array $overrides = []): string
+    {
+        $params = [
+            'busca'     => $_GET['busca']     ?? '',
+            'categoria' => $_GET['categoria'] ?? '',
+            'pagina'    => $_GET['pagina']    ?? '',
+        ];
+        foreach ($overrides as $k => $v) {
+            $params[$k] = $v;
+        }
+        // remove vazios pra URL ficar limpa
+        $params = array_filter($params, static fn($v) => $v !== '' && $v !== null);
+        return '?' . http_build_query($params) . '#produtos';
     }
 
-    // ---- monta WHERE conforme filtros ativos ----
-    $where  = [];
-    $params = [];
+    try {
+        $pdo = Connection::conectar();
 
-    if ($busca !== '') {
-        $where[]          = 'pdt_name LIKE :busca';
-        $params[':busca'] = '%' . $busca . '%';
-    }
-    if ($categoria !== '') {
-        $where[]              = 'pdt_category = :categoria';
-        $params[':categoria'] = $categoria;
-    }
-    $whereSql = $where ? ('WHERE ' . implode(' AND ', $where)) : '';
+        // ---- categorias para os pré-filtros ----
+        $categorias = $pdo->query(
+            "SELECT DISTINCT pdt_category
+            FROM Product
+            WHERE pdt_category IS NOT NULL AND pdt_category <> ''
+            ORDER BY pdt_category"
+        )->fetchAll(PDO::FETCH_COLUMN);
 
-    // ---- total (respeitando os filtros) ----
-    $stmtCount = $pdo->prepare("SELECT COUNT(*) FROM Product $whereSql");
-    $stmtCount->execute($params);
-    $totalProdutos = (int) $stmtCount->fetchColumn();
-    $totalPaginas  = (int) max(1, (int) ceil($totalProdutos / PRODUTOS_POR_PAGINA));
+        // ---- página atual ----
+        $paginaAtual = isset($_GET['pagina']) ? (int) $_GET['pagina'] : 1;
+        if ($paginaAtual < 1) {
+            $paginaAtual = 1;
+        }
 
-    // se a página pedida passar do total, volta pra última válida
-    if ($paginaAtual > $totalPaginas) {
-        $paginaAtual = $totalPaginas;
-    }
-    $offset = ($paginaAtual - 1) * PRODUTOS_POR_PAGINA;
+        // ---- monta WHERE conforme filtros ativos ----
+        $where  = [];
+        $params = [];
 
-    // ---- busca a fatia da página, já filtrada ----
-    $stmt = $pdo->prepare(
-        "SELECT pdt_id, pdt_name, pdt_price, pdt_description, pdt_amount, pdt_category
-           FROM Product
-           $whereSql
-          ORDER BY pdt_id
-          LIMIT :limite OFFSET :offset"
-    );
-    foreach ($params as $k => $v) {
-        $stmt->bindValue($k, $v);
-    }
-    $stmt->bindValue(':limite', PRODUTOS_POR_PAGINA, PDO::PARAM_INT);
-    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
-    $stmt->execute();
+        if ($busca !== '') {
+            $where[]          = 'pdt_name LIKE :busca';
+            $params[':busca'] = '%' . $busca . '%';
+        }
+        if ($categoria !== '') {
+            $where[]              = 'pdt_category = :categoria';
+            $params[':categoria'] = $categoria;
+        }
+        $whereSql = $where ? ('WHERE ' . implode(' AND ', $where)) : '';
 
-    while ($linha = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $produtos[] = new Product(
-            (int) $linha['pdt_id'],
-            $linha['pdt_name'],
-            (float) $linha['pdt_price'],
-            $linha['pdt_description'] ?? '',
-            (int) $linha['pdt_amount'],
-            $linha['pdt_category'] ?? ''
+        // ---- total (respeitando os filtros) ----
+        $stmtCount = $pdo->prepare("SELECT COUNT(*) FROM Product $whereSql");
+        $stmtCount->execute($params);
+        $totalProdutos = (int) $stmtCount->fetchColumn();
+        $totalPaginas  = (int) max(1, (int) ceil($totalProdutos / PRODUTOS_POR_PAGINA));
+
+        // se a página pedida passar do total, volta pra última válida
+        if ($paginaAtual > $totalPaginas) {
+            $paginaAtual = $totalPaginas;
+        }
+        $offset = ($paginaAtual - 1) * PRODUTOS_POR_PAGINA;
+
+        // ---- busca a fatia da página, já filtrada ----
+        $stmt = $pdo->prepare(
+            "SELECT pdt_id, pdt_name, pdt_price, pdt_description, pdt_amount, pdt_category
+            FROM Product
+            $whereSql
+            ORDER BY pdt_id
+            LIMIT :limite OFFSET :offset"
         );
-    }
-} catch (PDOException $e) {
-    $erroBanco = "Não foi possível carregar os produtos no momento.";
-}
+        foreach ($params as $k => $v) {
+            $stmt->bindValue($k, $v);
+        }
+        $stmt->bindValue(':limite', PRODUTOS_POR_PAGINA, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
 
-/**
- * Formata preço float pro padrão brasileiro (R$ 12,90)
- */
-function formatarPreco(float $preco): string
-{
-    return number_format($preco, 2, ',', '.');
-}
+        while ($linha = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $produtos[] = new Product(
+                (int) $linha['pdt_id'],
+                $linha['pdt_name'],
+                (float) $linha['pdt_price'],
+                $linha['pdt_description'] ?? '',
+                (int) $linha['pdt_amount'],
+                $linha['pdt_category'] ?? ''
+            );
+        }
+    } catch (PDOException $e) {
+        $erroBanco = "Não foi possível carregar os produtos no momento.";
+    }
+
+    /**
+     * Formata preço float pro padrão brasileiro (R$ 12,90)
+     */
+    function formatarPreco(float $preco): string
+    {
+        return number_format($preco, 2, ',', '.');
+    }
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -135,252 +126,7 @@ function formatarPreco(float $preco): string
         <title>Loxja Cafe | Seu momento favorito</title>
         <link href="MVP.css" rel="stylesheet">
         <link href="style_index.css" rel="stylesheet">
-        <style>
-            /* ===== H1PI - estilos do tab-card de detalhes e da paginação ===== */
-            /* Cada card de produto tem um link "#produto-ID". O overlay de detalhes
-               tem esse mesmo ID, então o CSS :target o exibe sem precisar de JS. */
-            .product-detail-overlay {
-                display: none;
-                position: fixed;
-                inset: 0;
-                z-index: 999;
-                padding: 24px;
-                background: rgba(0, 0, 0, 0.55);
-                align-items: center;
-                justify-content: center;
-            }
-
-            .product-detail-overlay:target {
-                display: flex;
-            }
-
-            .product-detail-card {
-                position: relative;
-                width: min(560px, 100%);
-                max-height: 85vh;
-                overflow-y: auto;
-                background: #fff;
-                border-radius: 16px;
-                padding: 32px;
-                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
-            }
-
-            .product-detail-close {
-                position: absolute;
-                top: 12px;
-                right: 16px;
-                font-size: 1.6rem;
-                line-height: 1;
-                text-decoration: none;
-                color: inherit;
-            }
-
-            .product-detail-image {
-                display: block;
-                width: 100%;
-                height: 200px;
-                border-radius: 12px;
-                margin-bottom: 16px;
-                background-color: #e8ddcf;
-                object-fit: cover;
-            }
-
-            /* imagens de teste vindas do dummyimage.com nos cards da grade */
-            img.product-image {
-                display: block;
-                width: 100%;
-                height: 180px;
-                object-fit: cover;
-                border-radius: 12px 12px 0 0;
-                background-color: #e8ddcf;
-            }
-
-            .product-detail-amount {
-                margin: 8px 0;
-                font-size: 0.95rem;
-                opacity: 0.8;
-            }
-
-            .product-card .text-link {
-                display: inline-block;
-                margin-top: 8px;
-            }
-
-            /* ===== Paginação com círculos (máx 3 números + "..." digitável) ===== */
-            .pagination-control {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                gap: 12px;
-                margin-top: 32px;
-                flex-wrap: wrap;
-            }
-
-            .pagination-pages {
-                display: flex;
-                gap: 8px;
-                flex-wrap: wrap;
-                justify-content: center;
-                align-items: center;
-            }
-
-            .pagination-number,
-            .pagination-arrow,
-            .pagination-jump {
-                /* tamanho fixo e idêntico pros 3 tipos */
-                box-sizing: border-box;
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                width: 42px;
-                height: 42px;
-                padding: 0;
-                margin: 0;
-                line-height: 1;
-                vertical-align: middle;
-
-                border-radius: 50%;
-                border: 1px solid currentColor;
-                text-decoration: none;
-                color: inherit;
-                font-weight: 600;
-                font-size: 0.95rem;
-                font-family: inherit;
-                background: transparent;
-                transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
-            }
-
-            .pagination-arrow {
-                font-size: 1.2rem;
-            }
-
-            .pagination-number:hover,
-            .pagination-arrow:hover,
-            .pagination-jump:hover {
-                background: rgba(111, 78, 55, 0.12);
-                transform: translateY(-1px);
-            }
-
-            .pagination-number.is-active {
-                background: #6f4e37;
-                color: #fff;
-                border-color: #6f4e37;
-                cursor: default;
-            }
-
-            .pagination-number.is-active:hover {
-                transform: none;
-                background: #6f4e37;
-            }
-
-            /* setas de "pular tudo" um pouco mais discretas */
-            .pagination-arrow.is-jump {
-                font-size: 1.05rem;
-                opacity: 0.85;
-            }
-
-            .pagination-arrow.is-disabled {
-                opacity: 0.35;
-                cursor: not-allowed;
-            }
-
-            .pagination-arrow.is-disabled:hover {
-                background: transparent;
-                transform: none;
-            }
-
-            /* O "..." como input circular */
-            .pagination-jump {
-                text-align: center;
-                -moz-appearance: textfield;
-                appearance: textfield;
-                cursor: text;
-                font-size: 0.95rem;
-            }
-
-            .pagination-jump::-webkit-outer-spin-button,
-            .pagination-jump::-webkit-inner-spin-button {
-                -webkit-appearance: none;
-                margin: 0;
-            }
-
-            .pagination-jump:focus {
-                outline: 2px solid #6f4e37;
-                outline-offset: 2px;
-                background: #fff;
-            }
-
-            .pagination-jump::placeholder {
-                color: currentColor;
-                opacity: 0.75;
-                font-weight: 700;
-                letter-spacing: 1px;
-            }
-
-            .empty-state {
-                text-align: center;
-                padding: 24px;
-                opacity: 0.8;
-            }
-
-            /* ===== H2PI - filtros ===== */
-            .pre-filters {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 8px;
-                margin-bottom: 24px;
-            }
-
-            .filter-chip {
-                display: inline-flex;
-                align-items: center;
-                padding: 6px 14px;
-                border-radius: 999px;
-                border: 1px solid var(--sage);
-                background: var(--white);
-                color: var(--muted);
-                text-decoration: none;
-                font-size: 0.9rem;
-                font-weight: 600;
-                transition: background .15s ease, color .15s ease, border-color .15s ease;
-            }
-
-            .filter-chip:hover,
-            .filter-chip:focus {
-                color: var(--ink);
-                background: var(--cream-green);
-                border-color: var(--cream-green);
-            }
-
-            .filter-chip.is-active {
-                background: var(--caramel);
-                border-color: var(--caramel);
-                color: var(--white);
-            }
-
-            .filter-chip.is-active:hover {
-                background: var(--caramel);
-                color: var(--white);
-            }
-
-            .filter-status {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 12px;
-                align-items: center;
-                justify-content: space-between;
-                margin-bottom: 20px;
-                padding: 10px 14px;
-                border-radius: 12px;
-                background: var(--cream-green);
-                color: var(--muted);
-                font-size: 0.92rem;
-            }
-
-            .filter-status strong {
-                color: var(--ink);
-            }
-        </style>
+        <link href="style_index_exibicao.css" rel="stylesheet">
     </head> 
     
 <!--===================[APAGAR]========================-->
