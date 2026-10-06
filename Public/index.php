@@ -3,119 +3,12 @@
     require_once __DIR__ . "/../Src/Class/Product/Product.php";
     require_once __DIR__ . "/../Src/Class/Product/ProductDB.php";
 
-    // --- quantos produtos mostrar por página ---
-    const PRODUTOS_POR_PAGINA = 6;
-
-    $produtos     = [];
-    $categorias   = [];
-    $totalPaginas = 1;
-    $paginaAtual  = 1;
-    $erroBanco    = null;
-
-    // ===== H2PI - Filtragem =====
-    // ?busca=...     -> filtra por nome (LIKE)
-    // ?categoria=... -> pré-filtro por categoria exata
-    $busca     = trim((string) ($_GET['busca']     ?? ''));
-    $categoria = trim((string) ($_GET['categoria'] ?? ''));
-
-    /**
-     * Reconstrói a URL atual preservando os filtros ativos.
-     * Use $overrides pra trocar parâmetros (ex.: trocar a página).
-     */
-    function urlComFiltros(array $overrides = []): string
-    {
-        $params = [
-            'busca'     => $_GET['busca']     ?? '',
-            'categoria' => $_GET['categoria'] ?? '',
-            'pagina'    => $_GET['pagina']    ?? '',
-        ];
-        foreach ($overrides as $k => $v) {
-            $params[$k] = $v;
-        }
-        // remove vazios pra URL ficar limpa
-        $params = array_filter($params, static fn($v) => $v !== '' && $v !== null);
-        return '?' . http_build_query($params) . '#produtos';
-    }
-
-    try {
-        $pdo = Connection::conectar();
-
-        // ---- categorias para os pré-filtros ----
-        $categorias = $pdo->query(
-            "SELECT DISTINCT pdt_category
-            FROM Product
-            WHERE pdt_category IS NOT NULL AND pdt_category <> ''
-            ORDER BY pdt_category"
-        )->fetchAll(PDO::FETCH_COLUMN);
-
-        // ---- página atual ----
-        $paginaAtual = isset($_GET['pagina']) ? (int) $_GET['pagina'] : 1;
-        if ($paginaAtual < 1) {
-            $paginaAtual = 1;
-        }
-
-        // ---- monta WHERE conforme filtros ativos ----
-        $where  = [];
-        $params = [];
-
-        if ($busca !== '') {
-            $where[]          = 'pdt_name LIKE :busca';
-            $params[':busca'] = '%' . $busca . '%';
-        }
-        if ($categoria !== '') {
-            $where[]              = 'pdt_category = :categoria';
-            $params[':categoria'] = $categoria;
-        }
-        $whereSql = $where ? ('WHERE ' . implode(' AND ', $where)) : '';
-
-        // ---- total (respeitando os filtros) ----
-        $stmtCount = $pdo->prepare("SELECT COUNT(*) FROM Product $whereSql");
-        $stmtCount->execute($params);
-        $totalProdutos = (int) $stmtCount->fetchColumn();
-        $totalPaginas  = (int) max(1, (int) ceil($totalProdutos / PRODUTOS_POR_PAGINA));
-
-        // se a página pedida passar do total, volta pra última válida
-        if ($paginaAtual > $totalPaginas) {
-            $paginaAtual = $totalPaginas;
-        }
-        $offset = ($paginaAtual - 1) * PRODUTOS_POR_PAGINA;
-
-        // ---- busca a fatia da página, já filtrada ----
-        $stmt = $pdo->prepare(
-            "SELECT pdt_id, pdt_name, pdt_price, pdt_description, pdt_amount, pdt_category
-            FROM Product
-            $whereSql
-            ORDER BY pdt_id
-            LIMIT :limite OFFSET :offset"
-        );
-        foreach ($params as $k => $v) {
-            $stmt->bindValue($k, $v);
-        }
-        $stmt->bindValue(':limite', PRODUTOS_POR_PAGINA, PDO::PARAM_INT);
-        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
-        $stmt->execute();
-
-        while ($linha = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $produtos[] = new Product(
-                (int) $linha['pdt_id'],
-                $linha['pdt_name'],
-                (float) $linha['pdt_price'],
-                $linha['pdt_description'] ?? '',
-                (int) $linha['pdt_amount'],
-                $linha['pdt_category'] ?? ''
-            );
-        }
-    } catch (PDOException $e) {
-        $erroBanco = "Não foi possível carregar os produtos no momento.";
-    }
-
-    /**
-     * Formata preço float pro padrão brasileiro (R$ 12,90)
-     */
-    function formatarPreco(float $preco): string
-    {
-        return number_format($preco, 2, ',', '.');
-    }
+    // funções para a seção de paginação
+    // 1. exibir produtos
+    // 2. exibir produtos com filtros baseados em
+    //    nome
+    //    categoria
+    // 3. 
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
