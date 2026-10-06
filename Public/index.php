@@ -2,13 +2,6 @@
     require_once __DIR__ . "/../Src/Connection.php";
     require_once __DIR__ . "/../Src/Class/Product/Product.php";
     require_once __DIR__ . "/../Src/Class/Product/ProductDB.php";
-
-    // funções para a seção de paginação
-    // 1. exibir produtos
-    // 2. exibir produtos com filtros baseados em
-    //    nome
-    //    categoria
-    // 3. 
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -55,8 +48,40 @@
             </nav>
         </header>
         <main>
-            
-            
+            <section class="search-strip" aria-label="Pesquisa e utilidades">
+                <form class="search-form" action="#produtos" method="get">
+                    <label for="busca">O que vai deixar seu dia mais gostoso?</label>
+                    <div class="search-control">
+                        <input id="busca" name="busca" type="search"
+                            value="<?= htmlspecialchars($busca) ?>"
+                            placeholder="Busque por cafe, doce...">
+                        <!-- mantém a categoria ativa quando o usuário busca por texto -->
+                        <input type="hidden" name="categoria" value="<?= htmlspecialchars($categoria) ?>">
+                        <button type="submit">Buscar</button>
+                    </div>
+                </form>
+                <a class="cart-link" href="carrinho/index.php">Carrinho <span>0</span></a>
+            </section>
+            <section class="hero" aria-labelledby="hero-title">
+                <div class="hero-copy">
+                    <p class="eyebrow">Torra artesanal &bull; carinho em cada xicara</p>
+                    <h1 id="hero-title">Um cafe quentinho para chamar de seu.</h1>
+                    <p>Escolha seu momento favorito: aromas marcantes, doces delicados e aquele aconchego que cabe na rotina.</p>
+                    <a class="primary-button" href="#produtos">Explorar sabores <span aria-hidden="true">&rarr;</span></a>
+                </div>
+                <div class="hero-art" role="img" aria-label="Xicara de cafe sobre uma mesa de madeira"></div>
+            </section>
+            <section class="products-section" id="produtos" aria-labelledby="products-title">
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">Feitos para desacelerar</p>
+                        <h2 id="products-title">Nosso cardapio</h2>
+                    </div>
+                </div>
+
+                <!--- fazer seção de cardápio --->
+
+            </section>
             <section class="contact-section" id="contato" aria-labelledby="contact-title">
                 <div>
                     <p class="eyebrow">Vem tomar um cafe</p>
