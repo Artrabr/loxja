@@ -15,7 +15,7 @@
 
     $filteredProducts = [];
 
-    foreach($product as $allProducts) {
+    foreach($allProducts as $product) {
         $lwr_search   = mb_strtolower($busca, 'UTF-8');
         $lwr_name     = mb_strtolower($product->getName(), 'UTF-8');
         $lwr_desc     = mb_strtolower($product->getDescription(), 'UTF-8');
