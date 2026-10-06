@@ -23,39 +23,78 @@ if (!$client) {
     header('Location: ../Login/index.php?error=nonexistent_user');
     exit;
 }
-
-$foto = '../../perfilsemfoto.png';
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Perfil</title>
+    <title>Meu Perfil - Loxja Café</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <link href="../style_index.css" rel="stylesheet">
+
     <link rel="stylesheet" href="profilestyle.css">
 </head>
 <body>
+    <header class="site-header" id="inicio">
+        <nav class="topbar" aria-label="Navegacao principal">
+            <a class="brand" href="../index.php" aria-label="Loxja Cafe, inicio">
+                <img src="../logo.png" alt="Loxja Cafe" class="brand-mark">
+                <span>Loxja <small>cafe</small></span>
+            </a>
 
-<div class="profile-container">
-    <div class="profile-header">
-        <img src="<?= htmlspecialchars($foto) ?>" alt="Foto de perfil" class="profile-pic">
-        <h1><?= htmlspecialchars($client->getName()) ?></h1>
-        <p><?= htmlspecialchars($client->getEmail()) ?></p>
-    </div>
 
-    <div class="profile-info">
-        <h2>Informações do Usuário</h2>
-        <ul>
-            <li><strong>Nome:</strong> <?= htmlspecialchars($client->getName()) ?></li>
-            <li><strong>E-mail:</strong> <?= htmlspecialchars($client->getEmail()) ?></li>
-        </ul>
-    </div>
+            
+        </nav>
+    </header>
 
-    <div class="profile-actions">
-            <a href="deleteSession.php" class="btn-logout">Sair</a>
-    </div>
-</div>
+    <main class="main-content">
+
+        
+        <div class="profile-container">
+            <div class="profile-header">
+                <div class="header-bg"></div>
+                <div class="header-content">
+                    <img src="../perfilsemfoto.png" alt="Foto de perfil" class="profile-pic">
+
+                   
+                    <h1><?= htmlspecialchars($client->getName()) ?></h1>
+                    
+                    <p><?= htmlspecialchars($client->getEmail()) ?></p>
+                </div>
+            </div>
+
+            <div class="profile-info">
+                <h2>Informações do Usuário</h2>
+                <ul>
+                    
+                    <li>
+                        <strong>Nome:</strong>
+                         <input type="hidden" id="id" name="id" value="<?=$id?>" required>
+                    <label for="cep"></label>
+                    <input type="text" id="cep" name="cep" >
+                        <span><?= htmlspecialchars($client->getName()) ?></span>
+                        
+                    </li>
+                    <li>
+                        <strong>E-mail:</strong>
+                        <input type="hidden" id="id" name="id" value="<?=$id?>" required>
+                    <label for="cep"></label>
+                    <input type="text" id="cep" name="cep" >
+                        <span><?= htmlspecialchars($client->getEmail()) ?></span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="profile-actions">
+                <a href="deleteSession.php" class="btn-logout">Sair</a>
+            </div>
+        </div>
+
+    </main>
+    
 
 </body>
-
 </html>
