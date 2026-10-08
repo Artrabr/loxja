@@ -218,8 +218,61 @@
                     <?php endforeach; ?>
                 </nav>
 
-                
+                <?php if(empty($productsOnDisplay)): ?>
+                    <p class="empty-state">Nenhum produto encontrado.</p>
+                <?php else: ?>
+                    <div class="product-grid">
+                        <?php foreach ($productsOnDisplay as $product): ?>
+                            <?php 
+                                $placeholder = 'https://dummyimage.com/600x400/ccd5ae/2f2a24&text=' . urlencode($product->getName());
+                            ?>
+                            <!-- escrever card -->
+                            <article class="product-card">
+                                <img
+                                    class="product-image"
+                                    src="<?= htmlspecialchars($placeholder) ?>"
+                                    alt="<?= htmlspecialchars($product->getName()) ?>">
 
+                                    <div class="product-info">
+                                        <p class="product-type"><?= htmlspecialchars($product->getCategory()) ?></p>
+
+                                        <h3><?= htmlspecialchars($product->getName()) ?></h3>
+                                        <p><?= htmlspecialchars($product->getDescription()) ?></p>
+
+                                        <a class="text-link" href="#detalhe-<?= (int)$product->getId() ?>">
+                                            Ver detalhes
+                                        </a>
+
+                                        <strong>R$ <?= number_format($product->getPrice(), 2, ',', '.') ?></strong>
+                                    </div>
+                            </article>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+
+                <?php foreach ($productsOnDisplay as $product): ?>
+                    <?php 
+                        $placeholder = 'https://dummyimage.com/600x400/ccd5ae/2f2a24&text=' . urlencode($product->getName());
+                    ?>
+                    <div class="product-detail-overlay" id="detalhe-<?= (int)$product->getId() ?>">
+                        <div class="product-detail-card">
+                            <a class="product-detail-close" href="#produtos" aria-label="Fechar">&times;</a>
+
+                            <img
+                                class="product-detail-image"
+                                src="<?= htmlspecialchars($placeholder) ?>"
+                                alt="<?= htmlspecialchars($product->getName()) ?>"
+                            >
+                            <p class="product-type"><?= htmlspecialchars($product->getCategory()) ?></p>
+
+                            <h3><?= htmlspecialchars($product->getName()) ?></h3>
+                            <p><?= htmlspecialchars($product->getDescription()) ?></p>
+                            <p class="product-detail-amount">
+                                R$ <?= number_format($product->getPrice(), 2, ',', '.') ?>
+                            </p>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
             </section>
             <section class="contact-section" id="contato" aria-labelledby="contact-title">
                 <div>
