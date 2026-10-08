@@ -9,9 +9,6 @@
 
     require_once __DIR__ . "/../Src/filtrationSetup.php";
 
-    var_dump(count($filteredProducts));
-    var_dump(count($allProducts));
-
     $perPage = 6;
     $page = (int)($_GET['page'] ?? 1);
     $totalProducts = count($filteredProducts);
