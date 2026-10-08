@@ -59,9 +59,7 @@
  
     $filteredProducts = [];
 
-    if(empty($search) && (empty($category) || $category === 'all')){
-        $filteredProducts = $allProducts;
-    } else {
+    if(empty($search) && (empty($category) || $category === 'all') && empty($minPrice) && empty($maxPrice)){
         $lowerSearch   = mb_strtolower($search, 'UTF-8');
         foreach($allProducts as $product) {
             $nameMatch     = true;
@@ -72,7 +70,6 @@
             $lowerDescription = mb_strtolower($product->getDescription(), 'UTF-8');
             $lowerCategory = mb_strtolower($product->getCategory(), 'UTF-8');
             $price    = $product->getPrice();
-            $amount   = $product->getAmountAvailable();
 
             $nameMatch = isNameMatching($lowerName, $lowerDescription, $lowerCategory, $lowerSearch);
             $categoryMatch = isCategoryMatching($category, $lowerCategory);
@@ -83,8 +80,6 @@
             }
         }
     }
-
-    
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
