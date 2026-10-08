@@ -26,7 +26,7 @@ CREATE TABLE Product (
     pdt_id          INT AUTO_INCREMENT PRIMARY KEY,
     pdt_name        VARCHAR(30)   NOT NULL,
     pdt_price       DECIMAL(10,2) NOT NULL,
-    pdt_description VARCHAR(300),
+    pdt_description VARCHAR(500),
     pdt_amount      INT NOT NULL DEFAULT 0,
     pdt_category    VARCHAR(50),
     pdt_image		VARCHAR(255)

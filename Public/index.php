@@ -10,6 +10,9 @@
 
     require_once __DIR__ . "/../Src/filtrationSetup.php";
 
+    var_dump(count($filteredProducts));
+    var_dump(count($allProducts));
+
     $perPage = 6;
     $page = (int)($_GET['page'] ?? 1);
     $totalProducts = count($filteredProducts);
@@ -24,8 +27,9 @@
     $lastShown  = min($offset + $perPage, $totalProducts);
 
     $pageWindow       = 3;
+    $halfWindow = (int)floor($pageWindow / 2);
     $visiblePages     = min($pageWindow, $totalPages);
-    $firstVisiblePage = max(1, min($page - 1, $totalPages - $visiblePages + 1));
+    $firstVisiblePage = max(1, min($page - $halfWindow, $totalPages - $visiblePages + 1));
     $lastVisiblePage = $firstVisiblePage + $visiblePages - 1;
     $hasHiddenPages = $visiblePages < $totalPages;
 ?>
@@ -74,20 +78,6 @@
             </nav>
         </header>
         <main>
-            <section class="search-strip" aria-label="Pesquisa e utilidades">
-                <form class="search-form" action="<?= htmlspecialchars($_SERVER['PHP_SELF']) ?>#produtos" method="get">
-                    <label for="search">O que vai deixar seu dia mais gostoso?</label>
-                    <div class="search-control">
-                        <input id="search" name="search" type="search"
-                            value="<?= htmlspecialchars($search) ?>"
-                            placeholder="Busque por cafe, doce...">
-                        <!-- mantém a category ativa quando o usuário busca por texto -->
-                        <input type="hidden" name="category" value="<?= htmlspecialchars($category) ?>">
-                        <button type="submit">Buscar</button>
-                    </div>
-                </form>
-                <a class="cart-link" href="carrinho/index.php">Carrinho <span>0</span></a>
-            </section>
             <section class="hero" aria-labelledby="hero-title">
                 <div class="hero-copy">
                     <p class="eyebrow">Torra artesanal &bull; carinho em cada xicara</p>
@@ -104,6 +94,20 @@
                         <h2 id="products-title">Nosso cardapio</h2>
                     </div>
                 </div>
+                <section class="search-strip" aria-label="Pesquisa e utilidades">
+                <form class="search-form" action="<?= htmlspecialchars($_SERVER['PHP_SELF']) ?>#produtos" method="get">
+                    <label for="search">O que vai deixar seu dia mais gostoso?</label>
+                    <div class="search-control">
+                        <input id="search" name="search" type="search"
+                            value="<?= htmlspecialchars($search) ?>"
+                            placeholder="Busque por cafe, doce...">
+                        <!-- mantém a category ativa quando o usuário busca por texto -->
+                        <input type="hidden" name="category" value="<?= htmlspecialchars($category) ?>">
+                        <button type="submit">Buscar</button>
+                    </div>
+                </form>
+                <a class="cart-link" href="carrinho/index.php">Carrinho <span>0</span></a>
+                </section>
                 <?php
                     $categories = ['all' => 'Todos'];
 
