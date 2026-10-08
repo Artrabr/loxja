@@ -49,6 +49,7 @@ require_once __DIR__ . "/../../Src/Class/Product/ProductDB.php";
                         <tbody>
                             <tr>
                                 <td><?php echo htmlspecialchars($product->getId()); ?></td>
+                                <td><img src="<?=$product->getImage()?>" alt="<?=$product->getName()?>"></td>
                                 <td><input aria-label="Nome" type="text" name="name" value="<?php echo htmlspecialchars($product->getName()); ?>" required></td>
                                 <td><input aria-label="Preço" type="number" name="price" value="<?php echo htmlspecialchars($product->getPrice()); ?>" step="0.01"></td>
                                 <td><input aria-label="Descrição" type="text" name="description" value="<?php echo htmlspecialchars($product->getDescription()); ?>"></td>
