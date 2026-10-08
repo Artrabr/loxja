@@ -82,8 +82,8 @@ class Product
         return $this->image;
     }
 
-    public function setImage(string $image) //ALTERAR O METODO DE SET PARA link/legal.edivertido/($VARIAVEL DE ENTRADA);
-    {
+    public function setImage(string $image) 
+    {//ALTERAR O METODO DE SET PARA link/legal.edivertido/($VARIAVEL DE ENTRADA);
         $this->image = $image;
     }
 }
