@@ -12,7 +12,7 @@
         $params = array_merge($base, $overrides);
         
         foreach($params as $key => $value) {
-            if ($value === null || $value === '') {
+            if ($value === null || $value === '' || ($key === 'minPrice') && (float)$value === 0.0) {
                 unset($params[$key]);
             }
         }
@@ -191,7 +191,7 @@
 
                     foreach($allProducts as $product) {
                         $productCategory = $product->getCategory();
-                        $slug = mb_strtolower($productCategory);
+                        $slug = mb_strtolower($productCategory, 'UTF-8');
                         $categories[$slug] = $productCategory;
                     }
 
@@ -204,7 +204,9 @@
                     <?php foreach ($categories as $slug => $label): ?>
                         <?php
                             $isActive = ($activeCategory === $slug);
-                            $url = productUrl($base, ['category' => $slug]);
+                            $url = ($slug === 'all')
+                            ? productUrl($base, ['category' => ''])
+                            : productUrl($base, ['category' => $slug]);
                         ?>
                         <a
                             class="filter-chip<?= $isActive ? ' is-active' : '' ?>"
@@ -216,7 +218,7 @@
                     <?php endforeach; ?>
                 </nav>
 
-
+                
 
             </section>
             <section class="contact-section" id="contato" aria-labelledby="contact-title">
