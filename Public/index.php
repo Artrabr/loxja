@@ -59,7 +59,7 @@
  
     $filteredProducts = [];
 
-    if(empty($search) && (empty($category) || $category === 'all') && empty($minPrice) && empty($maxPrice)){
+    if(!empty($search) && (!empty($category) || $category !== 'all') && empty(!$minPrice) && empty(!$maxPrice)){
         $lowerSearch   = mb_strtolower($search, 'UTF-8');
         foreach($allProducts as $product) {
             $nameMatch     = true;
