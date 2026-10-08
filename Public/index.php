@@ -13,7 +13,6 @@
     $minPrice = $_GET['minPrice'] ?? 0;
     $maxPrice = $_GET['maxprice'] ?? '';
 
-
     $allProducts = $db->getAllProducts();
 
     $filteredProducts = [];
@@ -44,6 +43,14 @@
                 if(mb_strtolower($category, 'UTF-8') !== $lwr_ctgr){
                     $match = false;
                 }
+            }
+
+            if(!empty($minPrice) && $price <= (float)$minPrice){
+                $match = false
+            }
+
+            if(!empty($maxPrice) && $price >= (float)$maxPrice){
+                $match = false
             }
 
             if($match) $filteredProducts[] = $product;
