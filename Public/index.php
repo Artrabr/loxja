@@ -34,7 +34,7 @@
             $return false;
         }
         if(!empty($maxPrice) && $productPrice >= (float)$maxPrice){
-            $return false
+            $return false;
         }
 
         return true;
