@@ -156,8 +156,8 @@ section {
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 
-  --red: red;
-  --dark_red: red;
+  --light_red: #F54927;
+  --red: #F4320B;
   --size_of_cart_item: 108px;
   padding: var(--padding_main);
   width: 100%;
@@ -285,6 +285,9 @@ section {
       display: flex;
       height: auto;
 
+      &:hover {
+        background-color: var(--light_red);
+      }
 
     }
 
