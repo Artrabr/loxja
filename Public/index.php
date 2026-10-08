@@ -8,6 +8,18 @@
     $pdo = Connection::conectar();
     $db = new ProductDB($pdo);
 
+    function productUrl($base, $overrides = []) {
+        $params = array_merge($base, $overrides);
+        
+        foreach($params as $key => $value) {
+            if ($value === null || $value === '') {
+                unset($params[$key]);
+            }
+        }
+
+        return '?' . http_build_query($params) . '#produtos';
+    }
+
     function isNameMatching($name, $description, $category, $search) {
         if(!empty($search)){
             if(!str_contains($name, $search) &&
@@ -54,6 +66,13 @@
             $maxPrice = $buffer;
         }
     }
+    
+    $base = [
+        'search'  => $search,
+        'category' => $category,
+        'minPrice' => $minPrice,
+        'maxPrice' => $maxPrice,
+    ];
 
     $allProducts = $db->getAllProducts();
  
@@ -90,7 +109,7 @@
     $productsOnDisplay = array_slice($filteredProducts, $offset, $perPage);
     
     $firstShown = ($totalProducts === 0) ? 0 : $offset + 1;
-    $lastShown  = min($offset + $perPage, $totalProducts)
+    $lastShown  = min($offset + $perPage, $totalProducts);
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -138,7 +157,7 @@
         </header>
         <main>
             <section class="search-strip" aria-label="Pesquisa e utilidades">
-                <form class="search-form" action="#produtos" method="get">
+                <form class="search-form" action="<?= htmlspecialchars($_SERVER['PHP_SELF']) ?>#produtos" method="get">
                     <label for="search">O que vai deixar seu dia mais gostoso?</label>
                     <div class="search-control">
                         <input id="search" name="search" type="search"
@@ -167,8 +186,37 @@
                         <h2 id="products-title">Nosso cardapio</h2>
                     </div>
                 </div>
+                <?php
+                    $categories = ['all' => 'Todos'];
 
-                <!--- fazer seção de cardápio --->
+                    foreach($allProducts as $product) {
+                        $productCategory = $product->getCategory();
+                        $slug = mb_strtolower($productCategory);
+                        $categories[$slug] = $productCategory;
+                    }
+
+                    $activeCategory = ($category === '')
+                    ? 'all'
+                    : mb_strtolower($category, 'UTF-8');
+                ?>
+
+                <nav class="pre-filters" aria-label="Filtrar por categoria">
+                    <?php foreach ($categories as $slug => $label): ?>
+                        <?php
+                            $isActive = ($activeCategory === $slug);
+                            $url = productUrl($base, ['category' => $slug]);
+                        ?>
+                        <a
+                            class="filter-chip<?= $isActive ? ' is-active' : '' ?>"
+                            href="<?= htmlspecialchars($url) ?>"
+                            <?= $isActive ? 'aria-current="true"' : '' ?>
+                        >
+                            <?= htmlspecialchars($label) ?>
+                        </a>
+                    <?php endforeach; ?>
+                </nav>
+
+
 
             </section>
             <section class="contact-section" id="contato" aria-labelledby="contact-title">
