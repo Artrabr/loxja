@@ -39,7 +39,12 @@ class CartItem {
       return
     }
     this.#value = v ?? 0;
-    this.#amount.value = this.#value;
+    if (this.#value > this.#limit) {
+      this.#amount.value = this.#limit
+      this.#value = this.#limit
+    } else {
+      this.#amount.value = this.#value;
+    }
   }
 }
 
@@ -55,11 +60,9 @@ document.querySelectorAll('.shopping_cart .cart_item_actions').forEach(div => {
 
   const remove = div.querySelector('.remove')
 
-  // amount_of_products.addEventListener('input', (event) => {
-  //   if (parseInt(amount_of_products.value, 10) < 0) {
-  //     amount_of_products.value = '0';
-  //   }
-  // });
+  amount_of_products.addEventListener('input', (event) => {
+    item.value = event.target.value
+  });
 
   increase.addEventListener('click', () => {
     item.value = item.value + 1
