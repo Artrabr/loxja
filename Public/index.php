@@ -110,6 +110,12 @@
     
     $firstShown = ($totalProducts === 0) ? 0 : $offset + 1;
     $lastShown  = min($offset + $perPage, $totalProducts);
+
+    $pageWindow       = 3;
+    $visiblePages     = min($pageWindow, $totalPages);
+    $firstVisiblePage = max(1, min($page - 1, $totalPages - $visiblePages + 1));
+    $lastVisiblePage = $firstVisiblePage + $visiblePages - 1;
+    $hasHiddenPages = $visiblePages < $totalPages;
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -248,31 +254,40 @@
                             </article>
                         <?php endforeach; ?>
                     </div>
-                <?php endif; ?>
+                    <?php foreach ($productsOnDisplay as $product): ?>
+                        <?php 
+                            $placeholder = 'https://dummyimage.com/600x400/ccd5ae/2f2a24&text=' . urlencode($product->getName());
+                        ?>
+                        <div class="product-detail-overlay" id="detalhe-<?= (int)$product->getId() ?>">
+                            <div class="product-detail-card">
+                                <a class="product-detail-close" href="#produtos" aria-label="Fechar">&times;</a>
 
-                <?php foreach ($productsOnDisplay as $product): ?>
-                    <?php 
-                        $placeholder = 'https://dummyimage.com/600x400/ccd5ae/2f2a24&text=' . urlencode($product->getName());
-                    ?>
-                    <div class="product-detail-overlay" id="detalhe-<?= (int)$product->getId() ?>">
-                        <div class="product-detail-card">
-                            <a class="product-detail-close" href="#produtos" aria-label="Fechar">&times;</a>
+                                <img
+                                    class="product-detail-image"
+                                    src="<?= htmlspecialchars($placeholder) ?>"
+                                    alt="<?= htmlspecialchars($product->getName()) ?>"
+                                >
+                                <p class="product-type"><?= htmlspecialchars($product->getCategory()) ?></p>
 
-                            <img
-                                class="product-detail-image"
-                                src="<?= htmlspecialchars($placeholder) ?>"
-                                alt="<?= htmlspecialchars($product->getName()) ?>"
-                            >
-                            <p class="product-type"><?= htmlspecialchars($product->getCategory()) ?></p>
-
-                            <h3><?= htmlspecialchars($product->getName()) ?></h3>
-                            <p><?= htmlspecialchars($product->getDescription()) ?></p>
-                            <p class="product-detail-amount">
-                                R$ <?= number_format($product->getPrice(), 2, ',', '.') ?>
-                            </p>
+                                <h3><?= htmlspecialchars($product->getName()) ?></h3>
+                                <p><?= htmlspecialchars($product->getDescription()) ?></p>
+                                <p class="product-detail-amount">
+                                    R$ <?= number_format($product->getPrice(), 2, ',', '.') ?>
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                <?php endforeach; ?>
+                    <?php endforeach; ?>
+                    <?php if($totalPages > 1): ?>
+                        <nav class="pagination-control" aria-label="Paginacao do cardapio">
+                            <?php if($page > 1): ?>
+                                <a
+                                    class="pagination-arrow is-jump"
+                                    href="<?= htmlspecialchars(productUrl($base, ['page' => 1])) ?>"
+                                    aria-label="Primeira pagina" title="Primeira Pagina">&laquo;
+                                </a>
+                            <?php endif; ?>
+                        </nav>
+                <?php endif; ?>
             </section>
             <section class="contact-section" id="contato" aria-labelledby="contact-title">
                 <div>
