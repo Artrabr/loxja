@@ -8,35 +8,49 @@
     $pdo = Connection::conectar();
     $db = new ProductDB($pdo);
 
-    $search     = trim($_GET['search']     ?? '');
+    $search   = trim($_GET['search']     ?? '');
     $category = trim($_GET['category'] ?? '');
+    $minPrice = $_GET['minPrice'] ?? 0;
+    $maxPrice = $_GET['maxprice'] ?? '';
+
 
     $allProducts = $db->getAllProducts();
 
     $filteredProducts = [];
 
-    foreach($allProducts as $product) {
-        $lwr_search   = mb_strtolower($busca, 'UTF-8');
-        $lwr_name     = mb_strtolower($product->getName(), 'UTF-8');
-        $lwr_desc     = mb_strtolower($product->getDescription(), 'UTF-8');
-        $lwr_ctgr     = mb_strtolower($product->getCategory(), 'UTF-8');
-    
-        if(!empty($search)){
-            if(str_contains($lwr_name, $lwr_search) ||
-               str_contains($lwr_desc, $lwr_search) ||
-               str_contains($lwr_ctgr, $lwr_search)) {
+    if(empty($search) && (empty($category) || $category === 'all')){
+        $filteredProducts = $allProducts;
+    } else {
+        $lwr_search   = mb_strtolower($search, 'UTF-8');
+        foreach($allProducts as $product) {
+            $match = true;
+
+            $lwr_name = mb_strtolower($product->getName(), 'UTF-8');
+            $lwr_desc = mb_strtolower($product->getDescription(), 'UTF-8');
+            $lwr_ctgr = mb_strtolower($product->getCategory(), 'UTF-8');
+            $price    = $product->getPrice();
+            $amount   = $product->getAmountAvailable();
+
+            if(!empty($search)){
+                if(!str_contains($lwr_name, $lwr_search) &&
+                   !str_contains($lwr_desc, $lwr_search) &&
+                   !str_contains($lwr_ctgr, $lwr_search)) {
             
-               $filteredProducts[] = $product;
+                    $match = false;
+                }
             }
-        } elseif (!empty($category) && $category !== 'all') {
-            if(mb_strtolower($category, 'UTF-8') === $lwr_ctgr){
-                $filteredProducts[] = $product;
+            
+            if(!empty($category) && $category !== 'all'){
+                if(mb_strtolower($category, 'UTF-8') !== $lwr_ctgr){
+                    $match = false;
+                }
             }
-        } else {
-            $filteredProducts = $allProducts;
-            break;
+
+            if($match) $filteredProducts[] = $product;
         }
     }
+
+    
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -146,43 +160,5 @@
                 <span>Loxja <small>cafe</small></span></a><p>&copy; 2026 Loxja Cafe. Todos os direitos reservados.</p>
             <a href="#inicio" class="back-top" aria-label="Voltar ao inicio">&uarr;</a>
         </footer>
-        <script>
-        // H2PI - filtro "dinâmico" enquanto digita.
-        // Isto filtra apenas os produtos já carregados na página atual.
-        // A busca "de verdade" (que varre todas as páginas) continua sendo a do
-        // formulário, disparada ao apertar Enter ou clicar em "Buscar".
-        (function () {
-            var input = document.getElementById('search');
-            var grid  = document.querySelector('.product-grid');
-            if (!input || !grid) return;
-
-            var cards = Array.prototype.slice.call(grid.querySelectorAll('.product-card'));
-            var names = cards.map(function (card) {
-                var h3 = card.querySelector('h3');
-                return h3 ? h3.textContent.toLowerCase() : '';
-            });
-
-            var notice = document.createElement('p');
-            notice.className = 'empty-state';
-            notice.style.display = 'none';
-            notice.textContent = 'Nenhum produto nesta página corresponde à busca. Aperte Enter para buscar em todas as páginas.';
-            grid.parentNode.insertBefore(notice, grid.nextSibling);
-
-            var timer = null;
-            input.addEventListener('input', function () {
-                clearTimeout(timer);
-                timer = setTimeout(function () {
-                    var q = input.value.trim().toLowerCase();
-                    var visiveis = 0;
-                    cards.forEach(function (card, i) {
-                        var match = q === '' || names[i].indexOf(q) !== -1;
-                        card.style.display = match ? '' : 'none';
-                        if (match) visiveis++;
-                    });
-                    notice.style.display = visiveis === 0 ? '' : 'none';
-                }, 120);
-            });
-        })();
-        </script>
     </body>
 </html>
