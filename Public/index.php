@@ -11,10 +11,10 @@
     function isNameMatching($name, $description, $category, $search) {
         if(!empty($search)){
             if(!str_contains($name, $search) &&
-                !str_contains($description, $search) &&
-                !str_contains($category, $search)) {
+               !str_contains($description, $search) &&
+               !str_contains($category, $search)) {
                     
-                return false;
+               return false;
             }
         }
         return true;
@@ -30,10 +30,10 @@
     }
 
     function isWithinPriceRange($minPrice, $maxPrice, $productPrice) {
-        if(!empty($minPrice) && $productPrice <= (float)$minPrice){
+        if(!empty($minPrice) && $productPrice < (float)$minPrice){
             return false;
         }
-        if(!empty($maxPrice) && $productPrice >= (float)$maxPrice){
+        if(!empty($maxPrice) && $productPrice > (float)$maxPrice){
             return false;
         }
 
@@ -43,14 +43,16 @@
     $search   = trim($_GET['search']     ?? '');
     $category = trim($_GET['category'] ?? '');
     $minPrice = $_GET['minPrice'] ?? 0;
-    $maxPrice = $_GET['maxPrice'] ?? '';
+    $maxPrice = $_GET['maxPrice'] ?? null;
 
     if($minPrice < 0) $minPrice = 0;
-    if($minPrice > $maxPrice) {
-        $buffer = $minPrice;
+    if(is_numeric($minPrice) && isnumeric($maxPrice)) {
+        if($minPrice > $maxPrice) {
+            $buffer = $minPrice;
 
-        $minPrice = $maxPrice;
-        $maxPrice = $buffer;
+            $minPrice = $maxPrice;
+            $maxPrice = $buffer;
+        }
     }
 
     $allProducts = $db->getAllProducts();
@@ -62,7 +64,9 @@
     } else {
         $lowerSearch   = mb_strtolower($search, 'UTF-8');
         foreach($allProducts as $product) {
-            $match = true;
+            $nameMatch     = true;
+            $categoryMatch = true;
+            $priceMatch    = true; 
 
             $lowerName = mb_strtolower($product->getName(), 'UTF-8');
             $lowerDescription = mb_strtolower($product->getDescription(), 'UTF-8');
@@ -70,11 +74,13 @@
             $price    = $product->getPrice();
             $amount   = $product->getAmountAvailable();
 
-            $match = isNameMatching($lowerName, $lowerDescription, $lowerCategory, $lowerSearch);
-            $match = isCategoryMatching($category, $lowerCategory);
-            $match = isWithinPriceRange($minPrice, $maxPrice, $price);
+            $nameMatch = isNameMatching($lowerName, $lowerDescription, $lowerCategory, $lowerSearch);
+            $categoryMatch = isCategoryMatching($category, $lowerCategory);
+            $priceMatch = isWithinPriceRange($minPrice, $maxPrice, $price);
 
-            if($match) $filteredProducts[] = $product;
+            if($nameMatch && $categoryMatch && $priceMatch){
+                $filteredProducts[] = $product;
+            }
         }
     }
 
@@ -89,7 +95,7 @@
         <title>Loxja Cafe | Seu momento favorito</title>
         <link href="MVP.css" rel="stylesheet">
         <link href="style_index.css" rel="stylesheet">
-        <link href="style_index_exibicao.css" rel="stylesheet">
+        <link href="style_index_exibition.css" rel="stylesheet">
     </head> 
     
 <!--===================[APAGAR]========================-->
