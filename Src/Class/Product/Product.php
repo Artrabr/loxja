@@ -7,9 +7,11 @@ class Product
     protected float $price;
     protected string $description;
     protected int $amountAvailable;
+    protected string $image;
     protected string $category;
 
-    public function __construct(int $id, string $name, float $price, string $description, int $amountAvailable, string $category)
+    // Keep image optional and after category so older callers that do not handle images remain compatible.
+    public function __construct(int $id, string $name, float $price, string $description, int $amountAvailable, string $category, ?string $image = null)
     {
         $this->id = $id;
         $this->name = $name;
@@ -17,6 +19,7 @@ class Product
         $this->description = $description;
         $this->amountAvailable = $amountAvailable;
         $this->category = $category;
+        $this->image = $image ?: '/loxja/Src/images/client/defaultimage.jpg';
     }
 
     public function getId(): int
@@ -72,5 +75,15 @@ class Product
     public function setCategory(string $category)
     {
         $this->category = $category;
+    }
+
+    public function getImage(): string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image) //ALTERAR O METODO DE SET PARA link/legal.edivertido/($VARIAVEL DE ENTRADA);
+    {
+        $this->image = $image;
     }
 }

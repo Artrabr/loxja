@@ -17,7 +17,7 @@
     <title>Adicionar Produto</title>
 </head>
 <body>
-    <form action="../../Src/addProduct.php" method="POST">
+    <form action="../../Src/addProduct.php" method="POST" enctype="multipart/form-data">
         <label for="name">Nome</label>
         <input type="text" id="name" name="name" required>
 
@@ -29,6 +29,9 @@
 
         <label for="quantity">Quantidade Disponível</label>
         <input type="number" id="quantity" name="quantity" min="0" required>
+
+        <label for="image">Image</label>
+        <input type="file" id="image" name="image" required>
 
         <label for="category">Categoria</label>
         <input type="text" id="category" name="category" required>

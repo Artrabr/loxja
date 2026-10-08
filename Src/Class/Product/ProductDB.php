@@ -14,12 +14,12 @@ class ProductDB
     //comentário por: Davi. pessoa responsavel por essa classe, por favor terminar o mais rápido possível para que eu possa testar o carrinho.
     public function getProductByID(int $id): ?Product
     {
-        $stmt = $this->pdo->prepare("SELECT pdt_id,pdt_name,pdt_price,pdt_description,pdt_amount,pdt_category FROM Product WHERE pdt_id = ?");
+        $stmt = $this->pdo->prepare("SELECT pdt_id,pdt_name,pdt_price,pdt_description,pdt_amount,pdt_image,pdt_category FROM Product WHERE pdt_id = ?");
         $stmt->execute([$id]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($row) {
-            return new Product($row['pdt_id'], $row['pdt_name'], $row['pdt_price'], $row['pdt_description'], $row['pdt_amount'], $row['pdt_category']);
+            return new Product($row['pdt_id'], $row['pdt_name'], $row['pdt_price'], $row['pdt_description'], $row['pdt_amount'], $row['pdt_category'], $row['pdt_image']);
         }
 
         return null;
@@ -27,36 +27,37 @@ class ProductDB
 
     public function getProductByName(string $name): ?Product
     {
-        $stmt = $this->pdo->prepare("SELECT pdt_id,pdt_name,pdt_price,pdt_description,pdt_amount,pdt_category FROM Product WHERE pdt_name = ? LIMIT 1");
+        $stmt = $this->pdo->prepare("SELECT pdt_id,pdt_name,pdt_price,pdt_description,pdt_amount,pdt_image,pdt_category FROM Product WHERE pdt_name = ? LIMIT 1");
         $stmt->execute([$name]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($row) {
-            return new Product($row['pdt_id'], $row['pdt_name'], $row['pdt_price'], $row['pdt_description'], $row['pdt_amount'], $row['pdt_category']);
+            return new Product($row['pdt_id'], $row['pdt_name'], $row['pdt_price'], $row['pdt_description'], $row['pdt_amount'], $row['pdt_category'], $row['pdt_image']);
         }
 
         return null;
     }
 
-    public function updateProductByName(string $name, float $price, string $description, int $amountAvailable, string $category): void
+    public function updateProductByName(string $name, float $price, string $description, int $amountAvailable, string $category, ?string $image = null): void
     {
+        // A missing or blank image means "keep the current image", which is needed by edits without an upload.
         $stmt = $this->pdo->prepare(
-            "UPDATE Product SET pdt_price = ?, pdt_description = ?, pdt_amount = ?, pdt_category = ? WHERE pdt_name = ?"
+            "UPDATE Product SET pdt_price = ?, pdt_description = ?, pdt_amount = ?, pdt_category = ?, pdt_image = COALESCE(NULLIF(TRIM(?), ''), pdt_image) WHERE pdt_name = ?"
         );
-        $stmt->execute([$price, $description, $amountAvailable, $category, $name]);
+        $stmt->execute([$price, $description, $amountAvailable, $category, $image, $name]);
     }
 
-    public function updateProductByID(int $id, string $name, float $price, string $description, int $amountAvailable, string $category): void
+    public function updateProductByID(int $id, string $name, float $price, string $description, int $amountAvailable, string $category, ?string $image = null): void
     {
         $stmt = $this->pdo->prepare(
-            "UPDATE Product SET pdt_name = ?, pdt_price = ?, pdt_description = ?, pdt_amount = ?, pdt_category = ? WHERE pdt_id = ?"
+            "UPDATE Product SET pdt_name = ?, pdt_price = ?, pdt_description = ?, pdt_amount = ?, pdt_category = ?, pdt_image = COALESCE(NULLIF(TRIM(?), ''), pdt_image) WHERE pdt_id = ?"
         );
-        $stmt->execute([$name, $price, $description, $amountAvailable, $category, $id]);
+        $stmt->execute([$name, $price, $description, $amountAvailable, $category, $image, $id]);
     }
 
     public function getAllProducts(): array
     {
-        $stmt = $this->pdo->query("SELECT pdt_id,pdt_name,pdt_price,pdt_description,pdt_amount,pdt_category FROM Product ORDER BY pdt_id ASC");
+        $stmt = $this->pdo->query("SELECT pdt_id,pdt_name,pdt_price,pdt_description,pdt_amount,pdt_image,pdt_category FROM Product ORDER BY pdt_id ASC");
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         $products = [];
@@ -67,25 +68,27 @@ class ProductDB
                 (float) $row['pdt_price'],
                 $row['pdt_description'],
                 (int) $row['pdt_amount'],
-                $row['pdt_category']
+                $row['pdt_category'],
+                $row['pdt_image']
             );
         }
 
         return $products;
     }
 
-    public function createProduct(string $name, float $price, string $description, int $amountAvailable, string $category): Product
+    public function createProduct(string $name, float $price, string $description, int $amountAvailable, string $category, ?string $image = null): Product
     {
-        $stmt = $this->pdo->prepare("INSERT INTO Product (pdt_name,pdt_price,pdt_description,pdt_amount,pdt_category) VALUES (:name,:price,:description,:amountAvailable,:category)");
+        $stmt = $this->pdo->prepare("INSERT INTO Product (pdt_name,pdt_price,pdt_description,pdt_amount,pdt_image,pdt_category) VALUES (:name,:price,:description,:amountAvailable,:image,:category)");
         $stmt->execute([
             'name' => $name,
             'price' => $price,
             'description' => $description,
             'amountAvailable' => $amountAvailable,
+            'image' => $image,
             'category' => $category]);
         $id = (int) $this->pdo->lastInsertId();
 
-        return new Product($id, $name, $price, $description, $amountAvailable, $category);
+        return new Product($id, $name, $price, $description, $amountAvailable, $category, $image);
     }
 
     public function deleteProductByID(int $id): bool //retorna true se apoagou o objeto
