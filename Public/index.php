@@ -8,6 +8,18 @@
     $pdo = Connection::conectar();
     $db = new ProductDB($pdo);
 
+    function productUrl($base, $overrides = []) {
+        $params = array_merge($base, $overrides);
+        
+        foreach($params as $key => $value) {
+            if ($value === null || $value === '' || ($key === 'minPrice') && (float)$value === 0.0) {
+                unset($params[$key]);
+            }
+        }
+
+        return '?' . http_build_query($params) . '#produtos';
+    }
+
     function isNameMatching($name, $description, $category, $search) {
         if(!empty($search)){
             if(!str_contains($name, $search) &&
@@ -54,6 +66,13 @@
             $maxPrice = $buffer;
         }
     }
+    
+    $base = [
+        'search'  => $search,
+        'category' => $category,
+        'minPrice' => $minPrice,
+        'maxPrice' => $maxPrice,
+    ];
 
     $allProducts = $db->getAllProducts();
  
@@ -90,7 +109,7 @@
     $productsOnDisplay = array_slice($filteredProducts, $offset, $perPage);
     
     $firstShown = ($totalProducts === 0) ? 0 : $offset + 1;
-    $lastShown  = min($offset + $perPage, $totalProducts)
+    $lastShown  = min($offset + $perPage, $totalProducts);
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -138,7 +157,7 @@
         </header>
         <main>
             <section class="search-strip" aria-label="Pesquisa e utilidades">
-                <form class="search-form" action="#produtos" method="get">
+                <form class="search-form" action="<?= htmlspecialchars($_SERVER['PHP_SELF']) ?>#produtos" method="get">
                     <label for="search">O que vai deixar seu dia mais gostoso?</label>
                     <div class="search-control">
                         <input id="search" name="search" type="search"
@@ -167,9 +186,93 @@
                         <h2 id="products-title">Nosso cardapio</h2>
                     </div>
                 </div>
+                <?php
+                    $categories = ['all' => 'Todos'];
 
-                <!--- fazer seção de cardápio --->
+                    foreach($allProducts as $product) {
+                        $productCategory = $product->getCategory();
+                        $slug = mb_strtolower($productCategory, 'UTF-8');
+                        $categories[$slug] = $productCategory;
+                    }
 
+                    $activeCategory = ($category === '')
+                    ? 'all'
+                    : mb_strtolower($category, 'UTF-8');
+                ?>
+
+                <nav class="pre-filters" aria-label="Filtrar por categoria">
+                    <?php foreach ($categories as $slug => $label): ?>
+                        <?php
+                            $isActive = ($activeCategory === $slug);
+                            $url = ($slug === 'all')
+                            ? productUrl($base, ['category' => ''])
+                            : productUrl($base, ['category' => $slug]);
+                        ?>
+                        <a
+                            class="filter-chip<?= $isActive ? ' is-active' : '' ?>"
+                            href="<?= htmlspecialchars($url) ?>"
+                            <?= $isActive ? 'aria-current="true"' : '' ?>
+                        >
+                            <?= htmlspecialchars($label) ?>
+                        </a>
+                    <?php endforeach; ?>
+                </nav>
+
+                <?php if(empty($productsOnDisplay)): ?>
+                    <p class="empty-state">Nenhum produto encontrado.</p>
+                <?php else: ?>
+                    <div class="product-grid">
+                        <?php foreach ($productsOnDisplay as $product): ?>
+                            <?php 
+                                $placeholder = 'https://dummyimage.com/600x400/ccd5ae/2f2a24&text=' . urlencode($product->getName());
+                            ?>
+                            <!-- escrever card -->
+                            <article class="product-card">
+                                <img
+                                    class="product-image"
+                                    src="<?= htmlspecialchars($placeholder) ?>"
+                                    alt="<?= htmlspecialchars($product->getName()) ?>">
+
+                                    <div class="product-info">
+                                        <p class="product-type"><?= htmlspecialchars($product->getCategory()) ?></p>
+
+                                        <h3><?= htmlspecialchars($product->getName()) ?></h3>
+                                        <p><?= htmlspecialchars($product->getDescription()) ?></p>
+
+                                        <a class="text-link" href="#detalhe-<?= (int)$product->getId() ?>">
+                                            Ver detalhes
+                                        </a>
+
+                                        <strong>R$ <?= number_format($product->getPrice(), 2, ',', '.') ?></strong>
+                                    </div>
+                            </article>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+
+                <?php foreach ($productsOnDisplay as $product): ?>
+                    <?php 
+                        $placeholder = 'https://dummyimage.com/600x400/ccd5ae/2f2a24&text=' . urlencode($product->getName());
+                    ?>
+                    <div class="product-detail-overlay" id="detalhe-<?= (int)$product->getId() ?>">
+                        <div class="product-detail-card">
+                            <a class="product-detail-close" href="#produtos" aria-label="Fechar">&times;</a>
+
+                            <img
+                                class="product-detail-image"
+                                src="<?= htmlspecialchars($placeholder) ?>"
+                                alt="<?= htmlspecialchars($product->getName()) ?>"
+                            >
+                            <p class="product-type"><?= htmlspecialchars($product->getCategory()) ?></p>
+
+                            <h3><?= htmlspecialchars($product->getName()) ?></h3>
+                            <p><?= htmlspecialchars($product->getDescription()) ?></p>
+                            <p class="product-detail-amount">
+                                R$ <?= number_format($product->getPrice(), 2, ',', '.') ?>
+                            </p>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
             </section>
             <section class="contact-section" id="contato" aria-labelledby="contact-title">
                 <div>
