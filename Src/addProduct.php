@@ -66,7 +66,7 @@ function disconnectFromDatabase(&$pdo)
     }
 
     $newName = bin2hex(random_bytes(16)) . '.' . $extension;
-    $uploadDirectory = __DIR__ . '/../Public/Product/images';
+    $uploadDirectory = __DIR__ . '/images/products';
     if (!is_dir($uploadDirectory) && !mkdir($uploadDirectory, 0775, true) && !is_dir($uploadDirectory)) {
         header('Location: /loxja/Public/Administration/add-product.php?moveNotMade=true'); 
         exit;
@@ -78,7 +78,7 @@ function disconnectFromDatabase(&$pdo)
         exit;
     }
     // Store a browser URL in the database; the upload itself uses the filesystem path above.
-    $imageUrl = '/loxja/Public/Product/images/' . $newName;
+    $imageUrl = '/loxja/Src/images/products/' . $newName;
 
     $existingProduct = $db->getProductByName($productName);
 
