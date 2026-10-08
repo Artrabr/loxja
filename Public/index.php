@@ -287,6 +287,7 @@
                                 </a>
                             <?php endif; ?>
                         </nav>
+                    <?php endif; ?>
                 <?php endif; ?>
             </section>
             <section class="contact-section" id="contato" aria-labelledby="contact-title">
