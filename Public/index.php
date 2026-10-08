@@ -26,7 +26,7 @@
                 return false;
             }
         }
-        return true
+        return true;
     }
 
     function isWithinPriceRange($minPrice, $maxPrice, $productPrice) {
