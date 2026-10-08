@@ -8,6 +8,38 @@
     $pdo = Connection::conectar();
     $db = new ProductDB($pdo);
 
+    function isNameMatching($name, $description, $category, $search) {
+        if(!empty($search)){
+            if(!str_contains($name, $search) &&
+                !str_contains($description, $search) &&
+                !str_contains($category, $search)) {
+                    
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function isCategoryMatching($chosenCategory, $productCategory) {
+        if(!empty($chosenCategory) && $chosenCategory !== 'all'){
+            if(mb_strtolower($chosenCategory, 'UTF-8') !== $productCategory){
+                return false;
+            }
+        }
+        return true
+    }
+
+    function isWithinPriceRange($minPrice, $maxPrice, $productPrice) {
+        if(!empty($minPrice) && $productPrice <= (float)$minPrice){
+            $return false;
+        }
+        if(!empty($maxPrice) && $productPrice >= (float)$maxPrice){
+            $return false
+        }
+
+        return true;
+    }
+
     $search   = trim($_GET['search']     ?? '');
     $category = trim($_GET['category'] ?? '');
     $minPrice = $_GET['minPrice'] ?? 0;
@@ -33,33 +65,14 @@
             $match = true;
 
             $lowerName = mb_strtolower($product->getName(), 'UTF-8');
-            $lowerDesc = mb_strtolower($product->getDescription(), 'UTF-8');
-            $lowerCtgr = mb_strtolower($product->getCategory(), 'UTF-8');
+            $lowerDescription = mb_strtolower($product->getDescription(), 'UTF-8');
+            $lowerCategory = mb_strtolower($product->getCategory(), 'UTF-8');
             $price    = $product->getPrice();
             $amount   = $product->getAmountAvailable();
 
-            if(!empty($search)){
-                if(!str_contains($lowerName, $lowerSearch) &&
-                   !str_contains($lowerDesc, $lowerSearch) &&
-                   !str_contains($lowerCtgr, $lowerSearch)) {
-            
-                    $match = false;
-                }
-            }
-            
-            if(!empty($category) && $category !== 'all'){
-                if(mb_strtolower($category, 'UTF-8') !== $lowerCtgr){
-                    $match = false;
-                }
-            }
-
-            if(!empty($minPrice) && $price <= (float)$minPrice){
-                $match = false
-            }
-
-            if(!empty($maxPrice) && $price >= (float)$maxPrice){
-                $match = false
-            }
+            $match = isNameMatching($lowerName, $lowerDescription, $lowerCategory, $lowerSearch);
+            $match = isCategoryMatching($category, $lowerCategory);
+            $match = isWithinPriceRange($minPrice, $maxPrice, $price);
 
             if($match) $filteredProducts[] = $product;
         }
