@@ -46,7 +46,7 @@
     $maxPrice = $_GET['maxPrice'] ?? null;
 
     if($minPrice < 0) $minPrice = 0;
-    if(is_numeric($minPrice) && isnumeric($maxPrice)) {
+    if(is_numeric($minPrice) && is_numeric($maxPrice)) {
         if($minPrice > $maxPrice) {
             $buffer = $minPrice;
 
@@ -59,25 +59,23 @@
  
     $filteredProducts = [];
 
-    if(!empty($search) && (!empty($category) || $category !== 'all') && empty(!$minPrice) && empty(!$maxPrice)){
-        $lowerSearch   = mb_strtolower($search, 'UTF-8');
-        foreach($allProducts as $product) {
-            $nameMatch     = true;
-            $categoryMatch = true;
-            $priceMatch    = true; 
+    $lowerSearch   = mb_strtolower($search, 'UTF-8');
+    foreach($allProducts as $product) {
+        $nameMatch     = true;
+        $categoryMatch = true;
+        $priceMatch    = true; 
 
-            $lowerName = mb_strtolower($product->getName(), 'UTF-8');
-            $lowerDescription = mb_strtolower($product->getDescription(), 'UTF-8');
-            $lowerCategory = mb_strtolower($product->getCategory(), 'UTF-8');
-            $price    = $product->getPrice();
+        $lowerName = mb_strtolower($product->getName(), 'UTF-8');
+        $lowerDescription = mb_strtolower($product->getDescription(), 'UTF-8');
+        $lowerCategory = mb_strtolower($product->getCategory(), 'UTF-8');
+        $price    = $product->getPrice();
 
-            $nameMatch = isNameMatching($lowerName, $lowerDescription, $lowerCategory, $lowerSearch);
-            $categoryMatch = isCategoryMatching($category, $lowerCategory);
-            $priceMatch = isWithinPriceRange($minPrice, $maxPrice, $price);
+        $nameMatch = isNameMatching($lowerName, $lowerDescription, $lowerCategory, $lowerSearch);
+        $categoryMatch = isCategoryMatching($category, $lowerCategory);
+        $priceMatch = isWithinPriceRange($minPrice, $maxPrice, $price);
 
-            if($nameMatch && $categoryMatch && $priceMatch){
-                $filteredProducts[] = $product;
-            }
+        if($nameMatch && $categoryMatch && $priceMatch){
+            $filteredProducts[] = $product;
         }
     }
 ?>
