@@ -31,10 +31,10 @@
 
     function isWithinPriceRange($minPrice, $maxPrice, $productPrice) {
         if(!empty($minPrice) && $productPrice <= (float)$minPrice){
-            $return false;
+            return false;
         }
         if(!empty($maxPrice) && $productPrice >= (float)$maxPrice){
-            $return false;
+            return false;
         }
 
         return true;
