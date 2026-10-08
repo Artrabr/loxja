@@ -11,36 +11,44 @@
     $search   = trim($_GET['search']     ?? '');
     $category = trim($_GET['category'] ?? '');
     $minPrice = $_GET['minPrice'] ?? 0;
-    $maxPrice = $_GET['maxprice'] ?? '';
+    $maxPrice = $_GET['maxPrice'] ?? '';
+
+    if($minPrice < 0) $minPrice = 0;
+    if($minPrice > $maxPrice) {
+        $buffer = $minPrice;
+
+        $minPrice = $maxPrice;
+        $maxPrice = $buffer;
+    }
 
     $allProducts = $db->getAllProducts();
-
+ 
     $filteredProducts = [];
 
     if(empty($search) && (empty($category) || $category === 'all')){
         $filteredProducts = $allProducts;
     } else {
-        $lwr_search   = mb_strtolower($search, 'UTF-8');
+        $lowerSearch   = mb_strtolower($search, 'UTF-8');
         foreach($allProducts as $product) {
             $match = true;
 
-            $lwr_name = mb_strtolower($product->getName(), 'UTF-8');
-            $lwr_desc = mb_strtolower($product->getDescription(), 'UTF-8');
-            $lwr_ctgr = mb_strtolower($product->getCategory(), 'UTF-8');
+            $lowerName = mb_strtolower($product->getName(), 'UTF-8');
+            $lowerDesc = mb_strtolower($product->getDescription(), 'UTF-8');
+            $lowerCtgr = mb_strtolower($product->getCategory(), 'UTF-8');
             $price    = $product->getPrice();
             $amount   = $product->getAmountAvailable();
 
             if(!empty($search)){
-                if(!str_contains($lwr_name, $lwr_search) &&
-                   !str_contains($lwr_desc, $lwr_search) &&
-                   !str_contains($lwr_ctgr, $lwr_search)) {
+                if(!str_contains($lowerName, $lowerSearch) &&
+                   !str_contains($lowerDesc, $lowerSearch) &&
+                   !str_contains($lowerCtgr, $lowerSearch)) {
             
                     $match = false;
                 }
             }
             
             if(!empty($category) && $category !== 'all'){
-                if(mb_strtolower($category, 'UTF-8') !== $lwr_ctgr){
+                if(mb_strtolower($category, 'UTF-8') !== $lowerCtgr){
                     $match = false;
                 }
             }
