@@ -78,6 +78,19 @@
             $filteredProducts[] = $product;
         }
     }
+
+    $perPage = 6;
+    $page = (int)($_GET['page'] ?? 1);
+    $totalProducts = count($filteredProducts);
+    $totalPages = max(1, ceil($totalProducts / $perPage));
+    
+    $page = max(1, min($page, $totalPages));
+
+    $offset = ($page - 1) * $perPage;
+    $productsOnDisplay = array_slice($filteredProducts, $offset, $perPage);
+    
+    $firstShown = ($totalProducts === 0) ? 0 : $offset + 1;
+    $lastShown  = min($offset + $perPage, $totalProducts)
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -88,7 +101,7 @@
         <title>Loxja Cafe | Seu momento favorito</title>
         <link href="MVP.css" rel="stylesheet">
         <link href="style_index.css" rel="stylesheet">
-        <link href="style_index_exibition.css" rel="stylesheet">
+        <link href="style_index_exhibition.css" rel="stylesheet">
     </head> 
     
 <!--===================[APAGAR]========================-->
