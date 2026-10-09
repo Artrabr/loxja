@@ -54,7 +54,7 @@
                     <input type="hidden" id="id" name="id" value="<?=$id?>" required>
                     <label for="cep">CEP</label>
                     <input type="text" id="cep" name="cep" 
-                    <?php if($client->getCep()): ?>
+                    <?php if($client->getCep()): ?>-
                         value="<?= htmlspecialchars($client->getCep()) ?>"
                     <?php endif; ?>
                      required>
