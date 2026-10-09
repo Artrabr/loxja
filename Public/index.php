@@ -65,7 +65,7 @@
                     </a>
                     
                 <?php //                       ^  trocar pela foto de perfil
-                    }else{
+                    } else {
                 ?>
                     <a class='login-button' href='Login/index.php'>Login</a>
                 <?php
