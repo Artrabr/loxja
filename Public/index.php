@@ -195,8 +195,56 @@
                                 <a
                                     class="pagination-arrow is-jump"
                                     href="<?= htmlspecialchars(productUrl($base, ['page' => 1])) ?>"
-                                    aria-label="Primeira pagina" title="Primeira Pagina">&laquo;
+                                    aria-label="Primeira pagina"
+                                    title="Primeira Pagina">&laquo;
                                 </a>
+                                <a
+                                    class="pagination-arrow"
+                                    href="<?= htmlspecialchars(productUrl($base, ['page' => $page - 1])) ?>"
+                                    aria-label="Pagina anterior"
+                                    title="Anterior">&lsaquo;
+                                </a>
+                            <?php else: ?>
+                                <span class="pagination-arrow is-jump is-disabled" aria-hidden="true">&laquo;</span>
+                                <span class="pagination-arrow is-jump is-disabled" aria-hidden="true">&lsaquo;</span>
+                            <?php endif; ?>
+
+                            <form
+                                class="pagination-goto"
+                                method="get"
+                                action="<?= htmlspecialchars($_SERVER['PHP_SELF']) ?>#produtos">
+                            
+                                <input type="hidden" name="search" value="<?= htmlspecialchars($search) ?>">
+                                <input type="hidden" name="category" value="<?= htmlspecialchars($category) ?>">
+                                <input type="hidden" name="minPrice" value="<?= htmlspecialchars($minPrice) ?>">
+                                <input type="hidden" name="maxPrice" value="<?= htmlspecialchars($maxPrice) ?>">
+
+                                <input
+                                    class="pagination-jump" 
+                                    type="number"
+                                    name="page"
+                                    min="1"
+                                    max="<?= $totalPages ?>"
+                                    placeholder="..."
+                                    aria-label="Ir para pagina">
+                            </form>
+
+                            <?php if($page < $totalPages): ?>
+                                <a
+                                    class="pagination-arrow"
+                                    href="<?= htmlspecialchars(productUrl($base, ['page' => $page + 1])) ?>"
+                                    aria-label="Proxima pagina"
+                                    title="Proxima">&rsaquo;
+                                </a>
+                                <a
+                                    class="pagination-arrow is-jump"
+                                    href="<?= htmlspecialchars(productUrl($base, ['page' => $totalPages])) ?>"
+                                    aria-label="Ultima pagina"
+                                    title="Ultima Pagina">&raquo;
+                                </a>
+                            <?php else: ?>
+                                <span class="pagination-arrow is-jump is-disabled" aria-hidden="true">&rsaquo;</span>
+                                <span class="pagination-arrow is-jump is-disabled" aria-hidden="true">&raquo;</span>
                             <?php endif; ?>
                         </nav>
                     <?php endif; ?>

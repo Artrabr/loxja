@@ -1,4 +1,4 @@
-.product-detail-overlay {
+g.product-detail-overlay {
 	display: none;
 	position: fixed;
 	inset: 0;
@@ -81,6 +81,22 @@ img.product-image {
 	flex-wrap: wrap;
 	justify-content: center;
 	align-items: center;
+}
+
+.pagination-goto {
+    display: inline-flex;
+    flex: 0 0 auto;
+    width: auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.pagination-goto input {
+    margin: 0;
+    padding: 0;
 }
 
 .pagination-number,
