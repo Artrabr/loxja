@@ -34,7 +34,6 @@ if (!$client) {
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
     <link href="../style_index.css" rel="stylesheet">
-
     <link rel="stylesheet" href="profilestyle.css">
 </head>
 <body>
@@ -44,57 +43,50 @@ if (!$client) {
                 <img src="../logo.png" alt="Loxja Cafe" class="brand-mark">
                 <span>Loxja <small>cafe</small></span>
             </a>
-
-
-            
         </nav>
     </header>
 
     <main class="main-content">
-
-        
         <div class="profile-container">
             <div class="profile-header">
                 <div class="header-bg"></div>
                 <div class="header-content">
                     <img src="../perfilsemfoto.png" alt="Foto de perfil" class="profile-pic">
-
-                   
                     <h1><?= htmlspecialchars($client->getName()) ?></h1>
-                    
                     <p><?= htmlspecialchars($client->getEmail()) ?></p>
                 </div>
             </div>
 
             <div class="profile-info">
                 <h2>Informações do Usuário</h2>
-                <ul>
-                    
-                    <li>
-                        <strong>Nome:</strong>
-                         <input type="hidden" id="id" name="id" value="<?=$id?>" required>
-                    <label for="cep"></label>
-                    <input type="text" id="cep" name="cep" >
-                        <span><?= htmlspecialchars($client->getName()) ?></span>
-                        
-                    </li>
-                    <li>
-                        <strong>E-mail:</strong>
-                        <input type="hidden" id="id" name="id" value="<?=$id?>" required>
-                    <label for="cep"></label>
-                    <input type="text" id="cep" name="cep" >
-                        <span><?= htmlspecialchars($client->getEmail()) ?></span>
-                    </li>
-                </ul>
+
+                <?php if (isset($_SESSION['msg'])): ?>
+                    <p class="msg-success"><?= htmlspecialchars($_SESSION['msg']) ?></p>
+                    <?php unset($_SESSION['msg']); ?>
+                <?php endif; ?>
+
+                <?php if (isset($_SESSION['erro'])): ?>
+                    <p class="msg-error"><?= htmlspecialchars($_SESSION['erro']) ?></p>
+                    <?php unset($_SESSION['erro']); ?>
+                <?php endif; ?>
+
+                <form method="POST" action="editar.php">
+                    <label for="nome">Nome:</label>
+                    <input type="text" id="nome" name="nome"
+                           value="<?= htmlspecialchars($client->getName()) ?>" required>
+
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email"
+                           value="<?= htmlspecialchars($client->getEmail()) ?>" required>
+
+                    <button type="submit">Salvar</button>
+                </form>
             </div>
 
             <div class="profile-actions">
                 <a href="deleteSession.php" class="btn-logout">Sair</a>
             </div>
         </div>
-
     </main>
-    
-
 </body>
 </html>
