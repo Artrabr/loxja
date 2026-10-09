@@ -31,7 +31,7 @@
         <input type="number" id="quantity" name="quantity" min="0" required>
 
         <label for="image">Image</label>
-        <input type="file" id="image" name="image" required>
+        <input type="file" id="image" name="image">
 
         <label for="category">Categoria</label>
         <input type="text" id="category" name="category" required>

@@ -19,7 +19,7 @@ class Product
         $this->description = $description;
         $this->amountAvailable = $amountAvailable;
         $this->category = $category;
-        $this->image = $image ?: '/loxja/Public/images/client/defaultimage.jpg';
+        $this->image = $image ?: '/loxja/Public/images/products/defaultimage.jpg';
     }
 
     public function getId(): int

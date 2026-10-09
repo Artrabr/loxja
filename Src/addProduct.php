@@ -45,40 +45,47 @@ function disconnectFromDatabase(&$pdo)
     $productDescription = trim((string) $_POST['description']);
     $productCategory = trim((string) $_POST['category']);
 
-    if (!isset($_FILES['image']) || $_FILES['image']['error'] !== UPLOAD_ERR_OK) {
-        header('Location: /loxja/Public/Administration/add-product.php?imageerror=true');
-        exit;
-    }
+    $imageUrl = '/loxja/Public/images/products/defaultimage.jpg';
+    $hasUploadedImage = false;
+    $imageFile = $_FILES['image'] ?? null;
 
-    $imageName = $_FILES['image']['name'];
-    $tempFile = $_FILES['image']['tmp_name'];
-    $extension = strtolower(pathinfo($imageName, PATHINFO_EXTENSION));
-    $allowedMimeTypes = [
-        'jpg' => 'image/jpeg',
-        'jpeg' => 'image/jpeg',
-        'png' => 'image/png',
-    ];
-    $mimeType = (new finfo(FILEINFO_MIME_TYPE))->file($tempFile);
+    if ($imageFile !== null && $imageFile['error'] !== UPLOAD_ERR_NO_FILE) {
+        if ($imageFile['error'] !== UPLOAD_ERR_OK) {
+            header('Location: /loxja/Public/Administration/add-product.php?imageerror=true');
+            exit;
+        }
 
-    if (!isset($allowedMimeTypes[$extension]) || $mimeType !== $allowedMimeTypes[$extension]) {
-        header('Location: /loxja/Public/Administration/add-product.php?notPermitedForm=true'); 
-        exit;
-    }
+        $imageName = $imageFile['name'];
+        $tempFile = $imageFile['tmp_name'];
+        $extension = strtolower(pathinfo($imageName, PATHINFO_EXTENSION));
+        $allowedMimeTypes = [
+            'jpg' => 'image/jpeg',
+            'jpeg' => 'image/jpeg',
+            'png' => 'image/png',
+        ];
+        $mimeType = (new finfo(FILEINFO_MIME_TYPE))->file($tempFile);
 
-    $newName = bin2hex(random_bytes(16)) . '.' . $extension;
-    $uploadDirectory = dirname(__DIR__) . '/Public/images/products';
-    if (!is_dir($uploadDirectory) && !mkdir($uploadDirectory, 0775, true) && !is_dir($uploadDirectory)) {
-        header('Location: /loxja/Public/Administration/add-product.php?moveNotMade=true'); 
-        exit;
-    }
-    $destination = $uploadDirectory . DIRECTORY_SEPARATOR . $newName;
+        if (!isset($allowedMimeTypes[$extension]) || $mimeType !== $allowedMimeTypes[$extension]) {
+            header('Location: /loxja/Public/Administration/add-product.php?notPermitedForm=true');
+            exit;
+        }
 
-    if (!move_uploaded_file($tempFile, $destination)) {
-        header('Location: /loxja/Public/Administration/add-product.php?moveNotMade=true'); 
-        exit;
+        $newName = bin2hex(random_bytes(16)) . '.' . $extension;
+        $uploadDirectory = dirname(__DIR__) . '/Public/images/products';
+        if (!is_dir($uploadDirectory) && !mkdir($uploadDirectory, 0775, true) && !is_dir($uploadDirectory)) {
+            header('Location: /loxja/Public/Administration/add-product.php?moveNotMade=true');
+            exit;
+        }
+        $destination = $uploadDirectory . DIRECTORY_SEPARATOR . $newName;
+
+        if (!move_uploaded_file($tempFile, $destination)) {
+            header('Location: /loxja/Public/Administration/add-product.php?moveNotMade=true');
+            exit;
+        }
+
+        $imageUrl = '/loxja/Public/images/products/' . $newName;
+        $hasUploadedImage = true;
     }
-    // Store a browser URL in the database; the upload itself uses the filesystem path above.
-    $imageUrl = '/loxja/Public/images/products/' . $newName;
 
     $existingProduct = $db->getProductByName($productName);
 
@@ -90,7 +97,7 @@ function disconnectFromDatabase(&$pdo)
             $productDescription,
             $newAmount,
             $productCategory,
-            $imageUrl
+            $hasUploadedImage ? $imageUrl : null
         );
 
         header('Location: /loxja/Public/Administration/add-product.php?productAlreadyExists=true');
