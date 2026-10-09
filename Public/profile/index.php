@@ -74,11 +74,14 @@ if (!$client) {
                     <label for="nome">Nome:</label>
                     <input type="text" id="nome" name="nome"
                            value="<?= htmlspecialchars($client->getName()) ?>" required>
-
+                    <br>
+                    <br>
                     <label for="email">Email:</label>
                     <input type="email" id="email" name="email"
                            value="<?= htmlspecialchars($client->getEmail()) ?>" required>
-
+                    <br>
+                    <br>
+                    
                     <button type="submit">Salvar</button>
                 </form>
             </div>
