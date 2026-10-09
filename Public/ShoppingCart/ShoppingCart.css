@@ -173,6 +173,11 @@ section {
     flex-direction: row;
     container-type: inline-size;
     height: var(--size_of_cart_item);
+
+    .price {
+      margin-left: auto;
+      text-align: right;
+    }
   }
 
   .cart_item_actions {

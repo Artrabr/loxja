@@ -6,3 +6,6 @@
 /.php-version
 /SELECT
 /ddeverror.md
+/.env
+/.php-cs-fixer.dist.php
+/conform.4976866.db_constants.php

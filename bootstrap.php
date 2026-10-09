@@ -38,4 +38,10 @@ if (!defined('DB_PASSWORD')) {
 }
 
 // usa caminho fixo da root, só pra garantir - igoroara
-define('ADMIN_EMAIL',file_get_contents(__DIR__ . "/admin_email.txt"));
+define('ADMIN_EMAIL', file_get_contents(__DIR__ . "/admin_email.txt"));
+
+// seta erros para aparecerem
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+

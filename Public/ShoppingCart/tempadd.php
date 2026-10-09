@@ -3,6 +3,7 @@
 require_once __DIR__ . "/../../Src/Class/Product/ProductDB.php";
 require_once __DIR__ . "/../../Src/Connection.php";
 require_once __DIR__ . "/../../Src/Class/Client/ClientDB.php";
+require_once __DIR__ . "/../../Src/Class/ShoppingCart/ShoppingCartDB.php";
 
 $pdo = Connection::conectar();
 $ProductDB = new ProductDB($pdo);
@@ -41,4 +42,14 @@ foreach ($testProducts as [$name, $price, $description, $amountAvailable, $categ
 }
 
 $ClientDB = new ClientDB($pdo);
-$ClientDB->createClient("admin", "admin@admin.com", "admin");
+$admin = $ClientDB->createClient("admin", "admin@admin.com", "admin");
+
+$ShoppingCart = new ShoppingCart();
+for ($i = 1; $i < 15; $i++) {
+    $ShoppingCart->addProductById($i);
+}
+
+$ShoppingCartDB = new ShoppingCartDB($pdo);
+$ShoppingCartDB->setShoppingCartByClientId($admin->getId(), $ShoppingCart);
+
+echo "eba!";
