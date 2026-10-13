@@ -1,4 +1,4 @@
-g.product-detail-overlay {
+.product-detail-overlay {
 	display: none;
 	position: fixed;
 	inset: 0;
@@ -92,6 +92,9 @@ img.product-image {
     border: 0;
     background: transparent;
     box-shadow: none;
+	min-width: 0;
+	border-radius: 0;
+	text-align: center;
 }
 
 .pagination-goto input {

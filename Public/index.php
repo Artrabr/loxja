@@ -1,3 +1,4 @@
+<!-- index.php (excerpt) -->
 <?php
     require_once __DIR__ . "/../bootstrap.php";
     require_once __DIR__ . "/../Src/Connection.php";
@@ -8,17 +9,22 @@
     $db = new ProductDB($pdo);
 
     require_once __DIR__ . "/../Src/filtrationSetup.php";
+    
+    $search   = $search   ?? '';
+    $category = $category ?? '';
+    $minPrice = $minPrice ?? '';
+    $maxPrice = $maxPrice ?? '';
 
     $perPage = 6;
     $page = (int)($_GET['page'] ?? 1);
     $totalProducts = count($filteredProducts);
     $totalPages = max(1, ceil($totalProducts / $perPage));
-    
+
     $page = max(1, min($page, $totalPages));
 
     $offset = ($page - 1) * $perPage;
     $productsOnDisplay = array_slice($filteredProducts, $offset, $perPage);
-    
+
     $firstShown = ($totalProducts === 0) ? 0 : $offset + 1;
     $lastShown  = min($offset + $perPage, $totalProducts);
 
@@ -141,29 +147,29 @@
                 <?php else: ?>
                     <div class="product-grid">
                         <?php foreach ($productsOnDisplay as $product): ?>
-                            <?php 
-                                $placeholder = 'https://dummyimage.com/600x400/ccd5ae/2f2a24&text=' . urlencode($product->getName());
-                            ?>
-                            <!-- escrever card -->
-                            <article class="product-card">
-                                <img
-                                    class="product-image"
-                                    src="<?= htmlspecialchars($placeholder) ?>"
-                                    alt="<?= htmlspecialchars($product->getName()) ?>">
+                            <a href="#detalhe-<?= (int)$product->getId() ?>">
 
-                                    <div class="product-info">
-                                        <p class="product-type"><?= htmlspecialchars($product->getCategory()) ?></p>
+                                <?php 
+                                    $placeholder = 'https://dummyimage.com/600x400/ccd5ae/2f2a24&text=' . urlencode($product->getName());
+                                ?>
+                                <!-- escrever card -->
+                                <article class="product-card">
+                                    <img
+                                        class="product-image"
+                                        src="<?= htmlspecialchars($placeholder) ?>"
+                                        alt="<?= htmlspecialchars($product->getName()) ?>">
 
-                                        <h3><?= htmlspecialchars($product->getName()) ?></h3>
-                                        <p><?= htmlspecialchars($product->getDescription()) ?></p>
+                                        <div class="product-info">
+                                            <p class="product-type"><?= htmlspecialchars($product->getCategory()) ?></p>
 
-                                        <a class="text-link" href="#detalhe-<?= (int)$product->getId() ?>">
-                                            Ver detalhes
-                                        </a>
+                                            <h3><?= htmlspecialchars($product->getName()) ?></h3>
+                                            <p><?= htmlspecialchars($product->getDescription()) ?></p>
 
-                                        <strong>R$ <?= number_format($product->getPrice(), 2, ',', '.') ?></strong>
-                                    </div>
-                            </article>
+                                            
+                                            <strong>R$ <?= number_format($product->getPrice(), 2, ',', '.') ?></strong>
+                                        </div>
+                                </article>
+                            </a>
                         <?php endforeach; ?>
                     </div>
                     <?php foreach ($productsOnDisplay as $product): ?>
@@ -209,22 +215,23 @@
                                 <span class="pagination-arrow is-jump is-disabled" aria-hidden="true">&lsaquo;</span>
                             <?php endif; ?>
 
+                            <!-- index.php (pagination form) -->
                             <form
                                 class="pagination-goto"
                                 method="get"
-                                action="<?= htmlspecialchars($_SERVER['PHP_SELF']) ?>#produtos">
-                            
-                                <input type="hidden" name="search" value="<?= htmlspecialchars($search) ?>">
-                                <input type="hidden" name="category" value="<?= htmlspecialchars($category) ?>">
-                                <input type="hidden" name="minPrice" value="<?= htmlspecialchars($minPrice) ?>">
-                                <input type="hidden" name="maxPrice" value="<?= htmlspecialchars($maxPrice) ?>">
+                                action="<?= htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES) ?>#produtos">
+
+                                <input type="hidden" name="search"   value="<?= htmlspecialchars($search,   ENT_QUOTES) ?>">
+                                <input type="hidden" name="category" value="<?= htmlspecialchars($category, ENT_QUOTES) ?>">
+                                <input type="hidden" name="minPrice" value="<?= htmlspecialchars($minPrice, ENT_QUOTES) ?>">
+                                <input type="hidden" name="maxPrice" value="<?= htmlspecialchars($maxPrice, ENT_QUOTES) ?>">
 
                                 <input
-                                    class="pagination-jump" 
+                                    class="pagination-jump"
                                     type="number"
                                     name="page"
                                     min="1"
-                                    max="<?= $totalPages ?>"
+                                    max="<?= (int)$totalPages ?>"
                                     placeholder="..."
                                     aria-label="Ir para pagina">
                             </form>

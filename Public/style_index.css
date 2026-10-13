@@ -21,15 +21,41 @@ body {
 	font-family: Georgia, 'Times New Roman', serif;
 }
 
+a,
 a:link,
-a:visited {
-	color: inherit;
-}
-
+a:visited,
 a:hover,
 a:focus,
 a:active {
 	color: inherit;
+	text-decoration: none;
+}
+
+a b,
+a em,
+a i,
+a strong {
+	display: inline;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	border-radius: 0;
+	background: transparent;
+	color: inherit;
+	font-size: inherit;
+	font-weight: inherit;
+	line-height: inherit;
+}
+
+.product-info strong {
+	display: inline-block;
+	margin: 0;
+	padding: 0;
+	color: #9b6736;
+	background: transparent;
+	border: 0;
+	font-size: 1rem;   /* MVP forces `font-size: medium` on a strong */
+	line-height: inherit;
 }
 
 .site-header,
@@ -300,6 +326,12 @@ h2 {
 	font-weight: 700;
 }
 
+.text-link,
+.about-copy a:not(.primary-button),
+.contact-section a:not(.primary-button) {
+	text-decoration: underline;
+}
+
 .product-grid {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
@@ -346,7 +378,10 @@ h2 {
 }
 
 .product-info strong {
+	display: inline-block;
 	color: #9b6736;
+	background: transparent;
+	border: 0;
 }
 
 .about-section {
