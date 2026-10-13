@@ -101,7 +101,7 @@
                         <button type="submit">Buscar</button>
                     </div>
                 </form>
-                <a class="cart-link" href="ShoppingCart/index.html">Carrinho <span>0</span></a>
+                <a class="cart-link" href="ShoppingCart/index.php">Carrinho <span>0</span></a>
                 </section>
                 <?php
                     $categories = ['all' => 'Todos'];
