@@ -67,8 +67,8 @@
                     } else {
                 ?>
                     <a class='login-button' href='Login/index.php'>Login</a>
-                <?php
-                    }
+                    <?php
+                }
                 ?>
             </nav>
         </header>

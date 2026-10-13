@@ -24,6 +24,9 @@ class ShoppingCart
     {
     }
 
+    /**
+    * @return ShoppingCartItem[]
+    */
     public function getProducts(): array
     {
         return $this->shoppingCartItems;

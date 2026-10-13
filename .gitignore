@@ -1,3 +1,11 @@
 /.ddev/config.yaml
 /db_consts.php
 /db_constants.php
+/.lerd.yaml
+/.node-version
+/.php-version
+/SELECT
+/ddeverror.md
+/.env
+/.php-cs-fixer.dist.php
+/conform.4976866.db_constants.php
