@@ -7,7 +7,7 @@ require_once __DIR__ . "/../../bootstrap.php";
 require_once __DIR__ . "/../../Src/Class/ShoppingCart/ShoppingCartDB.php";
 
 
-if (isset($_SESSION['client_object'])) {
+if (isset($_SESSION['client_object']) && !is_null($_SESSION['client_object'])) {
     $id = $_SESSION['client_object']->getId();
 } else {
     header("Location: ../Login/index.php");
@@ -45,7 +45,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 ////
 
-require_once __DIR__ . "/../../Src/Connection.php";
 require_once __DIR__ . "/../../Src/Class/ShoppingCart/ShoppingCartDB.php";
 
 $pdo = Connection::conectar();
