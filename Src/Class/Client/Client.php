@@ -7,7 +7,7 @@ class Client
     protected string $email;
     protected string $image;
 
-    public function __construct(int $id, string $name, string $email)
+    public function __construct(int $id, string $name, string $email, string $image)
     {
         $this->id = $id;
         $this->name = $name;
