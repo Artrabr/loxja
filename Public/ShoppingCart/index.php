@@ -52,9 +52,12 @@ $ShoppingCartDB = new ShoppingCartDB($pdo);
 
 $shoppingCart = $ShoppingCartDB->getShoppingCartByClientId($id);
 
-$products = $shoppingCart->getProducts();
-
-foreach ($products as $product) {
+$hasShoppingCart = false;
+if (!is_null($shoppingCart)) {
+    $products = $shoppingCart->getProducts();
+    $hasShoppingCart = true;
+} else {
+    $hasShoppingCart = false;
 }
 
 ?>
@@ -68,68 +71,96 @@ foreach ($products as $product) {
         <link href="../MVP.css" rel="stylesheet">
         <link href="ShoppingCart.css" rel="stylesheet">
     </head>
-    <body class="scroll">
+    <?php if ($hasShoppingCart) : ?>
+        <body class="scroll">
 
-        <section>
+            <section>
 
-            <form class="shopping_cart" id="shopping_cart" method="post" action="">
+                <form class="shopping_cart" id="shopping_cart" method="post" action="">
 
-                <?php foreach ($products as $product) :
-                    {
-                    $item = $product->getProduct();
-                    } ?>
-                    <div class="cart_item_wrapper">
+                    <?php foreach ($products as $product) :
+                        {
+                        $item = $product->getProduct();
+                        } ?>
+                        <div class="cart_item_wrapper">
 
-                        <!-- todo: colocar imagem aqui -->
-                        <div class="cart_item_info">
-                            <img src="./no_image_found.png" alt="imagem do produto não encontrada">
-                        <p><?= htmlspecialchars($item->getName()); ?></p>
-                        <p class="price"><b><span class="price_full"><?= htmlspecialchars(number_format($item->getPrice() * $product->getAmount(), 2))?></span> R$</b></p>
-                        </div>
+                            <!-- todo: colocar imagem aqui -->
+                            <div class="cart_item_info">
+                                <img src="./no_image_found.png" alt="imagem do produto não encontrada">
+                            <p><?= htmlspecialchars($item->getName()); ?></p>
+                            <p class="price"><b><span class="price_full"><?= htmlspecialchars(number_format($item->getPrice() * $product->getAmount(), 2))?></span> R$</b></p>
+                            </div>
 
-                        <div class="cart_item_actions">
+                            <div class="cart_item_actions">
 
-                            <div class="increase_decrease">
+                                <div class="increase_decrease">
 
-                            <button type="button" class="increase" estoque="<?= htmlspecialchars($item->getAmountAvailable())?>" price="<?= number_format($item->getPrice(), 2) ?>">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-up preview-icon"><path d="m18 15-6-6-6 6"/></svg>
-                                </button>
+                                <button type="button" class="increase" estoque="<?= htmlspecialchars($item->getAmountAvailable())?>" price="<?= number_format($item->getPrice(), 2) ?>">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-up preview-icon"><path d="m18 15-6-6-6 6"/></svg>
+                                    </button>
 
-                            <input type="number" name="quantities[]" class="amount_of_products" value="<?= htmlspecialchars($product->getAmount()) ?>" min="0"></input>
-                            <input type="text" name="item_ids[]" class="id_of_products" value="<?= htmlspecialchars($item->getId())?>" hidden></input>
+                                <input type="number" name="quantities[]" class="amount_of_products" value="<?= htmlspecialchars($product->getAmount()) ?>" min="0"></input>
+                                <input type="text" name="item_ids[]" class="id_of_products" value="<?= htmlspecialchars($item->getId())?>" hidden></input>
 
-                                <button type="button" class="decrease">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down preview-icon"><path d="m6 9 6 6 6-6"/></svg>
+                                    <button type="button" class="decrease">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down preview-icon"><path d="m6 9 6 6 6-6"/></svg>
+                                    </button>
+
+                                </div>
+
+                                <button type="button" class="remove">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash preview-icon"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                                 </button>
 
                             </div>
 
-                            <button type="button" class="remove">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash preview-icon"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                            </button>
-
                         </div>
+                    <?php endforeach?>
 
+                </form>
+
+                <!-- DONE: change this so it goes beneath instead of in the side -->
+                <!-- TODO: Adicionar link de href na imagem que te leva para a pagina do produto -->
+                <!-- DONE: adicionar animações de hover -->
+                <!-- DONE: limitar o numero de compra para o numero de estoque -->
+                <!-- TODO: Adicionar o preço do produto -->
+                <aside class="resume">
+                    <div class="resume_text_group">
+                        <h1>Loxja</h1>
+                        <h2>Preço final: <span id="preco_final"></span> R$</h2>
+                        <button type="submit" form="shopping_cart">Comprar</button>
                     </div>
-                <?php endforeach?>
+                </aside>
 
-            </form>
+            </section>
 
-            <!-- DONE: change this so it goes beneath instead of in the side -->
-            <!-- TODO: Adicionar link de href na imagem que te leva para a pagina do produto -->
-            <!-- DONE: adicionar animações de hover -->
-            <!-- DONE: limitar o numero de compra para o numero de estoque -->
-            <!-- TODO: Adicionar o preço do produto -->
-            <aside class="resume">
-                <div class="resume_text_group">
-                    <h1>Loxja</h1>
-                    <h2>Preço final: <span id="preco_final"></span> R$</h2>
-                    <button type="submit" form="shopping_cart">Comprar</button>
-                </div>
-            </aside>
+            <script src="script.js"></script>
+        </body>
+    <?php else : ?>
+        <body class="scroll">
 
-        </section>
+            <section>
 
-        <script src="script.js"></script>
-    </body>
+                <form class="shopping_cart" id="shopping_cart" method="post" action="">
+
+                </form>
+
+                <!-- DONE: change this so it goes beneath instead of in the side -->
+                <!-- TODO: Adicionar link de href na imagem que te leva para a pagina do produto -->
+                <!-- DONE: adicionar animações de hover -->
+                <!-- DONE: limitar o numero de compra para o numero de estoque -->
+                <!-- TODO: Adicionar o preço do produto -->
+                <aside class="resume">
+                    <div class="resume_text_group">
+                        <h1>Loxja</h1>
+                        <h2>Preço final: <span id="preco_final"></span>0 R$</h2>
+                        <button type="submit" form="shopping_cart">Comprar</button>
+                    </div>
+                </aside>
+
+            </section>
+
+            <script src="script.js"></script>
+        </body>
+    <?php endif; ?>
 </html>

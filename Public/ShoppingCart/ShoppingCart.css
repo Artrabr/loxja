@@ -163,6 +163,7 @@ section {
   width: 100%;
   /* max-height: calc(5*var(--size_of_cart_item)); */
   height: auto;
+  min-height: var(--size_of_cart_item);
   flex: 1;
   overflow-y: auto;
   padding-bottom: 0px;
