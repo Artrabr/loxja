@@ -9,7 +9,7 @@
     $db = new ProductDB($pdo);
 
     require_once __DIR__ . "/../Src/filtrationSetup.php";
-    
+
     $search   = $search   ?? '';
     $category = $category ?? '';
     $minPrice = $minPrice ?? '';
@@ -96,16 +96,44 @@
                     </div>
                 </div>
                 <section class="search-strip" aria-label="Pesquisa e utilidades">
-                <form class="search-form" action="<?= htmlspecialchars($_SERVER['PHP_SELF']) ?>#produtos" method="get">
+                <form class="search-form" action="<?= htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES) ?>#produtos" method="get">
                     <label for="search">O que vai deixar seu dia mais gostoso?</label>
+
                     <div class="search-control">
                         <input id="search" name="search" type="search"
-                            value="<?= htmlspecialchars($search) ?>"
+                            value="<?= htmlspecialchars($search, ENT_QUOTES) ?>"
                             placeholder="Busque por cafe, doce...">
-                        <!-- mantém a category ativa quando o usuário busca por texto -->
-                        <input type="hidden" name="category" value="<?= htmlspecialchars($category) ?>">
                         <button type="submit">Buscar</button>
                     </div>
+
+                    <div class="price-control">
+                        <label for="minPrice">De R$</label>
+                        <input
+                            id="minPrice"
+                            name="minPrice"
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            inputmode="decimal"
+                            placeholder="0,00"
+                            value="<?= ($minPrice !== '' && $minPrice !== null && (float)$minPrice > 0)
+                                ? htmlspecialchars((string)$minPrice, ENT_QUOTES) : '' ?>">
+
+                        <label for="maxPrice">até R$</label>
+                        <input
+                            id="maxPrice"
+                            name="maxPrice"
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            inputmode="decimal"
+                            placeholder="100,00"
+                            value="<?= ($maxPrice !== '' && $maxPrice !== null)
+                                ? htmlspecialchars((string)$maxPrice, ENT_QUOTES) : '' ?>">
+                    </div>
+
+                    <!-- mantém a categoria ativa quando o usuário busca por texto ou preço -->
+                    <input type="hidden" name="category" value="<?= htmlspecialchars($category, ENT_QUOTES) ?>">
                 </form>
                 <a class="cart-link" href="ShoppingCart/index.php">Carrinho <span>0</span></a>
                 </section>

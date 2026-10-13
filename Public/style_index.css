@@ -217,6 +217,55 @@ footer {
 	cursor: pointer;
 }
 
+.price-control {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-top: 12px;
+	max-width: 620px;
+}
+
+/* sobrescreve a regra .search-form label que coloca display:block */
+.price-control label {
+	display: inline-block;
+	margin: 0;
+	color: var(--muted);
+	font-size: .9rem;
+	white-space: nowrap;
+}
+
+.price-control input {
+	width: 100%;
+	max-width: 130px;
+	height: 40px;
+	margin: 0;
+	padding: 8px 12px;
+	border: 1px solid var(--sage);
+	border-radius: 10px;
+	background: var(--white);
+	color: var(--ink);
+	font: inherit;
+	font-size: .95rem;
+}
+
+.price-control input:focus {
+	outline: 2px solid var(--caramel);
+	outline-offset: 1px;
+}
+
+/* em telas pequenas, empilha os campos de preço */
+@media (max-width: 760px) {
+	.price-control {
+		flex-wrap: wrap;
+	}
+	.price-control label {
+		flex-basis: 100%;
+	}
+	.price-control input {
+		max-width: none;
+	}
+}
+
 .cart-link {
 	color: var(--ink);
 	text-decoration: none;
