@@ -6,7 +6,7 @@ function removeWrapper(something) {
 }
 
 // TODO: checar isso
-function sendForm() {
+async function sendForm() {
   const formElement = document.getElementById('shopping_cart')
 
   // 1. Manually pull data right from the form element
@@ -14,7 +14,7 @@ function sendForm() {
 
   // 2. Send via Fetch API
   try {
-    const response = await fetch('process_order.php', {
+    const response = await fetch('', {
       method: 'POST',
       body: formData
     })
@@ -61,6 +61,7 @@ class CartItem {
     if (v < 0) {
       if (this.#past_zero) {
         removeWrapper(this.#container)
+        sendForm()
         return
       }
       this.#amount.value = this.#value
@@ -79,6 +80,7 @@ class CartItem {
     }
     this.#price.innerText = (this.#price_per_product * this.#value).toFixed(2)
 
+    sendForm()
     total_price = 0
     document.querySelectorAll('.price_full').forEach(span => {
       total_price += parseFloat(span.textContent)
@@ -114,6 +116,7 @@ document.querySelectorAll('.shopping_cart .cart_item_actions').forEach(div => {
   remove.addEventListener('click', () => {
     item.value = 0
     removeWrapper(div)
+    sendForm()
   });
 
 });

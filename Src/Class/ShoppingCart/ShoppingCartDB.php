@@ -26,8 +26,6 @@ class ShoppingCartDB
             return null;
         }
 
-
-
         $shoppingCart = new ShoppingCart();
         foreach ($items as $item) {
             $product = new Product($item['pdt_id'], $item['pdt_name'], $item['pdt_price'], $item['pdt_description'], $item['pdt_amount'], $item['pdt_category']);
