@@ -51,7 +51,6 @@
                 <a class="brand" href="#inicio" aria-label="Loxja Cafe, inicio">
                 <img src="logo.png" alt="Loxja Cafe" class="brand-mark">
                 <span>Loxja <small>cafe</small></span></a>
-
                 <ul class="nav-links">
                     <li><a href="#produtos">Produtos</a></li>
                     <li><a href="#sobre">Sobre</a></li>
@@ -102,7 +101,7 @@
                         <button type="submit">Buscar</button>
                     </div>
                 </form>
-                <a class="cart-link" href="carrinho/index.php">Carrinho <span>0</span></a>
+                <a class="cart-link" href="ShoppingCart/index.html">Carrinho <span>0</span></a>
                 </section>
                 <?php
                     $categories = ['all' => 'Todos'];

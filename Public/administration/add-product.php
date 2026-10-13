@@ -15,6 +15,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adicionar Produto</title>
+    <link href="../MVP.css" rel="stylesheet">
+    <link href="index_style.css" rel="stylesheet">
 </head>
 <body>
     <form action="../../Src/addProduct.php" method="POST" enctype="multipart/form-data">
@@ -38,5 +40,6 @@
 
         <button type="submit">Adicionar Produto</button>
     </form>
+    <a href="../index.php">Voltar para o inicio</a>
 </body>
 </html>
