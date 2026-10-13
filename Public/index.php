@@ -115,7 +115,7 @@
                             min="0"
                             step="0.01"
                             inputmode="decimal"
-                            placeholder="Seu preço maximo..."
+                            placeholder="Preço mínimo"
                             value="<?= ($minPrice !== '' && $minPrice !== null && (float)$minPrice > 0)
                                 ? htmlspecialchars((string)$minPrice, ENT_QUOTES) : '' ?>">
 
@@ -127,7 +127,7 @@
                             min="0"
                             step="0.01"
                             inputmode="decimal"
-                            placeholder="Seu preço mínimo..."
+                            placeholder="Preço máximo"
                             value="<?= ($maxPrice !== '' && $maxPrice !== null)
                                 ? htmlspecialchars((string)$maxPrice, ENT_QUOTES) : '' ?>">
                     </div>
