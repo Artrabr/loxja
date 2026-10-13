@@ -7,12 +7,12 @@ class Client
     protected string $email;
     protected string $image;
 
-    public function __construct(int $id, string $name, string $email, string $image)
+    public function __construct(int $id, string $name, string $email, string $image = '/loxja/Public/images/client/defaultimage.jpg')
     {
         $this->id = $id;
         $this->name = $name;
         $this->email = $email;
-        $this->image = $image ?: '/loxja/Public/images/client/defaultimage.jpg';
+        $this->image = $image;
     }
 
     public function getId(): int
