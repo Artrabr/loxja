@@ -9,7 +9,8 @@ require_once __DIR__ . "/../../Src/Class/ShoppingCart/ShoppingCartDB.php";
 if (isset($_SESSION['cliente_objeto'])) {
     $id = $_SESSION['cliente_objeto']->getId();
 } else {
-    $id = 1;
+    header("Location: ../Login/index.php");
+    exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
