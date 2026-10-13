@@ -6,8 +6,8 @@ require_once __DIR__ . "/../../bootstrap.php";
 require_once __DIR__ . "/../../Src/Class/ShoppingCart/ShoppingCartDB.php";
 
 
-if (isset($_SESSION['cliente_objeto'])) {
-    $id = $_SESSION['cliente_objeto']->getId();
+if (isset($_SESSION['client_object'])) {
+    $id = $_SESSION['client_object']->getId();
 } else {
     header("Location: ../Login/index.php");
     exit;
