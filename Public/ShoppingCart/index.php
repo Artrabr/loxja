@@ -1,6 +1,7 @@
 <?php
 ////
 
+require_once __DIR__ . "/../../Src/Class/Client/Client.php";
 require_once __DIR__ . "/../../Src/Connection.php";
 require_once __DIR__ . "/../../bootstrap.php";
 require_once __DIR__ . "/../../Src/Class/ShoppingCart/ShoppingCartDB.php";
