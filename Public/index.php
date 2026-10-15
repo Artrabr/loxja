@@ -1,29 +1,33 @@
-<!-- index.php (excerpt) -->
 <?php
-    require_once __DIR__ . "/../bootstrap.php";
+    require_once __DIR__ . "/../Src/Class/Client/Client.php";
     require_once __DIR__ . "/../Src/Connection.php";
+    require_once __DIR__ . "/../bootstrap.php";
     require_once __DIR__ . "/../Src/Class/Product/Product.php";
     require_once __DIR__ . "/../Src/Class/Product/ProductDB.php";
     require_once __DIR__ . "/../Src/Class/ShoppingCart/ShoppingCart.php";
+    require_once __DIR__ . "/../Src/Class/ShoppingCart/ShoppingCartDB.php";
 
-    if (!isset($_SESSION['shopping_cart']) || !($_SESSION['shopping_cart'] instanceof ShoppingCart)) {
-        $_SESSION['shopping_cart'] = new ShoppingCart();
-    }
-
-    $cart = $_SESSION['shopping_cart'];
-
+    $pdo = Connection::conectar();
+    $db  = new ProductDB($pdo);
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_cart_id'])) {
         $productId   = (int)$_POST['add_to_cart_id'];
         $returnQuery = (string)($_POST['return_query'] ?? '');
         $quantity    = max(1, (int)($_POST['add_to_cart_quantity'] ?? 1));
 
-        try {
-            $cart->addProductById($productId, $quantity);
-            $_SESSION['shopping_cart'] = $cart;
-            $_SESSION['cart_flash']    = 'Produto adicionado ao carrinho!';
-        } catch (Throwable $e) {
-            $_SESSION['cart_flash'] = 'Não foi possível adicionar o produto.';
+        if (isset($_SESSION['client_object'])) {
+            try {
+                $clientId = (int)$_SESSION['client_object']->getId();
+                $cartDB   = new ShoppingCartDB($pdo);
+                for ($i = 0; $i < $quantity; $i++) {
+                    $cartDB->addItemToShoppingCartByClientId($clientId, $productId);
+                }
+                $_SESSION['cart_flash'] = 'Produto adicionado ao carrinho!';
+            } catch (Throwable $e) {
+                $_SESSION['cart_flash'] = 'Não foi possível adicionar o produto.';
+            }
+        } else {
+            $_SESSION['cart_flash'] = 'Faça login para adicionar produtos ao carrinho.';
         }
 
         $path     = strtok($_SERVER['REQUEST_URI'], '?');
@@ -37,12 +41,20 @@
     unset($_SESSION['cart_flash']);
 
     $cartItemCount = 0;
-    foreach ($cart->getProducts() as $item) {
-        $cartItemCount += $item->getAmount();
+    if (isset($_SESSION['client_object'])) {
+        try {
+            $clientId = (int)$_SESSION['client_object']->getId();
+            $cartDB   = new ShoppingCartDB($pdo);
+            $cart     = $cartDB->getShoppingCartByClientId($clientId);
+            if ($cart !== null) {
+                foreach ($cart->getProducts() as $item) {
+                    $cartItemCount += $item->getAmount();
+                }
+            }
+        } catch (Throwable $e) {
+            $cartItemCount = 0;
+        }
     }
-
-    $pdo = Connection::conectar();
-    $db = new ProductDB($pdo);
 
     require_once __DIR__ . "/../Src/filtrationSetup.php";
 
@@ -84,7 +96,11 @@
     </head> 
     
 <!--===================[APAGAR]========================-->
-    <a href="Administration/index.php" style='padding:5px; background-color:rgb(64, 171, 77);'>got to administration</a>  ||  <a href="Client/index.php" style='padding:5px; background-color:rgb(64, 171, 77);'>got to client area</a>
+    <a href="Administration/index.php" style='padding:5px; background-color:rgb(64, 171, 77);'>got to administration</a> 
+    || 
+    <a href="Client/index.php" style='padding:5px; background-color:rgb(64, 171, 77);'>got to client area</a>
+    || 
+    <a href="ShoppingCart/index.php" style='padding:5px; background-color:rgb(64, 171, 77);'>got to shopping cart</a>
 <!--===================[------]========================-->
 
     <body>
