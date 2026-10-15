@@ -4,6 +4,41 @@
     require_once __DIR__ . "/../Src/Connection.php";
     require_once __DIR__ . "/../Src/Class/Product/Product.php";
     require_once __DIR__ . "/../Src/Class/Product/ProductDB.php";
+    require_once __DIR__ . "/../Src/Class/ShoppingCart/ShoppingCart.php";
+
+    if (!isset($_SESSION['shopping_cart']) || !($_SESSION['shopping_cart'] instanceof ShoppingCart)) {
+        $_SESSION['shopping_cart'] = new ShoppingCart();
+    }
+
+    $cart = $_SESSION['shopping_cart'];
+
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_cart_id'])) {
+        $productId   = (int)$_POST['add_to_cart_id'];
+        $returnQuery = (string)($_POST['return_query'] ?? '');
+
+        try {
+            $cart->addProductById($productId, 1);
+            $_SESSION['shopping_cart'] = $cart;
+            $_SESSION['cart_flash']    = 'Produto adicionado ao carrinho!';
+        } catch (Throwable $e) {
+            $_SESSION['cart_flash'] = 'Não foi possível adicionar o produto.';
+        }
+
+        $path     = strtok($_SERVER['REQUEST_URI'], '?');
+        $location = $path . ($returnQuery !== '' ? '?' . $returnQuery : '') . '#detalhe-' . $productId;
+
+        header('Location: ' . $location);
+        exit;
+    }
+
+    $cartFlash = $_SESSION['cart_flash'] ?? null;
+    unset($_SESSION['cart_flash']);
+
+    $cartItemCount = 0;
+    foreach ($cart->getProducts() as $item) {
+        $cartItemCount += $item->getAmount();
+    }
 
     $pdo = Connection::conectar();
     $db = new ProductDB($pdo);
@@ -52,6 +87,14 @@
 <!--===================[------]========================-->
 
     <body>
+        <?php if ($cartFlash !== null): ?>
+            <div role="status" aria-live="polite"
+                style="position:fixed;top:16px;right:16px;z-index:9999;
+                        background:#2f2a24;color:#fff;padding:12px 20px;
+                        border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,.3);">
+                <?= htmlspecialchars($cartFlash) ?>
+            </div>
+        <?php endif; ?>
         <header class="site-header" id="inicio">
             <nav class="topbar" aria-label="Navegacao principal">
                 <a class="brand" href="#inicio" aria-label="Loxja Cafe, inicio">
@@ -135,7 +178,7 @@
                     <!-- mantém a categoria ativa quando o usuário busca por texto ou preço -->
                     <input type="hidden" name="category" value="<?= htmlspecialchars($category, ENT_QUOTES) ?>">
                 </form>
-                <a class="cart-link" href="ShoppingCart/index.php">Carrinho <span>0</span></a>
+                <a class="cart-link" href="ShoppingCart/index.php">Carrinho <span><?= (int)$cartItemCount ?></span></a>
                 </section>
                 <?php
                     $categories = ['all' => 'Todos'];
@@ -175,15 +218,10 @@
                     <div class="product-grid">
                         <?php foreach ($productsOnDisplay as $product): ?>
                             <a href="#detalhe-<?= (int)$product->getId() ?>">
-
-                                <?php 
-                                    $placeholder = 'https://dummyimage.com/600x400/ccd5ae/2f2a24&text=' . urlencode($product->getName());
-                                ?>
-                                <!-- escrever card -->
                                 <article class="product-card">
                                     <img
                                         class="product-image"
-                                        src="<?= htmlspecialchars($placeholder) ?>"
+                                        src="<?= htmlspecialchars($product->getImage()) ?>"
                                         alt="<?= htmlspecialchars($product->getName()) ?>">
 
                                         <div class="product-info">
@@ -216,6 +254,13 @@
                                 <p class="product-detail-amount">
                                     R$ <?= number_format($product->getPrice(), 2, ',', '.') ?>
                                 </p>
+                                <form class="add-to-cart-form" method="post"
+                                    action="<?= htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES) ?>">
+                                    <input type="hidden" name="add_to_cart_id" value="<?= (int)$product->getId() ?>">
+                                    <input type="hidden" name="return_query"
+                                        value="<?= htmlspecialchars($_SERVER['QUERY_STRING'] ?? '', ENT_QUOTES) ?>">
+                                    <button type="submit" class="add-to-cart-button">Adicionar ao carrinho</button>
+                                </form>
                             </div>
                         </div>
                     <?php endforeach; ?>
