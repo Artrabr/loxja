@@ -32,6 +32,7 @@
             </a>
             <a href="../profile/index.php">Perfil</a>
             <a href="../Client/index.php">Informações Técnicas</a>
+            <a href="../salesReport/index.php">Relatório de vendas</a>
         </nav>
     </header>
     <main>

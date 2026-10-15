@@ -8,6 +8,36 @@ class SaleReportDB
     {
         $this->pdo = $pdo;
     }
+    
+    public function getReportsByClientId(int $clientId): array
+    {
+        $stmt = $this->pdo->prepare("
+            SELECT sr.saleReport_id, sr.clt_id, sr.pdt_id, p.pdt_name,
+                   sr.saleReport_method, sr.saleReport_price,
+                   sr.saleReport_created_at, sr.saleReport_amount
+            FROM saleReport sr
+            INNER JOIN Product p ON p.pdt_id = sr.pdt_id
+            WHERE sr.clt_id = ?
+            ORDER BY sr.saleReport_created_at DESC, sr.saleReport_id DESC
+        ");
+        $stmt->execute([$clientId]);
+
+        $reports = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $reports[] = new SaleReport(
+                (int) $row['saleReport_id'],
+                (int) $row['clt_id'],
+                (int) $row['pdt_id'],
+                $row['saleReport_method'],
+                (float) $row['saleReport_price'],
+                $row['saleReport_created_at'],
+                (int) $row['saleReport_amount'],
+                $row['pdt_name']
+            );
+        }
+
+        return $reports;
+    }
 
     public function addReportProduct(int $id_cliente, int $id_produto, int $amount, string $method, float $price){
         $stmt = $this->pdo->prepare("

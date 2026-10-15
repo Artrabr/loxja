@@ -9,6 +9,7 @@ class SaleReport
     private float $price;
     private string $date;
     private int $amount;
+    private ?string $productName;
 
     public function __construct(
         int $id,
@@ -17,7 +18,8 @@ class SaleReport
         string $method,
         float $price,
         string $date,
-        int $amount
+        int $amount,
+        ?string $productName = null
     ) {
         $this->id = $id;
         $this->clientId = $clientId;
@@ -26,6 +28,7 @@ class SaleReport
         $this->price = $price;
         $this->date = $date;
         $this->amount = $amount;
+        $this->productName = $productName;
     }
 
     public function getId(): int
@@ -41,6 +44,11 @@ class SaleReport
     public function getProductId(): int
     {
         return $this->productId;
+    }
+
+    public function getProductName(): ?string
+    {
+        return $this->productName;
     }
 
     public function getMethod(): string
