@@ -16,9 +16,10 @@
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_cart_id'])) {
         $productId   = (int)$_POST['add_to_cart_id'];
         $returnQuery = (string)($_POST['return_query'] ?? '');
+        $quantity    = max(1, (int)($_POST['add_to_cart_quantity'] ?? 1));
 
         try {
-            $cart->addProductById($productId, 1);
+            $cart->addProductById($productId, $quantity);
             $_SESSION['shopping_cart'] = $cart;
             $_SESSION['cart_flash']    = 'Produto adicionado ao carrinho!';
         } catch (Throwable $e) {
@@ -89,9 +90,7 @@
     <body>
         <?php if ($cartFlash !== null): ?>
             <div role="status" aria-live="polite"
-                style="position:fixed;top:16px;right:16px;z-index:9999;
-                        background:#2f2a24;color:#fff;padding:12px 20px;
-                        border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,.3);">
+                class="cart-notification">
                 <?= htmlspecialchars($cartFlash) ?>
             </div>
         <?php endif; ?>
@@ -256,10 +255,22 @@
                                 </p>
                                 <form class="add-to-cart-form" method="post"
                                     action="<?= htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES) ?>">
-                                    <input type="hidden" name="add_to_cart_id" value="<?= (int)$product->getId() ?>">
-                                    <input type="hidden" name="return_query"
-                                        value="<?= htmlspecialchars($_SERVER['QUERY_STRING'] ?? '', ENT_QUOTES) ?>">
-                                    <button type="submit" class="add-to-cart-button">Adicionar ao carrinho</button>
+                                    <label class="add-to-cart-quantity-label" for="qty-<?= (int)$product->getId() ?>">Quantidade</label>
+                                    <div class="add-to-cart-row">
+                                        <input
+                                            class="add-to-cart-quantity"
+                                            id="qty-<?= (int)$product->getId() ?>"
+                                            type="number"
+                                            name="add_to_cart_quantity"
+                                            min="1"
+                                            step="1"
+                                            value="1"
+                                            inputmode="numeric">
+                                        <input type="hidden" name="add_to_cart_id" value="<?= (int)$product->getId() ?>">
+                                        <input type="hidden" name="return_query"
+                                            value="<?= htmlspecialchars($_SERVER['QUERY_STRING'] ?? '', ENT_QUOTES) ?>">
+                                        <button type="submit" class="add-to-cart-button">Adicionar ao carrinho</button>
+                                    </div>
                                 </form>
                             </div>
                         </div>
