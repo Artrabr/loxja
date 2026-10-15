@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . "/ShoppingCart.php";
+require_once __DIR__ . "/../Product/Product.php";
 
 class ShoppingCartDB
 {
@@ -59,5 +60,15 @@ class ShoppingCartDB
             $this->pdo->rollBack();
             throw $e;
         }
+    }
+    public function addItemToShoppingCartByClientId(int $clientId, $productId)
+    {
+        $stmt = $this->pdo->prepare("
+            INSERT INTO ItensCart (clt_id, pdt_id, ic_amount)
+            VALUES (?, ?, ?)
+            ON DUPLICATE KEY UPDATE ic_amount = ic_amount + VALUES(ic_amount)
+        ");
+
+        $stmt->execute([$clientId, $productId, 1]);
     }
 }
