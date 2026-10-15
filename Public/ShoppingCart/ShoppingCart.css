@@ -29,7 +29,7 @@ body {
 }
 
 
-section {
+main {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -51,6 +51,7 @@ section {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 
+    border: 1px solid var(--color-bg-secondary);
     padding: 0px var(--padding_main);
     width: 100%;
     height: var(--resume_height);
@@ -105,14 +106,12 @@ section {
     --padding_main: 8px;
   }
 
-  section {
+  main {
     height: 100%;
 
     form,
     aside {
       border-radius: 0px;
-      border-right: none;
-      border-left: none;
     }
 
     & h1 {
@@ -313,6 +312,8 @@ section {
     img {
       display: block;
       height: 80%;
+      width: auto;
+      aspect-ratio: 1 / 1;
     }
 
     p {

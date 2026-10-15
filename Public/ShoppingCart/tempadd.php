@@ -42,7 +42,10 @@ foreach ($testProducts as [$name, $price, $description, $amountAvailable, $categ
 }
 
 $ClientDB = new ClientDB($pdo);
-$admin = $ClientDB->createClient("admin", "admin@admin.com", "admin");
+$admin = $ClientDB->getClientByEmail("admin@admin.com");
+if (is_null($admin)) {
+    $admin = $ClientDB->createClient("admin", "admin@admin.com", "admin");
+}
 
 $ShoppingCart = new ShoppingCart();
 for ($i = 1; $i < 15; $i++) {
