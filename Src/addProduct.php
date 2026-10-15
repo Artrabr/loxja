@@ -34,7 +34,7 @@ function disconnectFromDatabase(&$pdo)
     $quantity = $_POST['quantity'] ?? $_POST['amountAvailable'] ?? null;
 
     if (!checkIfAllPostDataCame($requiredFields) || $quantity === null || trim((string) $quantity) === '') {
-        header('Location: /loxja/Public/Administration/add-product.php?allDataCamed=false');
+        header('Location: ' . PUBLIC_URL . '/Administration/add-product.php?allDataCamed=false');
         exit;
     }
 
@@ -45,13 +45,13 @@ function disconnectFromDatabase(&$pdo)
     $productDescription = trim((string) $_POST['description']);
     $productCategory = trim((string) $_POST['category']);
 
-    $imageUrl = '/loxja/Public/images/products/defaultimage.jpg';
+    $imageUrl = PUBLIC_URL . '/images/products/defaultimage.jpg';
     $hasUploadedImage = false;
     $imageFile = $_FILES['image'] ?? null;
 
     if ($imageFile !== null && $imageFile['error'] !== UPLOAD_ERR_NO_FILE) {
         if ($imageFile['error'] !== UPLOAD_ERR_OK) {
-            header('Location: /loxja/Public/Administration/add-product.php?imageerror=true');
+            header('Location: ' . PUBLIC_URL . '/Administration/add-product.php?imageerror=true');
             exit;
         }
 
@@ -66,24 +66,24 @@ function disconnectFromDatabase(&$pdo)
         $mimeType = (new finfo(FILEINFO_MIME_TYPE))->file($tempFile);
 
         if (!isset($allowedMimeTypes[$extension]) || $mimeType !== $allowedMimeTypes[$extension]) {
-            header('Location: /loxja/Public/Administration/add-product.php?notPermitedForm=true');
+            header('Location: ' . PUBLIC_URL . '/Administration/add-product.php?notPermitedForm=true');
             exit;
         }
 
         $newName = bin2hex(random_bytes(16)) . '.' . $extension;
         $uploadDirectory = dirname(__DIR__) . '/Public/images/products';
         if (!is_dir($uploadDirectory) && !mkdir($uploadDirectory, 0775, true) && !is_dir($uploadDirectory)) {
-            header('Location: /loxja/Public/Administration/add-product.php?moveNotMade=true');
+            header('Location: ' . PUBLIC_URL . '/Administration/add-product.php?moveNotMade=true');
             exit;
         }
         $destination = $uploadDirectory . DIRECTORY_SEPARATOR . $newName;
 
         if (!move_uploaded_file($tempFile, $destination)) {
-            header('Location: /loxja/Public/Administration/add-product.php?moveNotMade=true');
+            header('Location: ' . PUBLIC_URL . '/Administration/add-product.php?moveNotMade=true');
             exit;
         }
 
-        $imageUrl = '/loxja/Public/images/products/' . $newName;
+        $imageUrl = PUBLIC_URL . '/images/products/' . $newName;
         $hasUploadedImage = true;
     }
 
@@ -100,7 +100,7 @@ function disconnectFromDatabase(&$pdo)
             $hasUploadedImage ? $imageUrl : null
         );
 
-        header('Location: /loxja/Public/Administration/add-product.php?productAlreadyExists=true');
+        header('Location: ' . PUBLIC_URL . '/Administration/add-product.php?productAlreadyExists=true');
         exit;
     }
 
@@ -113,5 +113,5 @@ function disconnectFromDatabase(&$pdo)
         $imageUrl
     );
 
-    header('Location: /loxja/Public/Administration/add-product.php?addNewProduct=true');
+    header('Location: ' . PUBLIC_URL . '/Administration/add-product.php?addNewProduct=true');
     exit;

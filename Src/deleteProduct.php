@@ -33,7 +33,7 @@ function disconnectFromDatabase($pdo)
 //=========================codigo================================
 
 if (!isset($_POST['id']) || $_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: /loxja/Public/Administration/edit-product.php');
+    header('Location: ' . PUBLIC_URL . '/Administration/edit-product.php');
     exit;
 }
 
@@ -44,5 +44,5 @@ $db = new ProductDB($pdo);
 $db->deleteProductByID($id);
 disconnectFromDatabase($pdo);
 
-header('Location: /loxja/Public/Administration/edit-product.php');
+header('Location: ' . PUBLIC_URL . '/Administration/edit-product.php');
 exit;

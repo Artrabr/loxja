@@ -34,7 +34,7 @@ function disconnectFromDatabase(&$pdo)
     $requiredFields = ['name', 'description', 'category','quantity'];
 
     if (!checkIfAllPostDataCame($requiredFields)) {
-        header('Location: /loxja/Public/Administration/edit-product.php?allDataCamed=false');
+        header('Location: ' . PUBLIC_URL . '/Administration/edit-product.php?allDataCamed=false');
         exit;
     }
 
@@ -46,7 +46,7 @@ function disconnectFromDatabase(&$pdo)
     $quantity = (int)$_POST['quantity'];
 
     if ((int)$_POST['quantity'] < 0) { //pedir se quer apagar o produto, caso a quantidade seja negativa
-        header('Location: /loxja/Public/Administration/edit-product.php?askIfHeWantsToContinue=true');
+        header('Location: ' . PUBLIC_URL . '/Administration/edit-product.php?askIfHeWantsToContinue=true');
         exit;
     }
 
@@ -69,6 +69,6 @@ function disconnectFromDatabase(&$pdo)
             $productCategory
         );
 
-        header('Location: /loxja/Public/Administration/edit-product.php?productUpdated=true');
+        header('Location: ' . PUBLIC_URL . '/Administration/edit-product.php?productUpdated=true');
         exit;
     }

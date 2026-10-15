@@ -19,7 +19,15 @@ class Product
         $this->description = $description;
         $this->amountAvailable = $amountAvailable;
         $this->category = $category;
-        $this->image = $image ?: '/loxja/Public/images/products/defaultimage.jpg';
+        $publicUrl = defined('PUBLIC_URL') ? PUBLIC_URL : '/Public';
+        $this->image = $image ?: $publicUrl . '/images/products/defaultimage.jpg';
+
+        if (strpos($this->image, '/') === 0) {
+            $publicPathPosition = strpos($this->image, '/Public/');
+            if ($publicPathPosition !== false) {
+                $this->image = rtrim($publicUrl, '/') . substr($this->image, $publicPathPosition + strlen('/Public'));
+            }
+        }
     }
 
     public function getId(): int

@@ -2,6 +2,27 @@
 
 define('PROJECT_ROOT', __DIR__);
 
+$documentRoot = realpath($_SERVER['DOCUMENT_ROOT'] ?? '');
+$projectRoot = realpath(PROJECT_ROOT);
+$projectUrl = '';
+
+if ($documentRoot !== false && $projectRoot !== false) {
+    $documentRoot = rtrim(str_replace('\\', '/', $documentRoot), '/');
+    $projectRoot = str_replace('\\', '/', $projectRoot);
+
+    if (strcasecmp($projectRoot, $documentRoot) === 0) {
+        $projectUrl = '';
+    } else {
+        $documentRootPrefix = $documentRoot . '/';
+        if (stripos($projectRoot, $documentRootPrefix) === 0) {
+            $projectUrl = substr($projectRoot, strlen($documentRoot));
+        }
+    }
+}
+
+define('PROJECT_URL', rtrim($projectUrl, '/'));
+define('PUBLIC_URL', PROJECT_URL . '/Public');
+
 define('CLASS', PROJECT_ROOT . "/Src/Class/");
 
 // não é utilizado neste projeto
