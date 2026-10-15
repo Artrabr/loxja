@@ -200,16 +200,13 @@
                         <?php endforeach; ?>
                     </div>
                     <?php foreach ($productsOnDisplay as $product): ?>
-                        <?php 
-                            $placeholder = 'https://dummyimage.com/600x400/ccd5ae/2f2a24&text=' . urlencode($product->getName());
-                        ?>
                         <div class="product-detail-overlay" id="detalhe-<?= (int)$product->getId() ?>">
                             <div class="product-detail-card">
                                 <a class="product-detail-close" href="#produtos" aria-label="Fechar">&times;</a>
 
                                 <img
                                     class="product-detail-image"
-                                    src="<?= htmlspecialchars($placeholder) ?>"
+                                    src="<?= htmlspecialchars($product->getImage()) ?>"
                                     alt="<?= htmlspecialchars($product->getName()) ?>"
                                 >
                                 <p class="product-type"><?= htmlspecialchars($product->getCategory()) ?></p>
