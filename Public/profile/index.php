@@ -43,6 +43,8 @@ if (!$client) {
                 <img src="../logo.png" alt="Loxja Cafe" class="brand-mark">
                 <span>Loxja <small>cafe</small></span>
             </a>
+            <a href="../profile/index.php">Perfil</a>
+            <a href="../Client/index.php">Informações Técnicas</a>
         </nav>
     </header>
 
