@@ -93,4 +93,16 @@ class ClientDB
         }
         return false;
     }
+    public function changeClientPasswordById(string $new_password, int $id)
+    {
+        $stmt = $this->pdo->prepare("
+            UPDATE Client
+            SET clt_password = :password
+            WHERE clt_id = :id
+            ");
+        $stmt->execute([
+            'password' => password_hash($new_password, PASSWORD_BCRYPT),
+            'id' => $id
+        ]);
+    }
 }
