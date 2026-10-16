@@ -71,7 +71,8 @@ ClientSession($cliente);
 disconnectFromDatabase($pdo);
 
 if ($cliente->isAdmin()) {
-    header("Location: ../Public/administration/index.php");
+    header("Location: ../Public/Administration/index.php");
+    exit();
 }
 
 header("Location: ../Public/index.php?success=login_success");
