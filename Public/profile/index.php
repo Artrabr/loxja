@@ -5,6 +5,16 @@ require_once __DIR__ . '/../../Src/Connection.php';
 require_once __DIR__ . '/../../Src/Class/Client/ClientDB.php';
 require_once __DIR__ . '/../../Src/Validation.php';
 
+function getPassword(Client $client)
+{
+    // Retorna a senha do banco de dados do cliente
+    $id = $client->getId();
+    global $pdo;
+    $smt = $pdo->prepare("SELECT clt_password FROM Client WHERE clt_id = :id");
+    $smt->execute(['id' => $id]);
+    return $smt->fetchColumn();
+}
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -33,10 +43,70 @@ if (!$client) {
 
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
+    <!-- Importando os estilos base e o estilo da área do cliente -->
+    <link href="../MVP.css" rel="stylesheet">
     <link href="../style_index.css" rel="stylesheet">
-    <link rel="stylesheet" href="profilestyle.css">
+    <link href="../Client/client.css" rel="stylesheet">
+
+    <style>
+        /* Ajustes específicos para a página de perfil */
+        .profile-pic-hero {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border: 3px solid var(--client-focus);
+            box-shadow: var(--shadow);
+            background-color: #f0e9df;
+        }
+
+        .btn-logout-link {
+            display: inline-block;
+            margin-top: 24px;
+            color: var(--client-focus);
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 2px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+
+        .btn-logout-link:hover {
+            border-color: var(--client-focus);
+        }
+
+        /* Suporte para inputs de email e senha no estilo do client.css */
+        .client-page form input[type="email"],
+        .client-page form input[type="password"] {
+            display: block;
+            box-sizing: border-box;
+            width: 100%;
+            max-width: none;
+            min-width: 0;
+            height: 48px;
+            margin: 0;
+            padding: 11px 14px;
+            border: 1px solid var(--client-line);
+            border-radius: 8px;
+            background: #fff;
+            color: var(--ink);
+            font: inherit;
+            transition: border-color 160ms ease, box-shadow 160ms ease;
+        }
+
+        .client-page form input[type="email"]:focus,
+        .client-page form input[type="password"]:focus {
+            border-color: var(--client-focus);
+            box-shadow: 0 0 0 3px rgba(143, 101, 65, 0.16);
+            outline: none;
+        }
+        
+        /* Mensagens de feedback */
+        .msg-success { color: #2e7d32; font-weight: bold; margin-bottom: 15px; }
+        .msg-error { color: #c62828; font-weight: bold; margin-bottom: 15px; }
+    </style>
 </head>
-<body>
+<body class="client-page">
     <header class="site-header" id="inicio">
         <nav class="topbar" aria-label="Navegacao principal">
             <a class="brand" href="../index.php" aria-label="Loxja Cafe, inicio">
@@ -48,50 +118,41 @@ if (!$client) {
         </nav>
     </header>
 
-    <main class="main-content">
-        <div class="profile-container">
-            <div class="profile-header">
-                <div class="header-bg"></div>
-                <div class="header-content">
-                    <img src="../perfilsemfoto.png" alt="Foto de perfil" class="profile-pic">
-                    <h1><?= htmlspecialchars($client->getName()) ?></h1>
-                    <p><?= htmlspecialchars($client->getEmail()) ?></p>
-                </div>
-            </div>
+    <main>
+        <section>
+            <img src="../perfilsemfoto.png" alt="Foto de perfil" class="profile-pic-hero">
+            <h1>Bem-vindo, <?= htmlspecialchars($client->getName()) ?>!</h1>
+            <p>Esta é a sua área exclusiva para gerenciar seus dados cadastrais.</p>
+            <a href="deleteSession.php" class="btn-logout-link">Sair da conta</a>
+        </section>
+        
+        <section>
+            <h2>Informações do Usuário</h2>
+            <p>Aqui você pode visualizar e atualizar suas informações pessoais.</p>
 
-            <div class="profile-info">
-                <h2>Informações do Usuário</h2>
+            <?php if (isset($_SESSION['msg'])): ?>
+                <p class="msg-success"><?= htmlspecialchars($_SESSION['msg']) ?></p>
+                <?php unset($_SESSION['msg']); ?>
+            <?php endif; ?>
 
-                <?php if (isset($_SESSION['msg'])): ?>
-                    <p class="msg-success"><?= htmlspecialchars($_SESSION['msg']) ?></p>
-                    <?php unset($_SESSION['msg']); ?>
-                <?php endif; ?>
+            <?php if (isset($_SESSION['erro'])): ?>
+                <p class="msg-error"><?= htmlspecialchars($_SESSION['erro']) ?></p>
+                <?php unset($_SESSION['erro']); ?>
+            <?php endif; ?>
 
-                <?php if (isset($_SESSION['erro'])): ?>
-                    <p class="msg-error"><?= htmlspecialchars($_SESSION['erro']) ?></p>
-                    <?php unset($_SESSION['erro']); ?>
-                <?php endif; ?>
+            <form method="POST" action="editar.php">
+                <label for="nome">Nome</label>
+                <input type="text" id="nome" name="nome" value="<?= htmlspecialchars($client->getName()) ?>" required>
 
-                <form method="POST" action="editar.php">
-                    <label for="nome">Nome:</label>
-                    <input type="text" id="nome" name="nome"
-                           value="<?= htmlspecialchars($client->getName()) ?>" required>
-                    <br>
-                    <br>
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email"
-                           value="<?= htmlspecialchars($client->getEmail()) ?>" required>
-                    <br>
-                    <br>
-                    
-                    <button type="submit">Salvar</button>
-                </form>
-            </div>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" value="<?= htmlspecialchars($client->getEmail()) ?>" required>
 
-            <div class="profile-actions">
-                <a href="deleteSession.php" class="btn-logout">Sair</a>
-            </div>
-        </div>
+                <label for="senha">Senha</label>
+                <input type="password" id="senha" name="senha" value="<?= htmlspecialchars(getPassword($client)) ?>" required>
+
+                <button type="submit">Salvar Alterações</button>
+            </form>
+        </section>
     </main>
 </body>
 </html>
