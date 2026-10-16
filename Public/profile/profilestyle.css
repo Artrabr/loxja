@@ -140,13 +140,16 @@ body {
     border-bottom: 2px solid #6c757d;
     padding-bottom: 10px;
     margin-bottom: 20px;
+    
 }
 
 .profile-info ul {
     list-style: none;
+    
 }
 
 .profile-info li {
+    
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -157,6 +160,7 @@ body {
 
 .profile-info li:last-child {
     border-bottom: none;
+    
 }
 
 .profile-info li strong {
