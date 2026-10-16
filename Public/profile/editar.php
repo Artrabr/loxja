@@ -51,13 +51,12 @@ if (strlen($senha) < 6) {
     exit;
 }
 
-// Atualiza o objeto
 $client->setName($nome);
 $client->setEmail($email);
-$client->updatePassword($_POST['senha'] ?? '');
+$clientDB->changeClientPasswordById($_POST['senha'] ?? '', $client->getId());
 
 try {
-    $clientDB->updateClient($client);   // ← nome correto!
+    $clientDB->updateClient($client);
     $_SESSION['client_object'] = $client;
     $_SESSION['msg'] = 'Dados atualizados com sucesso!';
 } catch (DuplicateEmail $e) {
