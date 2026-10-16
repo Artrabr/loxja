@@ -5,6 +5,16 @@ require_once __DIR__ . '/../../Src/Connection.php';
 require_once __DIR__ . '/../../Src/Class/Client/ClientDB.php';
 require_once __DIR__ . '/../../Src/Validation.php';
 
+function getPassword(Client $client)
+{
+ //retorna a senha do banco de dados do cliente
+    $id = $client->getId();
+    global $pdo;
+    $smt = $pdo->prepare("SELECT clt_password FROM Client WHERE clt_id = :id");
+    $smt->execute(['id' => $id]);
+    return $smt->fetchColumn();
+}
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -51,11 +61,12 @@ if (!$client) {
     <main class="main-content">
         <div class="profile-container">
             <div class="profile-header">
-                <div class="header-bg"></div>
+                
                 <div class="header-content">
                     <img src="../perfilsemfoto.png" alt="Foto de perfil" class="profile-pic">
                     <h1><?= htmlspecialchars($client->getName()) ?></h1>
                     <p><?= htmlspecialchars($client->getEmail()) ?></p>
+                    <p><?= htmlspecialchars(getPassword($client)) ?></p>
                 </div>
             </div>
 
@@ -81,6 +92,11 @@ if (!$client) {
                     <label for="email">Email:</label>
                     <input type="email" id="email" name="email"
                            value="<?= htmlspecialchars($client->getEmail()) ?>" required>
+                    <br>
+                    <br>
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" name="senha"
+                           value="<?= htmlspecialchars(getPassword($client)) ?>" required>
                     <br>
                     <br>
                     

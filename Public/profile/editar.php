@@ -31,6 +31,7 @@ if (!$client) {
 
 $nome  = trim($_POST['nome']  ?? '');
 $email = trim($_POST['email'] ?? '');
+$senha = trim($_POST['senha'] ?? '');
 
 if (strlen($nome) < 3) {
     $_SESSION['erro'] = 'O nome precisa ter ao menos 3 caracteres.';
@@ -44,9 +45,16 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     exit;
 }
 
+if (strlen($senha) < 6) {
+    $_SESSION['erro'] = 'A senha precisa ter ao menos 6 caracteres.';
+    header('Location: index.php');
+    exit;
+}
+
 // Atualiza o objeto
 $client->setName($nome);
 $client->setEmail($email);
+$client->updatePassword($_POST['senha'] ?? '');
 
 try {
     $clientDB->updateClient($client);   // ← nome correto!

@@ -6,10 +6,9 @@
 }
 
 body {
-    
-    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-    background-color: #fdf8e8;
-    color: #3a2c25;
+	background: var(--vanilla);
+	color: var(--ink);
+	font-family: Georgia, 'Times New Roman', serif;
 }
 
 /* ===== LAYOUT PRINCIPAL (texto à esquerda + card à direita) ===== */
