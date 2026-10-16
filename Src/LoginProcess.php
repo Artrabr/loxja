@@ -70,9 +70,9 @@ ClientSession($cliente);
 //disconecta do banco de dados
 disconnectFromDatabase($pdo);
 
-if ($login == $admlogin) {
+if ($cliente->isAdmin()) {
+    header("Location: ../Public/administration/index.php");
 }
 
 header("Location: ../Public/index.php?success=login_success");
 exit();
-
