@@ -40,4 +40,12 @@ class Client
     {
         $this->email = $email;
     }
+
+    public function isAdmin()
+    {
+        if ($this->getEmail() == ADMIN_EMAIL) {
+            return true;
+        }
+        return false;
+    }
 }
