@@ -47,5 +47,4 @@ class SaleReportDB
         $data = [$id_cliente,$id_produto,$amount,$method,$price];
         $stmt->execute($data);
     }
-    
 }

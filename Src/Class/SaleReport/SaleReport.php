@@ -1,5 +1,9 @@
 <?php
 
+require_once __DIR__ . "/../Product/Product.php";
+require_once __DIR__ . "/../Client/ClientDB.php";
+require_once __DIR__ . "/../../Connection.php";
+
 class SaleReport
 {
     private int $id;
@@ -9,7 +13,6 @@ class SaleReport
     private float $price;
     private string $date;
     private int $amount;
-    private ?string $productName;
 
     public function __construct(
         int $id,
@@ -19,7 +22,6 @@ class SaleReport
         float $price,
         string $date,
         int $amount,
-        ?string $productName = null
     ) {
         $this->id = $id;
         $this->clientId = $clientId;
@@ -46,9 +48,26 @@ class SaleReport
         return $this->productId;
     }
 
-    public function getProductName(): ?string
+    public function getClientName(): string
     {
-        return $this->productName;
+        $id = getClientId();
+        $pdo = Connection::conectar();
+            $db = new ClientDB($pdo);
+            $client = $db->getClientByID($id);
+            $name = $client->getName();
+        $pdo = null;
+        return $name;
+    }
+
+    public function getProductName(): string
+    {
+        $id = getProductId();
+        $pdo = Connection::conectar();
+            $db = new ProductDB($pdo);
+            $Product = $db->getProductByID($id);
+            $name = $Product->getName();
+        $pdo = null;
+        return $name;
     }
 
     public function getMethod(): string
