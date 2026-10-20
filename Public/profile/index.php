@@ -99,7 +99,7 @@ if (!$client) {
             outline: none;
         }
         
-        .msg-success { color: #09f115; font-weight: bold; margin-bottom: 15px; }
+        .msg-success { color: #0e9214; font-weight: bold; margin-bottom: 15px; }
         .msg-error { color: #c62828; font-weight: bold; margin-bottom: 15px; }
     </style>
 </head>
@@ -145,7 +145,7 @@ if (!$client) {
                 <input type="email" id="email" name="email" value="<?= htmlspecialchars($client->getEmail()) ?>" required>
 
                 <label for="senha">Senha</label>
-                <input type="password" id="senha" name="senha" value="<?= htmlspecialchars(getPassword($client)) ?>" required>
+                <input type="password" id="senha" name="senha" required>
 
                 <button type="submit">Salvar Alterações</button>
             </form>
