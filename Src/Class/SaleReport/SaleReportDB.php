@@ -47,4 +47,29 @@ class SaleReportDB
         $data = [$id_cliente,$id_produto,$amount,$method,$price];
         $stmt->execute($data);
     }
+
+    public function addSaleReport(
+        int $clientId,
+        int $productId,
+        string $method,
+        float $price,
+        int $amount,
+        ?string $createdAt = null
+    ): int {
+        $stmt = $this->pdo->prepare("
+            INSERT INTO saleReport
+                (clt_id, pdt_id, saleReport_method, saleReport_price, saleReport_amount, saleReport_created_at)
+            VALUES (?, ?, ?, ?, ?, ?)
+        ");
+        $stmt->execute([
+            $clientId,
+            $productId,
+            $method,
+            $price,
+            $amount,
+            $createdAt ?? date('Y-m-d H:i:s'),
+        ]);
+
+        return (int) $this->pdo->lastInsertId();
+    }
 }
