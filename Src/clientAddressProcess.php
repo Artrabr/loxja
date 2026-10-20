@@ -9,7 +9,8 @@
 // verificar se já existe um ID igual ao ID recebido e caso exista
 // apagar a linha e adicionar uma nova linha com os novos dados ou
 // atualizar os dados existentes.
-
+require_once __DIR__ . "/Class/Client/Client.php";
+require_once __DIR__ . "/../bootstrap.php";
 require_once __DIR__ . "/Connection.php";
 require_once __DIR__ . "/Class/ClientAddress/ClientAddressDB.php";
 
@@ -54,9 +55,14 @@ function convertValueToCorrectType($value, $type)
 //----------------===========================-------------------
 
 try {
+    if (!isset($_SESSION['client_object']) || !($_SESSION['client_object'] instanceof Client)) {
+        header("Location: " . PUBLIC_URL . "/Login/index.php?error=not_logged_in");
+        exit;
+    }
+
+    $clientId = $_SESSION['client_object']->getId();
     $pdo = connectToDatabase();
 
-    $clientId     = isset($_POST['id'])           ? $_POST['id']           : '';
     $cep          = isset($_POST['cep'])          ? $_POST['cep']          : '';
     $road         = isset($_POST['road'])         ? $_POST['road']         : '';
     $number       = isset($_POST['number'])       ? $_POST['number']       : '';
@@ -68,7 +74,6 @@ try {
     //conversao de valores para seu tipo correto
 
     $cep          = removeHyphenFromCEP($cep);
-    $clientId     = convertValueToCorrectType($clientId, 'int');
     $number       = convertValueToCorrectType($number, 'int');
     $cep          = convertValueToCorrectType($cep, 'int');
 
