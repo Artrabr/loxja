@@ -54,7 +54,8 @@ a strong {
 	color: #9b6736;
 	background: transparent;
 	border: 0;
-	font-size: 1rem;   /* MVP forces `font-size: medium` on a strong */
+	font-size: 1rem;
+	/* MVP forces `font-size: medium` on a strong */
 	line-height: inherit;
 }
 
@@ -258,9 +259,11 @@ footer {
 	.price-control {
 		flex-wrap: wrap;
 	}
+
 	.price-control label {
 		flex-basis: 100%;
 	}
+
 	.price-control input {
 		max-width: none;
 	}
@@ -328,8 +331,8 @@ h2 {
 	line-height: 1.05;
 }
 
-.hero-copy > p:not(.eyebrow),
-.about-copy > p:not(.eyebrow),
+.hero-copy>p:not(.eyebrow),
+.about-copy>p:not(.eyebrow),
 .contact-section p {
 	max-width: 510px;
 	color: var(--muted);
@@ -501,6 +504,7 @@ footer p {
 	color: var(--ink);
 	text-decoration: none;
 }
+
 @media (max-width: 760px) {
 	.topbar {
 		flex-wrap: wrap;

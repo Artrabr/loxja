@@ -7,7 +7,7 @@ require_once __DIR__ . '/../../Src/Validation.php';
 
 function getPassword(Client $client)
 {
-    // Retorna a senha do banco de dados do cliente
+   
     $id = $client->getId();
     global $pdo;
     $smt = $pdo->prepare("SELECT clt_password FROM Client WHERE clt_id = :id");
@@ -43,13 +43,11 @@ if (!$client) {
 
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-    <!-- Importando os estilos base e o estilo da área do cliente -->
     <link href="../MVP.css" rel="stylesheet">
     <link href="../style_index.css" rel="stylesheet">
-    <link href="../Client/client.css" rel="stylesheet">
-
+    <link href="profilestyle.css" rel="stylesheet">
     <style>
-        /* Ajustes específicos para a página de perfil */
+      
         .profile-pic-hero {
             width: 120px;
             height: 120px;
@@ -75,7 +73,7 @@ if (!$client) {
             border-color: var(--client-focus);
         }
 
-        /* Suporte para inputs de email e senha no estilo do client.css */
+        
         .client-page form input[type="email"],
         .client-page form input[type="password"] {
             display: block;
@@ -101,8 +99,7 @@ if (!$client) {
             outline: none;
         }
         
-        /* Mensagens de feedback */
-        .msg-success { color: #2e7d32; font-weight: bold; margin-bottom: 15px; }
+        .msg-success { color: #09f115; font-weight: bold; margin-bottom: 15px; }
         .msg-error { color: #c62828; font-weight: bold; margin-bottom: 15px; }
     </style>
 </head>

@@ -58,7 +58,7 @@ $clientDB->changeClientPasswordById($_POST['senha'] ?? '', $client->getId());
 try {
     $clientDB->updateClient($client);
     $_SESSION['client_object'] = $client;
-    $_SESSION['msg'] = 'Dados atualizados com sucesso!';
+    $_SESSION['msg'] =  'Dados atualizados com sucesso!';
 } catch (DuplicateEmail $e) {
     $_SESSION['erro'] = 'Este email já está sendo usado por outro cliente.';
 } catch (Exception $e) {
