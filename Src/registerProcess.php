@@ -12,22 +12,6 @@ function connectToDatabase()
     return $pdo;
 }
 
-function disconnectFromDatabase($pdo)
-{
-    $pdo = null;
-}
-
-function getPassword(Client $client){ //retorna a senha do banco de dados do cliente
-    $id = $client->getId();
-    global $pdo;
-    $smt = $pdo->prepare("SELECT clt_password FROM Client WHERE clt_id = :id");
-    $smt->execute(['id' => $id]);
-    return $smt->fetchColumn();
-}
-
-function ClientSession($cliente){
-    $_SESSION["client_object"] = $cliente;
-}
 
 //--------------------------------
 //            CODIGO
@@ -40,25 +24,44 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 // Campos obrigatórios enviados pelo formulário de cadastro.
 $name = trim((string) ($_POST["nome"] ?? ''));
-$login = trim((string) ($_POST["email"] ?? ''));
+$email = trim((string) ($_POST["email"] ?? ''));
 $password = (string) ($_POST["senha"] ?? '');
 
-if ($name === '' || $login === '' || $password === '') {
+$valid_name = false;
+try {
+    $valid_name = Validation::isValidUsername($name);
+} catch (\Throwable $th) {
+    $valid_name = false;
+}
+$valid_email = false;
+try {
+    $valid_email = Validation::isValidEmail($email);
+} catch (\Throwable $th) {
+    $valid_email = false;
+}
+$valid_password = false;
+try {
+    $valid_password = Validation::isValidPassword($password);
+} catch (\Throwable $th) {
+    $valid_password = false;
+}
+
+if (!$valid_name || !$valid_email || !$valid_password) {
     header("Location: ../Public/Registration/index.php?erro=camposobrigatorios");
     exit();
 }
 
 $pdo = connectToDatabase();
-$db = new ClientDB($pdo);
+$db_client = new ClientDB($pdo);
 
-$client = $db->getClientByEmail($login);
-if ($client !== null) {
+try {
+    $client = $db_client->createClient($name, $email, $password);
+} catch (DuplicateEmail $e) {
     disconnectFromDatabase($pdo);
     header("Location: ../Public/index.php?erro=usuarioexistente");
     exit();
 }
-$client = $db->createClient($name,$login,$password);
-ClientSession($client);
-disconnectFromDatabase($pdo);
+
+$_SESSION["client_object"] = $client;
 header("Location: ../Public/index.php?success=login_success");
 exit();

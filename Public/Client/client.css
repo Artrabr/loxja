@@ -34,7 +34,6 @@
 .client-page main > section:first-of-type p,
 .client-page main > section:nth-of-type(2) > p {
     max-width: 440px;
-    color: var(--muted);
     font-size: 1.05rem;
     line-height: 1.7;
 }
@@ -174,4 +173,15 @@
     .client-page form input[type="text"] {
         margin-bottom: 8px;
     }
+}
+.msg-success {
+    color: #0e9214;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.msg-error {
+    color: #c62828;
+    font-weight: bold;
+    margin-bottom: 15px;
 }
