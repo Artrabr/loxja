@@ -125,7 +125,7 @@
                     $imageUrl = $_SESSION['client_object']->getImage();
                 ?> 
                     <a href="profile/index.php">
-                        <img src="<?= htmlspecialchars($imageUrl, ENT_QUOTES, 'UTF-8') ?>" alt="perfilIMG" class="brand-mark">
+                        <img src="<?= htmlspecialchars($imageUrl, ENT_QUOTES, 'UTF-8') ?>" alt="Foto de perfil" class="profile-avatar">
                     </a>
                     
                 <?php //                ^  trocar pela foto de perfil
