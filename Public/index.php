@@ -19,9 +19,7 @@
             try {
                 $clientId = (int)$_SESSION['client_object']->getId();
                 $cartDB   = new ShoppingCartDB($pdo);
-                for ($i = 0; $i < $quantity; $i++) {
-                    $cartDB->addItemToShoppingCartByClientId($clientId, $productId);
-                }
+                $cartDB->addItemToShoppingCartByClientId($clientId, $productId,$quantity);
                 $_SESSION['cart_flash'] = 'Produto adicionado ao carrinho!';
             } catch (Throwable $e) {
                 $_SESSION['cart_flash'] = 'Erro: ' . $e->getMessage();
