@@ -39,6 +39,14 @@ $orderPlaced = false;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $selectedMethod = trim((string) ($_POST['method'] ?? ''));
 
+    if ($cart === null || empty($cart->getProducts())) {
+        $errors[] = "Seu carrinho está vazio.";
+    }
+
+    if ($address === null) {
+        $errors[] = "Você precisa registrar um endereço antes de confirmar a compra.";
+    }
+
     if (!array_key_exists($selectedMethod, $paymentMethods)) {
         $errors[] = "Por favor escolha um método válido de pagamento.";
     }
