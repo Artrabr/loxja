@@ -121,8 +121,10 @@
                     <li><a href="#contato">Contato</a></li>
                 </ul>
                 <?php
-                    if(isset($_SESSION['client_object'])){
+                    $email = $_SESSION['client_object']->getEmail();
                     $imageUrl = $_SESSION['client_object']->getImage();
+                    if(isset($_SESSION['client_object'])){
+                    
                 ?> 
                     <a href="profile/index.php">
                         <img src="<?= htmlspecialchars($imageUrl, ENT_QUOTES, 'UTF-8') ?>" alt="Foto de perfil" class="profile-avatar">
@@ -134,6 +136,12 @@
                     <a class='login-button' href='Login/index.php'>Login</a>
                     <?php
                 }
+
+                if($email == 'admin@admin.com'):
+                ?>
+                    <a href="./Administration/index.php" rel="admin">Gerenciar</a>
+                <?php
+                    endif
                 ?>
             </nav>
         </header>
