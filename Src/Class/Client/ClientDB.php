@@ -18,24 +18,24 @@ class ClientDB
 
     public function getClientByID(int $id): ?Client
     {
-        $stmt = $this->pdo->prepare("SELECT clt_email,clt_name,clt_id FROM Client WHERE clt_id = ?");
+        $stmt = $this->pdo->prepare("SELECT clt_email, clt_name, clt_id, clt_perfilPicture FROM Client WHERE clt_id = ?");
         $stmt->execute([$id]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($row) {
-            return new Client($row['clt_id'], $row['clt_name'], $row['clt_email']);
+            return new Client($row['clt_id'], $row['clt_name'], $row['clt_email'], $row['clt_perfilPicture']);
         }
 
         return null;
     }
     public function getClientByEmail(string $email): ?Client
     {
-        $stmt = $this->pdo->prepare("SELECT clt_email,clt_name,clt_id FROM Client WHERE clt_email = ?");
+        $stmt = $this->pdo->prepare("SELECT clt_email, clt_name, clt_id, clt_perfilPicture FROM Client WHERE clt_email = ?");
         $stmt->execute([$email]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($row) {
-            return new Client($row['clt_id'], $row['clt_name'], $row['clt_email']);
+            return new Client($row['clt_id'], $row['clt_name'], $row['clt_email'], $row['clt_perfilPicture']);
         }
 
         return null;
@@ -66,12 +66,14 @@ class ClientDB
             $stmt = $this->pdo->prepare("
                 UPDATE Client
                 SET clt_name = :name,
-                    clt_email = :email
+                    clt_email = :email,
+                    clt_perfilPicture = :image
                 WHERE clt_id = :id
                 ");
             $stmt->execute([
                 'name' => $client->getName(),
                 'email' => $client->getEmail(),
+                'image' => $client->getImageFilename(),
                 'id' => $client->getId()
             ]);
         } catch (PDOException $e) {

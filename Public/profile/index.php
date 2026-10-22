@@ -117,7 +117,7 @@ if (!$client) {
 
     <main>
         <section>
-            <img src="../perfilsemfoto.png" alt="Foto de perfil" class="profile-pic-hero">
+            <img src="<?= htmlspecialchars($client->getImage(), ENT_QUOTES, 'UTF-8') ?>" alt="Foto de perfil" class="profile-pic-hero">
             <h1>Bem-vindo, <?= htmlspecialchars($client->getName()) ?>!</h1>
             <p>Esta é a sua área exclusiva para gerenciar seus dados cadastrais.</p>
             <a href="deleteSession.php" class="btn-logout-link">Sair da conta</a>
@@ -137,12 +137,15 @@ if (!$client) {
                 <?php unset($_SESSION['erro']); ?>
             <?php endif; ?>
 
-            <form method="POST" action="editar.php">
+            <form method="POST" action="editar.php" enctype="multipart/form-data">
                 <label for="nome">Nome</label>
                 <input type="text" id="nome" name="nome" value="<?= htmlspecialchars($client->getName()) ?>" required>
 
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" value="<?= htmlspecialchars($client->getEmail()) ?>" required>
+
+                <label for="imagem">Foto de perfil (JPG, PNG ou WebP; até 5 MB)</label>
+                <input type="file" id="imagem" name="imagem" accept="image/jpeg,image/png,image/webp">
 
                 <label for="senha">Senha</label>
                 <input type="password" id="senha" name="senha" required>

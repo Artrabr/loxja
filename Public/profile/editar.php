@@ -53,16 +53,93 @@ if (strlen($senha) < 6) {
 
 $client->setName($nome);
 $client->setEmail($email);
-$clientDB->changeClientPasswordById($_POST['senha'] ?? '', $client->getId());
+
+$maxImageSize = 5 * 1024 * 1024;
+$allowedImageTypes = [
+    'image/jpeg' => 'jpg',
+    'image/png' => 'png',
+    'image/webp' => 'webp',
+];
+$uploadedImagePath = null;
+$oldImageFilename = $client->getImageFilename();
+$saved = false;
 
 try {
+    if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] !== UPLOAD_ERR_NO_FILE) {
+        $upload = $_FILES['imagem'];
+        if (
+            !is_array($upload)
+            || !isset($upload['error'], $upload['size'], $upload['tmp_name'])
+            || !is_int($upload['error'])
+            || !is_numeric($upload['size'])
+            || !is_string($upload['tmp_name'])
+        ) {
+            throw new RuntimeException('O arquivo enviado é inválido.');
+        }
+
+        if ($upload['error'] !== UPLOAD_ERR_OK) {
+            throw new RuntimeException('Não foi possível enviar a imagem. Tente novamente.');
+        }
+
+        if ($upload['size'] > $maxImageSize) {
+            throw new RuntimeException('A imagem deve ter no máximo 5 MB.');
+        }
+
+        $imageInfo = getimagesize($upload['tmp_name']);
+        $mimeType = $imageInfo['mime'] ?? '';
+        if ($imageInfo === false || !isset($allowedImageTypes[$mimeType])) {
+            throw new RuntimeException('A imagem deve estar no formato JPG, PNG ou WebP.');
+        }
+
+        $uploadDirectory = __DIR__ . '/../images/client';
+        if (!is_dir($uploadDirectory) && !mkdir($uploadDirectory, 0755, true) && !is_dir($uploadDirectory)) {
+            throw new RuntimeException('Não foi possível preparar o armazenamento da imagem.');
+        }
+
+        $imageFilename = bin2hex(random_bytes(16)) . '.' . $allowedImageTypes[$mimeType];
+        $uploadedImagePath = $uploadDirectory . DIRECTORY_SEPARATOR . $imageFilename;
+        if (!move_uploaded_file($upload['tmp_name'], $uploadedImagePath)) {
+            throw new RuntimeException('Não foi possível salvar a imagem enviada.');
+        }
+
+        $client->setImageFilename($imageFilename);
+    }
+
+    $pdo->beginTransaction();
     $clientDB->updateClient($client);
+    $clientDB->changeClientPasswordById($senha, $client->getId());
+    $pdo->commit();
+    $saved = true;
+
     $_SESSION['client_object'] = $client;
-    $_SESSION['msg'] =  'Dados atualizados com sucesso!';
+    $_SESSION['msg'] = 'Dados atualizados com sucesso!';
+
+    if ($oldImageFilename !== null && $oldImageFilename !== $client->getImageFilename()) {
+        $oldImagePath = __DIR__ . '/../images/client/' . $oldImageFilename;
+        if (is_file($oldImagePath) && !unlink($oldImagePath)) {
+            error_log('Não foi possível remover a imagem de perfil antiga: ' . $oldImagePath);
+        }
+    }
 } catch (DuplicateEmail $e) {
+    if ($pdo->inTransaction()) {
+        $pdo->rollBack();
+    }
     $_SESSION['erro'] = 'Este email já está sendo usado por outro cliente.';
-} catch (Exception $e) {
-    $_SESSION['erro'] = 'Erro ao atualizar: ' . $e->getMessage();
+} catch (RuntimeException $e) {
+    if ($pdo->inTransaction()) {
+        $pdo->rollBack();
+    }
+    $_SESSION['erro'] = $e->getMessage();
+} catch (PDOException $e) {
+    if ($pdo->inTransaction()) {
+        $pdo->rollBack();
+    }
+    error_log('Erro ao atualizar perfil: ' . $e->getMessage());
+    $_SESSION['erro'] = 'Ocorreu um erro ao salvar os dados. Tente novamente.';
+} finally {
+    if (!$saved && $uploadedImagePath !== null && is_file($uploadedImagePath) && !unlink($uploadedImagePath)) {
+        error_log('Não foi possível remover uma imagem de perfil não salva: ' . $uploadedImagePath);
+    }
 }
 
 $pdo = null;

@@ -5,15 +5,15 @@ class Client
     protected int $id;
     protected string $name;
     protected string $email;
-    protected string $image;
+    protected ?string $imageFilename;
 
     public function __construct(int $id, string $name, string $email, ?string $image = null)
     {
         $this->id = $id;
         $this->name = $name;
         $this->email = $email;
-        $publicUrl = defined('PUBLIC_URL') ? PUBLIC_URL : '/Public';
-        $this->image = $image ?: $publicUrl . '/images/client/defaultimage.jpg';
+
+        $this->setImageFilename($image);
     }
 
     public function getId(): int
@@ -39,6 +39,28 @@ class Client
     public function setEmail(string $email)
     {
         $this->email = $email;
+    }
+
+    public function getImage(): string
+    {
+        $publicUrl = defined('PUBLIC_URL') ? PUBLIC_URL : '/Public';
+
+        if ($this->imageFilename === null) {
+            return $publicUrl . '/perfilsemfoto.png';
+        }
+
+        return $publicUrl . '/images/client/' . rawurlencode($this->imageFilename);
+    }
+
+    public function getImageFilename(): ?string
+    {
+        return $this->imageFilename;
+    }
+
+    public function setImageFilename(?string $imageFilename): void
+    {
+        $imageFilename = basename(str_replace('\\', '/', trim((string) $imageFilename)));
+        $this->imageFilename = in_array($imageFilename, ['', '.', '..'], true) ? null : $imageFilename;
     }
 
     public function isAdmin()
