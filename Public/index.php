@@ -7,6 +7,7 @@
     require_once __DIR__ . "/../Src/Class/ShoppingCart/ShoppingCart.php";
     require_once __DIR__ . "/../Src/Class/ShoppingCart/ShoppingCartDB.php";
 
+    $client = $_SESSION['client_object'] ?? null;
     $pdo = Connection::conectar();
     $db  = new ProductDB($pdo);
 
@@ -15,9 +16,9 @@
         $returnQuery = (string)($_POST['return_query'] ?? '');
         $quantity    = max(1, (int)($_POST['add_to_cart_quantity'] ?? 1));
 
-        if (isset($_SESSION['client_object'])) {
+        if ($client instanceof Client) {
             try {
-                $clientId = (int)$_SESSION['client_object']->getId();
+                $clientId = $client->getId();
                 $cartDB   = new ShoppingCartDB($pdo);
                 for ($i = 0; $i < $quantity; $i++) {
                     $cartDB->addItemToShoppingCartByClientId($clientId, $productId);
@@ -41,9 +42,9 @@
     unset($_SESSION['cart_flash']);
 
     $cartItemCount = 0;
-    if (isset($_SESSION['client_object'])) {
+    if ($client instanceof Client) {
         try {
-            $clientId = (int)$_SESSION['client_object']->getId();
+            $clientId = $client->getId();
             $cartDB   = new ShoppingCartDB($pdo);
             $cart     = $cartDB->getShoppingCartByClientId($clientId);
             if ($cart !== null) {
@@ -112,28 +113,23 @@
                     <li><a href="#contato">Contato</a></li>
                 </ul>
                 <?php
-                    $email = $_SESSION['client_object']->getEmail();
-                    $imageUrl = $_SESSION['client_object']->getImage();
-                    if(isset($_SESSION['client_object'])){
-                    
-                ?> 
+                    if ($client instanceof Client) {
+                        $imageUrl = $client->getImage();
+                ?>
                     <a href="profile/index.php">
                         <img src="<?= htmlspecialchars($imageUrl, ENT_QUOTES, 'UTF-8') ?>" alt="Foto de perfil" class="profile-avatar">
                     </a>
-                    
-                <?php //                ^  trocar pela foto de perfil
+                <?php
                     } else {
                 ?>
                     <a class='login-button' href='Login/index.php'>Login</a>
-                    <?php
+                <?php
                 }
 
-                if($email == 'admin@admin.com'):
+                if ($client instanceof Client && $client->isAdmin()) {
                 ?>
                     <a href="./Administration/index.php" rel="admin">Gerenciar</a>
-                <?php
-                    endif
-                ?>
+                <?php } ?>
             </nav>
         </header>
         <main>
