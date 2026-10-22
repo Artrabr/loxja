@@ -43,10 +43,14 @@ class Client
 
     public function getImage(): string
     {
-        $publicUrl = defined('PUBLIC_URL') ? PUBLIC_URL : '/Public';
+        if (defined('PUBLIC_URL')) {
+            $publicUrl = PUBLIC_URL;
+        } else {
+            $publicUrl = '/Public';
+        }
 
         if ($this->imageFilename === null) {
-            return $publicUrl . '/perfilsemfoto.png';
+            return $publicUrl . '/images/client/defaultimage.jpg';
         }
 
         return $publicUrl . '/images/client/' . rawurlencode($this->imageFilename);
