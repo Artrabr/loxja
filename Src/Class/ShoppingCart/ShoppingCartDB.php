@@ -36,7 +36,6 @@ class ShoppingCartDB
     }
     public function setShoppingCartByClientId(int $clientId, ShoppingCart $cart): void
     {
-        $this->pdo->beginTransaction();
         try {
             // 1. Delete ALL items for this client
             $del = $this->pdo->prepare("DELETE FROM ItensCart WHERE clt_id = ?");

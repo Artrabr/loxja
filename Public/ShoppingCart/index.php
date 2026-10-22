@@ -89,7 +89,7 @@ if (!is_null($shoppingCart)) {
             <?php if ($hasShoppingCart) : ?>
                 <main>
 
-                    <form class="shopping_cart" id="shopping_cart" method="post" action="">
+                    <form class="shopping_cart" id="shopping_cart" method="post" action="../Finalization">
 
                         <?php foreach ($products as $product) :
                             {

@@ -24,7 +24,7 @@
                 }
                 $_SESSION['cart_flash'] = 'Produto adicionado ao carrinho!';
             } catch (Throwable $e) {
-                $_SESSION['cart_flash'] = 'Não foi possível adicionar o produto.';
+                $_SESSION['cart_flash'] = 'Erro: ' . $e->getMessage();
             }
         } else {
             $_SESSION['cart_flash'] = 'Faça login para adicionar produtos ao carrinho.';

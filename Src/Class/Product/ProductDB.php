@@ -102,4 +102,23 @@ class ProductDB
         };
         return true;
     }
+
+    public function decreaseStock(int $id, int $amount): void
+{
+    if ($amount <= 0) {
+        throw new InvalidArgumentException('Amount deve ser maior que zero.');
+    }
+
+    $stmt = $this->pdo->prepare(
+        "UPDATE Product
+            SET pdt_amount = pdt_amount - :amount
+          WHERE pdt_id = :id
+            AND pdt_amount >= :amount"
+    );
+    $stmt->execute(['amount' => $amount, 'id' => $id]);
+
+    if ($stmt->rowCount() === 0) {
+        throw new RuntimeException("Estoque insuficiente para o produto #{$id}.");
+    }
+}
 }

@@ -39,16 +39,8 @@ $orderPlaced = false;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $selectedMethod = trim((string) ($_POST['method'] ?? ''));
 
-    if ($cart === null || empty($cart->getProducts())) {
-        $errors[] = "Your shopping cart is empty.";
-    }
-
-    if ($address === null) {
-        $errors[] = "You need to register a shipping address before finishing the purchase.";
-    }
-
     if (!array_key_exists($selectedMethod, $paymentMethods)) {
-        $errors[] = "Please choose a valid payment method.";
+        $errors[] = "Por favor escolha um método válido de pagamento.";
     }
 
     if (empty($errors)) {
@@ -88,7 +80,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $productDB->decreaseStock($product->getId(), $amount);
             }
 
-            // Sale reports are written; now clear the cart atomically.
             $cartDB->setShoppingCartByClientId($clientId, new ShoppingCart());
 
             $pdo->commit();
@@ -100,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $pdo->rollBack();
             }
             error_log($e->getMessage());
-            $errors[] = "We could not finish your purchase: " . $e->getMessage();
+            $errors[] = "Não conseguimos terminar sua compra: " . $e->getMessage();
         }
     }
 }
@@ -127,14 +118,29 @@ $pdo = null;
 </head>
 <body class="checkout-page">
     <header class="site-header" id="inicio">
-        <nav class="topbar" aria-label="Main navigation">
-            <a class="brand" href="../index.php#inicio" aria-label="Loxja Cafe, home">
-                <img src="../logo.png" alt="" class="brand-mark">
-                <span>Loxja <small>cafe</small></span>
-            </a>
-            <a href="../profile/index.php">Profile</a>
-            <a href="../Client/index.php">Account</a>
-            <a href="../salesReport/index.php">Sales report</a>
+        <nav class="topbar" aria-label="Navegacao principal">
+            <a class="brand" href="#inicio" aria-label="Loxja Cafe, inicio">
+            <img src="../logo.png" alt="Loxja Cafe" class="brand-mark">
+            <span>Loxja <small>cafe</small></span></a>
+            <ul class="nav-links">
+                <li><a href="../index.php#produtos">Produtos</a></li>
+                <li><a href="../index.php#sobre">Sobre</a></li>
+                <li><a href="../index.php#contato">Contato</a></li>
+            </ul>
+            <?php
+                if(isset($_SESSION['client_object'])){
+            ?> 
+                <a href="../profile/index.php">
+                    <img src="../perfilsemfoto.png" alt="Loxja Cafe" class="brand-mark">
+                </a>
+                
+            <?php //                       ^  trocar pela foto de perfil
+                } else {
+            ?>
+                <a class='login-button' href='Login/index.php'>Login</a>
+                <?php
+            }
+            ?>
         </nav>
     </header>
 
@@ -163,7 +169,7 @@ $pdo = null;
 
             <div class="checkout-layout">
                 <section class="checkout-card checkout-cart">
-                    <h2>Your cart</h2>
+                    <h2>Carrinho</h2>
 
                     <?php if (empty($cartItems)): ?>
                         <p class="checkout-empty">
