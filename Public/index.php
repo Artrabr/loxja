@@ -94,15 +94,6 @@
         <link href="style_index.css" rel="stylesheet">
         <link href="style_index_exhibition.css" rel="stylesheet">
     </head> 
-    
-<!--===================[APAGAR]========================-->
-    <a href="Administration/index.php" style='padding:5px; background-color:rgb(64, 171, 77);'>got to administration</a> 
-    || 
-    <a href="Client/index.php" style='padding:5px; background-color:rgb(64, 171, 77);'>got to client area</a>
-    || 
-    <a href="ShoppingCart/index.php" style='padding:5px; background-color:rgb(64, 171, 77);'>got to shopping cart</a>
-<!--===================[------]========================-->
-
     <body>
         <?php if ($cartFlash !== null): ?>
             <div role="status" aria-live="polite"
