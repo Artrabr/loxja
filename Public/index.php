@@ -122,12 +122,13 @@
                 </ul>
                 <?php
                     if(isset($_SESSION['client_object'])){
+                    $imageUrl = $_SESSION['client_object']->getImage();
                 ?> 
                     <a href="profile/index.php">
-                        <img src="perfilsemfoto.png" alt="Loxja Cafe" class="brand-mark">
+                        <img src="<?= htmlspecialchars($imageUrl, ENT_QUOTES, 'UTF-8') ?>" alt="perfilIMG" class="brand-mark">
                     </a>
                     
-                <?php //                       ^  trocar pela foto de perfil
+                <?php //                ^  trocar pela foto de perfil
                     } else {
                 ?>
                     <a class='login-button' href='Login/index.php'>Login</a>
