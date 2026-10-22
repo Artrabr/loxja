@@ -41,6 +41,11 @@ class Client
         $this->email = $email;
     }
 
+    public function getImageFilename(): ?string
+    {
+        return $this->imageFilename;
+    }
+
     public function getImage(): string
     {
         if (defined('PUBLIC_URL')) {
@@ -53,12 +58,7 @@ class Client
             return $publicUrl . '/images/client/defaultimage.jpg';
         }
 
-        return $publicUrl . '/images/client/' . rawurlencode($this->imageFilename);
-    }
-
-    public function getImageFilename(): ?string
-    {
-        return $this->imageFilename;
+        return $publicUrl . '/images/client/' . rawurlencode($this->getImageFilename());
     }
 
     public function setImageFilename(?string $imageFilename): void

@@ -69,7 +69,7 @@ require_once __DIR__ . "/../../Src/Class/Product/ProductDB.php";
                 <?php endforeach; ?>
             </tbody>
         </table>
-        <p><a href="../index.php">Voltar para o inicio</a></p>
+        <p><a href="../Administration/index.php">Voltar para o inicio</a></p>
     </main>
 </body>
 </html>

@@ -40,6 +40,6 @@
 
         <button type="submit">Adicionar Produto</button>
     </form>
-    <a href="../index.php">Voltar para o inicio</a>
+    <a href="../Administration/index.php">Voltar para o inicio</a>
 </body>
 </html>

@@ -94,15 +94,6 @@
         <link href="style_index.css" rel="stylesheet">
         <link href="style_index_exhibition.css" rel="stylesheet">
     </head> 
-    
-<!--===================[APAGAR]========================-->
-    <a href="Administration/index.php" style='padding:5px; background-color:rgb(64, 171, 77);'>got to administration</a> 
-    || 
-    <a href="Client/index.php" style='padding:5px; background-color:rgb(64, 171, 77);'>got to client area</a>
-    || 
-    <a href="ShoppingCart/index.php" style='padding:5px; background-color:rgb(64, 171, 77);'>got to shopping cart</a>
-<!--===================[------]========================-->
-
     <body>
         <?php if ($cartFlash !== null): ?>
             <div role="status" aria-live="polite"
@@ -121,18 +112,27 @@
                     <li><a href="#contato">Contato</a></li>
                 </ul>
                 <?php
+                    $email = $_SESSION['client_object']->getEmail();
+                    $imageUrl = $_SESSION['client_object']->getImage();
                     if(isset($_SESSION['client_object'])){
+                    
                 ?> 
                     <a href="profile/index.php">
-                        <img src="perfilsemfoto.png" alt="Loxja Cafe" class="brand-mark">
+                        <img src="<?= htmlspecialchars($imageUrl, ENT_QUOTES, 'UTF-8') ?>" alt="Foto de perfil" class="profile-avatar">
                     </a>
                     
-                <?php //                       ^  trocar pela foto de perfil
+                <?php //                ^  trocar pela foto de perfil
                     } else {
                 ?>
                     <a class='login-button' href='Login/index.php'>Login</a>
                     <?php
                 }
+
+                if($email == 'admin@admin.com'):
+                ?>
+                    <a href="./Administration/index.php" rel="admin">Gerenciar</a>
+                <?php
+                    endif
                 ?>
             </nav>
         </header>
