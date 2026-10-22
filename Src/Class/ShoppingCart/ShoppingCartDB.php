@@ -36,28 +36,21 @@ class ShoppingCartDB
     }
     public function setShoppingCartByClientId(int $clientId, ShoppingCart $cart): void
     {
-        try {
-            // 1. Delete ALL items for this client
-            $del = $this->pdo->prepare("DELETE FROM ItensCart WHERE clt_id = ?");
-            $del->execute([$clientId]);
+        // 1. Delete ALL items for this client
+        $del = $this->pdo->prepare("DELETE FROM ItensCart WHERE clt_id = ?");
+        $del->execute([$clientId]);
 
-            // 2. Insert each item from the object
-            $ins = $this->pdo->prepare("
-                INSERT INTO ItensCart (clt_id, pdt_id, ic_amount)
-                VALUES (?, ?, ?)
-            ");
-            foreach ($cart->getProducts() as $item) {
-                $ins->execute([
-                    $clientId,
-                    $item->getProduct()->getId(),
-                    $item->getAmount(),
-                ]);
-            }
-
-            $this->pdo->commit();
-        } catch (Throwable $e) {
-            $this->pdo->rollBack();
-            throw $e;
+        // 2. Insert each item from the object
+        $ins = $this->pdo->prepare("
+            INSERT INTO ItensCart (clt_id, pdt_id, ic_amount)
+            VALUES (?, ?, ?)
+        ");
+        foreach ($cart->getProducts() as $item) {
+            $ins->execute([
+                $clientId,
+                $item->getProduct()->getId(),
+                $item->getAmount(),
+            ]);
         }
     }
     public function addItemToShoppingCartByClientId(int $clientId, $productId)
