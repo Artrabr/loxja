@@ -35,18 +35,9 @@ class Validation
         $email_validated->rule('email', 'email');
 
         if (!$email_validated->validate()) {
-            $errors = $email_validated->errors('email'); // Gets errors specifically for the 'email' field
-
-            // Check which specific rule failed
-            if (isset($errors['required'])) {
-                throw new InvalidEmail($errors['required'][0]);
-            }
-
-            if (isset($errors['email'])) {
-                throw new InvalidEmail($errors['email'][0]);
-            }
+            $errors = $email_validated->errors('email');      // flat list of messages
+            throw new InvalidEmail($errors[0]); // or check message text if needed
         }
-
         return true;
     }
 
@@ -56,12 +47,8 @@ class Validation
         $username_validated->rule('required', 'username');
 
         if (!$username_validated->validate()) {
-            $errors = $username_validated->errors('username'); // Gets errors specifically for the 'username' field
-
-            // Check which specific rule failed
-            if (isset($errors['required'])) {
-                throw new InvalidUsername($errors['required'][0]);
-            }
+            $errors = $username_validated->errors('username');      // flat list of messages
+            throw new InvalidUsername($errors[0]); // or check message text if needed
         }
         return true;
     }
@@ -71,13 +58,10 @@ class Validation
         $password_validated = self::makeValidator(['password' => $password]);
         $password_validated->rule('required', 'password');
 
-        if (!$password_validated->validate()) {
-            $errors = $password_validated->errors('password'); // Gets errors specifically for the 'password' field
 
-            // Check which specific rule failed
-            if (isset($errors['required'])) {
-                throw new InvalidPassword($errors['required'][0]);
-            }
+        if (!$password_validated->validate()) {
+            $errors = $password_validated->errors('password');      // flat list of messages
+            throw new InvalidPassword($errors[0]); // or check message text if needed
         }
         return true;
     }
