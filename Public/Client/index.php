@@ -36,13 +36,25 @@
         </nav>
     </header>
     <main>
+        
         <section>
             <h1>Bem-vindo à área do cliente!</h1>
             <p>Esta é a área exclusiva para clientes cadastrados</p>
         </section>
+
+        
         <section>
             <h2>Informações de envio</h2>
             <p>Aqui você pode visualizar e atualizar suas informações de envio.</p>
+
+            <?php if (isset($_GET['CAPsuccess']) && $_GET['CAPsuccess'] === 'true'): ?>
+                <p class="msg-success">Dados atualizados com sucesso!</p>
+            <?php endif; ?>
+
+            <?php if (isset($_GET['CAPerror'])): ?>
+                <p class="msg-error">Não foi possível atualizar os dados. Verifique os campos e tente novamente.</p>
+            <?php endif; ?>
+
             <!-- NÃO MECHE NESSA MERDA PELO AMOR DE DEUS Formulário para atualizar informações de envio -->
             <?php
                 $pdo = Connection::conectar();
@@ -50,13 +62,14 @@
                 $clientAddressDB = new ClientAddressDB($pdo);
                 $client = $clientAddressDB->getAddressByClientID($id)
                     ?? new ClientAddress($id, 0, '', '', '', '', '', 0);
-                $pdo = null; // Fechar a conexão com o banco de dados
+                $pdo = null; 
             ?>
             <div>
-                <form action="../../Src/ClientAddressProcess.php" method="POST">
+                
+                <form action="../../Src/clientAddressProcess.php" method="POST">
                     <label for="cep">CEP</label>
                     <input type="text" id="cep" name="cep" 
-                    <?php if($client->getCep()): ?>-
+                    <?php if($client->getCep()): ?>
                         value="<?= htmlspecialchars($client->getCep()) ?>"
                     <?php endif; ?>
                      required>
