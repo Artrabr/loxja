@@ -128,7 +128,7 @@ $pdo = null;
 <body class="checkout-page">
     <header class="site-header" id="inicio">
         <nav class="topbar" aria-label="Navegacao principal">
-            <a class="brand" href="#inicio" aria-label="Loxja Cafe, inicio">
+            <a class="brand" href="../index.php#inicio" aria-label="Loxja Cafe, inicio">
             <img src="../logo.png" alt="Loxja Cafe" class="brand-mark">
             <span>Loxja <small>cafe</small></span></a>
             <ul class="nav-links">

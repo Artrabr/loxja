@@ -5,17 +5,8 @@
 }
 
 body {
-  --resume_height: 100px;
-  --padding_main: 16px;
-
-  --sage: #ccd5ae;
-  --cream-green: #e9edc9;
-  --vanilla: #fefae0;
-  --sand: #faedcd;
-  --caramel: #d4a373;
-  --ink: #2f2a24;
-  --muted: #756c5f;
-  --white: #fffdf7;
+  --resume-height: 100px;
+  --padding-main: 16px;
   background-color: var(--sand);
 }
 
@@ -38,7 +29,7 @@ main {
   height: 80vh;
   width: 100%;
   max-width: 800px;
-  gap: 0px;
+  gap: 0;
 
   &>* {
     background-color: var(--vanilla);
@@ -52,9 +43,9 @@ main {
     border-top-right-radius: 0;
 
     border: 1px solid var(--color-bg-secondary);
-    padding: 0px var(--padding_main);
+    padding: 0px var(--padding-main);
     width: 100%;
-    height: var(--resume_height);
+    height: var(--resume-height);
     align-self: flex-end;
     margin: 0px;
 
@@ -102,8 +93,8 @@ main {
 
 @media screen and (max-width: 768px) {
   body {
-    --resume_height: 70px;
-    --padding_main: 8px;
+    --resume-height: 70px;
+    --padding-main: 8px;
   }
 
   main {
@@ -155,23 +146,23 @@ main {
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 
-  --light_red: #F54927;
-  --red: #F4320B;
-  --size_of_cart_item: 108px;
-  padding: var(--padding_main);
+  --light-red: #f54927;
+  --red: #f4320b;
+  --size-of-cart-item: 108px;
+  padding: var(--padding-main);
   width: 100%;
-  /* max-height: calc(5*var(--size_of_cart_item)); */
+  /* max-height: calc(5 * var(--size-of-cart-item)); */
   height: auto;
   flex: 1;
   overflow-y: auto;
-  padding-bottom: 0px;
+  padding-bottom: 0;
 
 
   .cart_item_wrapper {
     display: flex;
     flex-direction: row;
     container-type: inline-size;
-    height: var(--size_of_cart_item);
+    height: var(--size-of-cart-item);
 
     .price {
       margin-left: auto;
@@ -197,9 +188,6 @@ main {
       display: flex;
       flex-direction: column;
 
-      gap: 0px;
-      height: min-content;
-
       /* remove os simbolos de adicionar/remover do input tipo number padrões do navegador*/
 
       /* Chrome, Safari, Edge, Opera */
@@ -219,7 +207,7 @@ main {
 
         align-self: center;
         text-align: center;
-        padding: 0px;
+        padding: 0;
         width: 24px;
         height: 24px;
         flex: 1 1 auto;
@@ -229,7 +217,7 @@ main {
         border: var(--ink) solid 2px;
       }
 
-      gap: 0px;
+      gap: 0;
       height: 100%;
 
       input {
@@ -242,11 +230,11 @@ main {
 
       .increase {
         padding-top: 1em;
-        padding-bottom: 0px;
+        padding-bottom: 0;
       }
 
       .decrease {
-        padding-top: 0px;
+        padding-top: 0;
         padding-bottom: 1em;
       }
 
@@ -258,17 +246,15 @@ main {
 
         background-color: transparent;
         border: none;
-        height: min-content;
         margin: 0px;
         padding-left: 1em;
         padding-right: 1em;
-        width: calc(24px +2em);
+        width: calc(24px + 2em);
         height: min-content;
 
         align-self: center;
 
         svg {
-          color: var(--ink);
           stroke: var(--ink);
           display: block;
           align-self: center;
@@ -290,7 +276,7 @@ main {
       height: auto;
 
       &:hover {
-        background-color: var(--light_red);
+        background-color: var(--light-red);
       }
 
     }

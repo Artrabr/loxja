@@ -21,6 +21,7 @@ require_once __DIR__ . "/../../Src/Class/Product/ProductDB.php";
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Produtos</title>
     <link href="../MVP.css" rel="stylesheet">
+    <link href="../theme.css" rel="stylesheet">
     <link href="index_style.css" rel="stylesheet">
 </head>
 <body class="edit-products">

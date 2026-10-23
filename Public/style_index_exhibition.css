@@ -399,3 +399,17 @@ img.product-image {
 	flex: 1 1 auto;
 	width: auto;
 }
+
+html[data-theme="dark"] .product-detail-card {
+    background: var(--white);
+    color: var(--ink);
+}
+
+html[data-theme="dark"] .pagination-jump:focus {
+    background: var(--white);
+}
+
+html[data-theme="dark"] img.product-image,
+html[data-theme="dark"] .product-detail-image {
+    background-color: #3a352d;
+}

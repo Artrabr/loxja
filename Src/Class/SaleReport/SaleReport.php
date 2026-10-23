@@ -88,3 +88,4 @@ class SaleReport
         return $this->price * $this->amount;
     }
 }
+

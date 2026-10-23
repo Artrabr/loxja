@@ -82,6 +82,7 @@ if (!is_null($shoppingCart)) {
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Carrinho de compras</title>
         <link href="../MVP.css" rel="stylesheet">
+        <link href="../theme.css" rel="stylesheet">
         <link href="ShoppingCart.css" rel="stylesheet">
     </head>
         <body class="scroll">
