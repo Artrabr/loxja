@@ -110,9 +110,10 @@
                     <li><a href="#contato">Contato</a></li>
                 </ul>
                 <?php
-                    $email = $_SESSION['client_object']->getEmail();
-                    $imageUrl = $_SESSION['client_object']->getImage();
+                    $email = '';
                     if(isset($_SESSION['client_object'])){
+                        $email = $_SESSION['client_object']->getEmail();
+                        $imageUrl = $_SESSION['client_object']->getImage();
                     
                 ?> 
                     <a href="profile/index.php">

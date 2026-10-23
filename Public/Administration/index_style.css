@@ -11,27 +11,92 @@
   }
 }
 
+.full-width-nav a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.full-width-nav a b {
+  border-color: var(--caramel);
+  border-radius: 10px;
+  background-color: var(--caramel);
+  color: var(--white);
+}
+
+.full-width-nav a:hover,
+.full-width-nav a:focus-visible {
+  color: #9b6736;
+}
+
+.full-width-nav a:hover b,
+.full-width-nav a:focus-visible b {
+  border-color: #b98253;
+  background-color: #b98253;
+  color: var(--white);
+}
+
+.edit-products {
+  background: var(--vanilla);
+}
+
 .edit-products main {
   max-width: 100%;
   padding: 1rem;
   text-align: center;
 }
 
+.edit-products h1 {
+  color: var(--ink);
+}
+
 .edit-products table {
+  width: 100%;
   margin: 0 auto;
+  border-collapse: collapse;
+  background: var(--white);
+  box-shadow: var(--shadow);
+}
+
+.edit-products th,
+.edit-products td {
+  padding: 0.75rem;
+  border: 1px solid var(--sage);
+  vertical-align: middle;
+}
+
+.edit-products th {
+  background: var(--cream-green);
+  color: var(--ink);
+  text-align: left;
 }
 
 .edit-products td input {
+  box-sizing: border-box;
+  width: 100%;
   margin: 0.25rem 0;
   max-width: 12rem;
 }
 
 .edit-products td form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
   border: 0;
   box-shadow: none;
   margin: 0.25rem auto;
   min-width: 0;
   padding: 0;
+}
+
+.edit-products td button {
+  width: 100%;
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+}
+
+.edit-products td form:last-child button {
+  border-color: #b23a3a;
+  background: #b23a3a;
 }
 
 .edit-products .edit-product-image {
@@ -43,9 +108,17 @@
   object-fit: contain;
 }
 
-.edit-float-button{
+.edit-float-button {
   display: flex;
   position: relative;
   left: 10px;
   right: 10px;
+}
+
+@media (max-width: 760px) {
+  .edit-products table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
 }

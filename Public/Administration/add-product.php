@@ -16,6 +16,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adicionar Produto</title>
     <link href="../MVP.css" rel="stylesheet">
+    <link href="../theme.css" rel="stylesheet">
     <link href="index_style.css" rel="stylesheet">
 </head>
 <body>

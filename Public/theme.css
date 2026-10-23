@@ -1,0 +1,63 @@
+:root {
+    --sage: #ccd5ae;
+    --cream-green: #e9edc9;
+    --vanilla: #fefae0;
+    --sand: #faedcd;
+    --caramel: #d4a373;
+    --ink: #2f2a24;
+    --muted: #756c5f;
+    --white: #fffdf7;
+    --shadow: 0 18px 45px rgba(88, 66, 42, 0.12);
+    --radius: 18px;
+    --font-brand: Georgia, "Times New Roman", serif;
+}
+
+body {
+    background-color: var(--sand);
+    color: var(--ink);
+    font-family: var(--font-brand);
+}
+
+a {
+    color: #9b6736;
+}
+
+button,
+input[type="submit"] {
+    border: 1px solid var(--caramel);
+    border-radius: 10px;
+    background-color: var(--caramel);
+    color: var(--white);
+    font-family: var(--font-brand);
+    transition: background-color 160ms ease, transform 160ms ease;
+}
+
+button:hover:not(:disabled),
+input[type="submit"]:hover:not(:disabled) {
+    background-color: #b98253;
+    transform: translateY(-1px);
+}
+
+button:focus-visible,
+input[type="submit"]:focus-visible {
+    outline: 3px solid rgba(143, 101, 65, 0.32);
+    outline-offset: 3px;
+}
+
+input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+select,
+textarea {
+    border-color: var(--sage);
+    border-radius: 9px;
+    background-color: var(--white);
+    color: var(--ink);
+    font-family: var(--font-brand);
+}
+
+input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):focus,
+select:focus,
+textarea:focus {
+    border-color: var(--caramel);
+    outline: 2px solid rgba(212, 163, 115, 0.3);
+    outline-offset: 1px;
+}
