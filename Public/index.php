@@ -1,4 +1,24 @@
 <?php
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_tema'])) {
+        $temaAtual = $_COOKIE['tema'] ?? 'light';
+        $temaNovo  = ($temaAtual === 'dark') ? 'light' : 'dark';
+
+        setcookie('tema', $temaNovo, [
+            'expires'  => time() + 60 * 60 * 24 * 365, // 1 ano
+            'path'     => '/',
+            'httponly' => true,
+            'samesite' => 'Lax',
+        ]);
+
+        $returnQuery = (string)($_POST['return_query'] ?? '');
+        $path        = strtok($_SERVER['REQUEST_URI'], '?');
+        $location    = $path . ($returnQuery !== '' ? '?' . $returnQuery : '');
+
+        header('Location: ' . $location);
+        exit;
+    }
+
+    $tema = $_COOKIE['tema'] ?? 'light';
     require_once __DIR__ . "/../Src/Class/Client/Client.php";
     require_once __DIR__ . "/../Src/Connection.php";
     require_once __DIR__ . "/../bootstrap.php";
@@ -84,7 +104,7 @@
     $hasHiddenPages = $visiblePages < $totalPages;
 ?>
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="<?= htmlspecialchars($tema) ?>">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -111,6 +131,17 @@
                     <li><a href="#sobre">Sobre</a></li>
                     <li><a href="#contato">Contato</a></li>
                 </ul>
+                <form method="post"
+          action="<?= htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES) ?>"
+          class="theme-toggle-form">
+        <input type="hidden" name="return_query"
+               value="<?= htmlspecialchars($_SERVER['QUERY_STRING'] ?? '', ENT_QUOTES) ?>">
+        <button type="submit" name="toggle_tema" class="theme-toggle"
+                aria-label="<?= $tema === 'dark' ? 'Ativar modo claro' : 'Ativar modo escuro' ?>"
+                title="<?= $tema === 'dark' ? 'Modo claro' : 'Modo escuro' ?>">
+            <?= $tema === 'dark' ? '☀️' : '🌙' ?>
+        </button>
+    </form>
                 <?php
                     $email = $_SESSION['client_object']->getEmail();
                     $imageUrl = $_SESSION['client_object']->getImage();

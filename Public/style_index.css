@@ -583,3 +583,97 @@ footer p {
 		flex-basis: 100%;
 	}
 }
+/* =====================================================
+   MODO ESCURO
+   ===================================================== */
+html[data-theme="dark"] {
+    /* Variáveis do style_index.css */
+    --sage:        #4a5240;
+    --cream-green: #2c3020;
+    --vanilla:     #1a1815;
+    --sand:        #2a2519;
+    --caramel:     #d4a373;          /* mantém o acento quente */
+    --ink:         #ede8dc;
+    --muted:       #b0a797;
+    --white:       #24211d;
+    --shadow:      0 18px 45px rgba(0, 0, 0, .55);
+
+    /* Variáveis do MVP.css (usadas por forms, tabelas, etc.) */
+    --color-bg:              #24211d;
+    --color-bg-secondary:    #3a352d;
+    --color-text:            #ede8dc;
+    --color-text-secondary:  #b0a797;
+    --color-link:            #d4a373;
+    --color-secondary:       #e0a172;
+    --color-accent:          rgba(212, 163, 115, .13);
+    --color-shadow:          rgba(255, 255, 255, .04);
+    --color-table:           #8b6f47;
+    --color-scrollbar:       #4a4338;
+}
+
+/* Textos de destaque que estavam com cor fixa */
+html[data-theme="dark"] .eyebrow,
+html[data-theme="dark"] .product-type,
+html[data-theme="dark"] .product-info strong {
+    color: var(--caramel);
+}
+
+/* Escurece levemente as fotos no modo escuro */
+html[data-theme="dark"] .hero-art {
+    background:
+        linear-gradient(rgba(0, 0, 0, .45), rgba(0, 0, 0, .45)),
+        url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1100&q=85')
+        center/cover;
+}
+html[data-theme="dark"] .about-image,
+html[data-theme="dark"] .product-image {
+    filter: brightness(.85);
+}
+
+/* =====================================================
+   BOTÃO DE TEMA (precisa vencer o padrão do MVP.css)
+   ===================================================== */
+.theme-toggle-form {
+    display: inline-flex;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+    min-width: 0;
+    max-width: none;
+    text-align: initial;
+}
+
+.theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    margin: 0;
+    border-radius: 50%;
+    border: 1px solid var(--caramel);
+    background: var(--white);
+    color: var(--ink);
+    font-size: 1.2rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+    box-shadow: none;
+    filter: none;
+}
+
+.theme-toggle:hover,
+.theme-toggle:focus {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+    filter: none;
+}
+
+.theme-toggle:active {
+    transform: translateY(0);
+    filter: none;
+}

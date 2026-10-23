@@ -181,3 +181,59 @@
     margin-bottom: 15px;
 }
 
+      
+        .profile-pic-hero {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border: 3px solid var(--client-focus);
+            box-shadow: var(--shadow);
+            background-color: #f0e9df;
+        }
+
+        .btn-logout-link {
+            display: inline-block;
+            margin-top: 24px;
+            color: var(--client-focus);
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 2px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+
+        .btn-logout-link:hover {
+            border-color: var(--client-focus);
+        }
+
+        
+        .client-page form input[type="email"],
+        .client-page form input[type="password"] {
+            display: block;
+            box-sizing: border-box;
+            width: 100%;
+            max-width: none;
+            min-width: 0;
+            height: 48px;
+            margin: 0;
+            padding: 11px 14px;
+            border: 1px solid var(--client-line);
+            border-radius: 8px;
+            background: #fff;
+            color: var(--ink);
+            font: inherit;
+            transition: border-color 160ms ease, box-shadow 160ms ease;
+        }
+
+        .client-page form input[type="email"]:focus,
+        .client-page form input[type="password"]:focus {
+            border-color: var(--client-focus);
+            box-shadow: 0 0 0 3px rgba(143, 101, 65, 0.16);
+            outline: none;
+        }
+        
+        .msg-success { color: #0e9214; font-weight: bold; margin-bottom: 15px; }
+        .msg-error { color: #c62828; font-weight: bold; margin-bottom: 15px; }
+
+
