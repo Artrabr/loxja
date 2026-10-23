@@ -1,6 +1,8 @@
 <?php
 
 require_once __DIR__ . "/SaleReport.php";
+require_once __DIR__ . "/../Client/ClientDB.php";
+require_once __DIR__ . "/../Product/ProductDB.php";
 
 class SaleReportDB
 {
@@ -11,57 +13,50 @@ class SaleReportDB
         $this->pdo = $pdo;
     }
 
-    public function getReportsByClientId(
-        int $clientId, 
-        ?string $startDate = null, 
-        ?string $endDate = null, 
-        ?string $status = null
-    ): array {
+    public function getReportsByClientId(int $clientId): array
+    {
         $sql = "
             SELECT 
-                sr.saleReport_id, sr.clt_id, sr.pdt_id, 
-                p.pdt_name, c.clt_name,
-                sr.saleReport_method, sr.saleReport_price, 
-                sr.saleReport_created_at, sr.saleReport_amount, sr.saleReport_status
-            FROM saleReport sr
-            INNER JOIN Product p ON p.pdt_id = sr.pdt_id
-            INNER JOIN client c ON c.clt_id = sr.clt_id
-            WHERE sr.clt_id = :clientId
+                saleReport_id,
+                clt_id,
+                pdt_id,
+                saleReport_amount,
+                saleReport_method,
+                saleReport_price,
+                saleReport_created_at
+            FROM saleReport
+            WHERE clt_id = :clientId
         ";
-
         $params = [':clientId' => $clientId];
-
-        if ($startDate !== null) {
-            $sql .= " AND sr.saleReport_created_at >= :startDate";
-            $params[':startDate'] = $startDate . ' 00:00:00';
-        }
-        if ($endDate !== null) {
-            $sql .= " AND sr.saleReport_created_at <= :endDate";
-            $params[':endDate'] = $endDate . ' 23:59:59';
-        }
-        if ($status !== null) {
-            $sql .= " AND sr.saleReport_status = :status";
-            $params[':status'] = $status;
-        }
-
-        $sql .= " ORDER BY sr.saleReport_created_at DESC, sr.saleReport_id DESC";
-
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($params);
 
+        $clientDB = new ClientDB($this->pdo);
+        $productDB = new ProductDB($this->pdo);
         $reports = [];
+
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $clientId = (int) $row['clt_id'];
+            $productId = (int) $row['pdt_id'];
+            $client = $clientDB->getClientByID($clientId);
+            $product = $productDB->getProductByID($productId);
+
+            if ($client === null || $product === null) {
+                throw new RuntimeException(
+                    "Sale report {$row['saleReport_id']} references a missing client or product."
+                );
+            }
+
             $reports[] = new SaleReport(
                 (int) $row['saleReport_id'],
-                (int) $row['clt_id'],
-                (int) $row['pdt_id'],
+                $clientId,
+                $productId,
+                $client,
+                $product,
                 $row['saleReport_method'],
                 (float) $row['saleReport_price'],
                 $row['saleReport_created_at'],
-                (int) $row['saleReport_amount'],
-                $row['pdt_name'],
-                $row['saleReport_status'] ?? 'completed',
-                $row['clt_name']
+                (int) $row['saleReport_amount']
             );
         }
 
@@ -71,29 +66,26 @@ class SaleReportDB
     public function addSaleReport(
         int $clientId,
         int $productId,
-        string $method,
-        float $price,
         int $amount,
-        string $status = 'completed',
-        ?string $createdAt = null
-    ): int {
+        string $method,
+        float $price
+    ): bool
+    //adiciona no banco e
+    //retorna um booleano true se der tudo certo
+    {
         $stmt = $this->pdo->prepare("
             INSERT INTO saleReport
-                (clt_id, pdt_id, saleReport_method, saleReport_price, saleReport_amount, saleReport_status, saleReport_created_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+                (clt_id, pdt_id, saleReport_amount, saleReport_method, saleReport_price)
+            VALUES (?, ?, ?, ?, ?)
         ");
         
-        $stmt->execute([
+        return $stmt->execute([ //se der retorna true se n retorna false
             $clientId,
             $productId,
-            $method,
-            $price,
             $amount,
-            $status,
-            $createdAt ?? date('Y-m-d H:i:s'),
+            $method,
+            $price
         ]);
-
-        return (int) $this->pdo->lastInsertId();
     }
 
     public function getOrdersByClientId(int $clientId): array
