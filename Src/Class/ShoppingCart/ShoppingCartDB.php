@@ -53,14 +53,28 @@ class ShoppingCartDB
             ]);
         }
     }
-    public function addItemToShoppingCartByClientId(int $clientId, $productId)
+    public function addItemToShoppingCartByClientId(int $clientId, int $productId, int $productAmount = 1)
     {
         $stmt = $this->pdo->prepare("
-            INSERT INTO ItensCart (clt_id, pdt_id, ic_amount)
-            VALUES (?, ?, ?)
-            ON DUPLICATE KEY UPDATE ic_amount = ic_amount + VALUES(ic_amount)
+        INSERT INTO ItensCart (clt_id, pdt_id, ic_amount)
+        SELECT
+            :clientId                              AS clt_id,
+            p.pdt_id                               AS pdt_id,
+            LEAST(:productAmount, p.pdt_amount)    AS ic_amount
+        FROM Product p
+        WHERE p.pdt_id = :productId
+          AND p.pdt_amount > 0
+        ON DUPLICATE KEY UPDATE
+            ic_amount = LEAST(
+                ItensCart.ic_amount + VALUES(ic_amount),
+                (SELECT pdt_amount FROM Product WHERE pdt_id = ItensCart.pdt_id)
+            )
         ");
 
-        $stmt->execute([$clientId, $productId, 1]);
+        $stmt->execute([
+            'clientId'      => $clientId,
+            'productId'     => $productId,
+            'productAmount' => $productAmount,
+        ]);
     }
 }

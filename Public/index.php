@@ -39,9 +39,7 @@
             try {
                 $clientId = (int)$_SESSION['client_object']->getId();
                 $cartDB   = new ShoppingCartDB($pdo);
-                for ($i = 0; $i < $quantity; $i++) {
-                    $cartDB->addItemToShoppingCartByClientId($clientId, $productId);
-                }
+                $cartDB->addItemToShoppingCartByClientId($clientId, $productId,$quantity);
                 $_SESSION['cart_flash'] = 'Produto adicionado ao carrinho!';
             } catch (Throwable $e) {
                 $_SESSION['cart_flash'] = 'Erro: ' . $e->getMessage();
@@ -143,9 +141,10 @@
         </button>
     </form>
                 <?php
-                    $email = $_SESSION['client_object']->getEmail();
-                    $imageUrl = $_SESSION['client_object']->getImage();
+                    $email = '';
                     if(isset($_SESSION['client_object'])){
+                        $email = $_SESSION['client_object']->getEmail();
+                        $imageUrl = $_SESSION['client_object']->getImage();
                     
                 ?> 
                     <a href="profile/index.php">
