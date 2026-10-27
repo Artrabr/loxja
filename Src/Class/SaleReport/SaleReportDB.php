@@ -14,6 +14,7 @@ class SaleReportDB
     }
 
     public function getReportsByClientId(int $clientId): array
+    //retorna uma array com um objeto pra cada pedido (salesreport)
     {
         $sql = "
             SELECT 
@@ -43,7 +44,7 @@ class SaleReportDB
 
             if ($client === null || $product === null) {
                 throw new RuntimeException(
-                    "Sale report {$row['saleReport_id']} references a missing client or product."
+                    "Sale report {$row['saleReport_id']} references a missing client or product" //pega o ingles do pai
                 );
             }
 
@@ -68,7 +69,7 @@ class SaleReportDB
         int $productId,
         int $amount,
         string $method,
-        float $price
+        float $price 
     ): bool
     //adiciona no banco e
     //retorna um booleano true se der tudo certo
@@ -88,7 +89,9 @@ class SaleReportDB
         ]);
     }
 
-    public function getOrdersByClientId(int $clientId): array
+    public function getOrders(int $clientId): array
+    //retorne uma array com objetos pra todos os pedidos
+    //pode apagar esse codigo bizzaro q ta ai dentro da função
     {
         $stmt = $this->pdo->prepare("
             SELECT 
@@ -106,5 +109,12 @@ class SaleReportDB
         $stmt->execute([$clientId]);
         
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getOrdersInThisRange(string $start, string $end, int $clientId = null): array
+    //retorna os valores do periodo inicial até o periodo final. caso o id nao for informado retornar todos os pedidos
+    //porem se o id do cliente for informado retornar os pedidos que possuam o id
+    {
+
     }
 }
