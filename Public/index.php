@@ -143,18 +143,12 @@
         </button>
     </form>
                 <?php
-<<<<<<< HEAD
-                    if ($client instanceof Client) {
-                        $imageUrl = $client->getImage();
-                ?>
-=======
                     $email = '';
                     if(isset($_SESSION['client_object'])){
                         $email = $_SESSION['client_object']->getEmail();
                         $imageUrl = $_SESSION['client_object']->getImage();
                     
                 ?> 
->>>>>>> d48379ce861ad558c4e190ecae7a3d1e58674928
                     <a href="profile/index.php">
                         <img src="<?= htmlspecialchars($imageUrl, ENT_QUOTES, 'UTF-8') ?>" alt="Foto de perfil" class="profile-avatar">
                     </a>
