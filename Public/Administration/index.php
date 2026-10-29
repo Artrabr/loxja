@@ -16,7 +16,7 @@ if (!$client instanceof Client) {
 }
 
 if (!$client->isAdmin()) {
-    http_response_code(403);
+    http_response_code(403); //manda pro index e nao informa o erro
     exit('Acesso restrito à administração.');
 }
 
