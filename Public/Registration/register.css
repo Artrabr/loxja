@@ -1,5 +1,5 @@
 :root {
-    --auth-background: var(--cream-green);
+    --auth-background: var(--sand);
 }
 
 * {
@@ -19,7 +19,7 @@ body {
     display: grid;
     place-items: center;
     padding: 35px 20px;
-    background: radial-gradient(circle at 85% 12%, var(--sand), transparent 30%), var(--auth-background);
+    background: radial-gradient(circle at 12% 15%, var(--cream-green), transparent 28%), var(--auth-background);
 }
 
 .brand {

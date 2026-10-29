@@ -10,17 +10,33 @@
     }*/
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adicionar Produto</title>
+    <title>Adicionar produto | Loxja Café</title>
     <link href="../MVP.css" rel="stylesheet">
     <link href="../theme.css" rel="stylesheet">
     <link href="index_style.css" rel="stylesheet">
 </head>
-<body>
-    <form action="../../Src/addProduct.php" method="POST" enctype="multipart/form-data">
+<body class="admin-page">
+    <header class="site-header">
+        <nav class="topbar" aria-label="Navegação administrativa">
+            <a class="brand" href="../index.php#inicio" aria-label="Loxja Café, início">
+                <img src="../logo.png" alt="" class="brand-mark">
+                <span>Loxja <small>café</small></span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="../index.php">Loja</a></li>
+                <li><a href="index.php">Administração</a></li>
+                <li><a href="edit-product.php">Editar produtos</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="admin-form-page">
+        <p class="eyebrow">Área administrativa</p>
+        <h1>Adicionar produto</h1>
+        <form class="admin-form" action="../../Src/addProduct.php" method="POST" enctype="multipart/form-data">
         <label for="name">Nome</label>
         <input type="text" id="name" name="name" required>
 
@@ -33,14 +49,15 @@
         <label for="quantity">Quantidade Disponível</label>
         <input type="number" id="quantity" name="quantity" min="0" required>
 
-        <label for="image">Image</label>
+        <label for="image">Imagem</label>
         <input type="file" id="image" name="image">
 
         <label for="category">Categoria</label>
         <input type="text" id="category" name="category" required>
 
         <button type="submit">Adicionar Produto</button>
-    </form>
-    <a href="../Administration/index.php">Voltar para o inicio</a>
+        </form>
+        <a class="admin-back-link" href="index.php">Voltar à administração</a>
+    </main>
 </body>
 </html>

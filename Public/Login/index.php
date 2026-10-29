@@ -28,7 +28,7 @@ $error = $_GET['error'] ?? null;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | Loxja Cafe</title>
+    <title>Entrar | Loxja Café</title>
     <link rel="stylesheet" href="../theme.css">
     <link rel="stylesheet" href="login.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css">
@@ -50,8 +50,8 @@ $error = $_GET['error'] ?? null;
     </form>
 
     <a class="brand" href="../index.php">
-        <img src="../logo.png" alt="Loxja Cafe" class="brand-mark">
-        <span>Loxja <small>cafe</small></span>
+        <img src="../logo.png" alt="" class="brand-mark">
+        <span>Loxja <small>café</small></span>
     </a>
     <?php if ($error === 'not_logged_in') : ?>
         <section class="auth-card" aria-labelledby="login-title">
@@ -67,10 +67,10 @@ $error = $_GET['error'] ?? null;
         </section>
     <?php else :?>
         <section class="auth-card" aria-labelledby="login-title">
-            <p class="eyebrow">Que bom ter voce por aqui</p>
+            <p class="eyebrow">Que bom ter você por aqui</p>
             <h1 id="login-title">Entre na sua conta</h1>
             <p class="intro">
-                Acompanhe seus pedidos e torne sua proxima pausa ainda mais gostosa.
+                Acompanhe seus pedidos e torne sua próxima pausa ainda mais gostosa.
             </p>
             <form action="../../Src/LoginProcess.php" method="post">
                 <label for="email">E-mail</label>
@@ -92,7 +92,7 @@ $error = $_GET['error'] ?? null;
                 <button type="submit">Entrar</button>
             </form>
             <p class="switch-page">
-                Ainda nao tem conta?
+                Ainda não tem conta?
                 <a href="../Registration/index.php">Cadastre-se</a>
             </p>
             <a class="back-link" href="../index.php">

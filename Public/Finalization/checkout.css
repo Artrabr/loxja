@@ -15,15 +15,15 @@
 }
 
 .checkout-page main {
-    max-width: 1180px;
+    max-width: var(--page-width);
     margin: 0 auto;
-    padding: 64px 28px 96px;
+    padding: 64px var(--page-gutter) 80px;
 }
 
 .checkout-page main > h1 {
     margin: 0 0 10px;
     font-size: clamp(2rem, 4vw, 3rem);
-    line-height: 1.05;
+    line-height: var(--heading-line-height);
 }
 
 .checkout-subtitle {
@@ -260,7 +260,7 @@
 
 @media (max-width: 860px) {
     .checkout-page main {
-        padding: 48px 24px 72px;
+        padding: 48px 20px 64px;
     }
 
     .checkout-layout {
@@ -270,7 +270,7 @@
 
 @media (max-width: 480px) {
     .checkout-page main {
-        padding: 32px 18px 56px;
+        padding: 40px 20px 60px;
     }
 
     .checkout-card {

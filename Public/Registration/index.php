@@ -26,7 +26,7 @@ $tema = $_COOKIE['tema'] ?? 'light';
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Cadastro | Loxja Cafe</title>
+	<title>Cadastro | Loxja Café</title>
 	<link rel="stylesheet" href="../theme.css">
 	<link rel="stylesheet" href="register.css">
 </head>
@@ -44,11 +44,11 @@ $tema = $_COOKIE['tema'] ?? 'light';
         </button>
     </form>
 		<a class="brand" href="../index.php">
-			<img src="../logo.png" alt="Loxja Cafe" class="brand-mark"><span>Loxja <small>cafe</small></span></a>
+			<img src="../logo.png" alt="" class="brand-mark"><span>Loxja <small>café</small></span></a>
 		<section class="auth-card" aria-labelledby="signup-title">
-			<p class="eyebrow">Seu cafe, do seu jeito</p>
+			<p class="eyebrow">Seu café, do seu jeito</p>
 			<h1 id="signup-title">Crie sua conta</h1>
-			<p class="intro">Faca parte da nossa mesa e receba novidades fresquinhas.</p>
+			<p class="intro">Faça parte da nossa mesa e receba novidades fresquinhas.</p>
 			<form action="../../Src/registerProcess.php" method="POST">
 				<label for="nome">Nome</label>
 				<input id="nome" name="nome" type="text" autocomplete="name" required>
@@ -58,7 +58,7 @@ $tema = $_COOKIE['tema'] ?? 'light';
 				<input id="senha" name="senha" type="password" autocomplete="new-password" required>
 				<button type="submit">Criar conta</button>
 			</form>
-			<p class="switch-page">Ja tem uma conta? <a href="../Login/index.php">Faca login</a></p>
+			<p class="switch-page">Já tem uma conta? <a href="../Login/index.php">Faça login</a></p>
 			<a class="back-link" href="../index.php">&larr; Voltar para a loja</a>
 		</section>
 	</main>

@@ -108,8 +108,8 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="Loxja Cafe: cafe especial, doces e momentos aconchegantes.">
-        <title>Loxja Cafe | Seu momento favorito</title>
+        <meta name="description" content="Loxja Café: café especial, doces e momentos aconchegantes.">
+        <title>Loxja Café | Seu momento favorito</title>
         <link href="MVP.css" rel="stylesheet">
         <link href="style_index.css" rel="stylesheet">
         <link href="style_index_exhibition.css" rel="stylesheet">
@@ -122,10 +122,10 @@
             </div>
         <?php endif; ?>
         <header class="site-header" id="inicio">
-            <nav class="topbar" aria-label="Navegacao principal">
-                <a class="brand" href="#inicio" aria-label="Loxja Cafe, inicio">
-                <img src="logo.png" alt="Loxja Cafe" class="brand-mark">
-                <span>Loxja <small>cafe</small></span></a>
+            <nav class="topbar" aria-label="Navegação principal">
+                <a class="brand" href="#inicio" aria-label="Loxja Café, início">
+                <img src="logo.png" alt="" class="brand-mark">
+                <span>Loxja <small>café</small></span></a>
                 <ul class="nav-links">
                     <li><a href="#produtos">Produtos</a></li>
                     <li><a href="#sobre">Sobre</a></li>
@@ -155,31 +155,31 @@
                 <?php
                     } else {
                 ?>
-                    <a class='login-button' href='Login/index.php'>Login</a>
+                    <a class="login-button" href="Login/index.php">Entrar</a>
                 <?php
                 }
 
                 if ($client instanceof Client && $client->isAdmin()) {
                 ?>
-                    <a href="./Administration/index.php" rel="admin">Gerenciar</a>
+                    <a href="./Administration/index.php" rel="admin">Administração</a>
                 <?php } ?>
             </nav>
         </header>
         <main>
             <section class="hero" aria-labelledby="hero-title">
                 <div class="hero-copy">
-                    <p class="eyebrow">Torra artesanal &bull; carinho em cada xicara</p>
-                    <h1 id="hero-title">Um cafe quentinho para chamar de seu.</h1>
+                    <p class="eyebrow">Torra artesanal &bull; carinho em cada xícara</p>
+                    <h1 id="hero-title">Um café quentinho para chamar de seu.</h1>
                     <p>Escolha seu momento favorito: aromas marcantes, doces delicados e aquele aconchego que cabe na rotina.</p>
                     <a class="primary-button" href="#produtos">Explorar sabores <span aria-hidden="true">&rarr;</span></a>
                 </div>
-                <div class="hero-art" role="img" aria-label="Xicara de cafe sobre uma mesa de madeira"></div>
+                <div class="hero-art" role="img" aria-label="Xícara de café sobre uma mesa de madeira"></div>
             </section>
             <section class="products-section" id="produtos" aria-labelledby="products-title">
                 <div class="section-heading">
                     <div>
                         <p class="eyebrow">Feitos para desacelerar</p>
-                        <h2 id="products-title">Nosso cardapio</h2>
+                        <h2 id="products-title">Nosso cardápio</h2>
                     </div>
                 </div>
                 <section class="search-strip" aria-label="Pesquisa e utilidades">
@@ -189,7 +189,7 @@
                     <div class="search-control">
                         <input id="search" name="search" type="search"
                             value="<?= htmlspecialchars($search, ENT_QUOTES) ?>"
-                            placeholder="Busque por cafe, doce...">
+                            placeholder="Busque por café, doce...">
                         <button type="submit">Buscar</button>
                     </div>
 
@@ -326,13 +326,13 @@
                                 <a
                                     class="pagination-arrow is-jump"
                                     href="<?= htmlspecialchars(productUrl($base, ['page' => 1])) ?>"
-                                    aria-label="Primeira pagina"
-                                    title="Primeira Pagina">&laquo;
+                                    aria-label="Primeira página"
+                                    title="Primeira página">&laquo;
                                 </a>
                                 <a
                                     class="pagination-arrow"
                                     href="<?= htmlspecialchars(productUrl($base, ['page' => $page - 1])) ?>"
-                                    aria-label="Pagina anterior"
+                                    aria-label="Página anterior"
                                     title="Anterior">&lsaquo;
                                 </a>
                             <?php else: ?>
@@ -358,21 +358,21 @@
                                     min="1"
                                     max="<?= (int)$totalPages ?>"
                                     placeholder="..."
-                                    aria-label="Ir para pagina">
+                                    aria-label="Ir para página">
                             </form>
 
                             <?php if($page < $totalPages): ?>
                                 <a
                                     class="pagination-arrow"
                                     href="<?= htmlspecialchars(productUrl($base, ['page' => $page + 1])) ?>"
-                                    aria-label="Proxima pagina"
+                                    aria-label="Próxima página"
                                     title="Proxima">&rsaquo;
                                 </a>
                                 <a
                                     class="pagination-arrow is-jump"
                                     href="<?= htmlspecialchars(productUrl($base, ['page' => $totalPages])) ?>"
                                     aria-label="Ultima pagina"
-                                    title="Ultima Pagina">&raquo;
+                                    title="Última página">&raquo;
                                 </a>
                             <?php else: ?>
                                 <span class="pagination-arrow is-jump is-disabled" aria-hidden="true">&rsaquo;</span>
@@ -384,16 +384,16 @@
             </section>
             <section class="contact-section" id="contato" aria-labelledby="contact-title">
                 <div>
-                    <p class="eyebrow">Vem tomar um cafe</p>
+                    <p class="eyebrow">Venha tomar um café</p>
                     <h2 id="contact-title">Seu cantinho fica na Rua do Aroma, 42.</h2>
-                    <p>De segunda a sabado, das 8h as 19h. Fale com a gente e reserve sua mesa.</p>
+                    <p>De segunda a sábado, das 8h às 19h. Fale com a gente e reserve sua mesa.</p>
                 </div>
                 <a class="primary-button eyebrow" href="mailto:oi@loxjacafe.com">Contate-nos<span aria-hidden="true">&rarr;</span></a>
             </section>
             <section class="about-section" id="sobre" aria-labelledby="about-title">
                 <div class="about-image"
                      role="img"
-                     aria-label="Interior aconchegante da Loxja Cafe, com mesas de madeira e luz suave"></div>
+                     aria-label="Interior aconchegante da Loxja Café, com mesas de madeira e luz suave"></div>
                 <div class="about-copy">
                     <p class="eyebrow">Sobre nós</p>
                     <h2 id="about-title">Um cantinho feito à mão, xícara por xícara.</h2>
@@ -406,10 +406,10 @@
         <footer>
             <a class="brand footer-brand" href="#inicio">
                 <span class="brand-mark">
-                    <img src="logo.png" alt="Loxja Cafe" class="brand-mark">
+                    <img src="logo.png" alt="" class="brand-mark">
                 </span>
-                <span>Loxja <small>cafe</small></span></a><p>&copy; 2026 Loxja Cafe. Todos os direitos reservados.</p>
-            <a href="#inicio" class="back-top" aria-label="Voltar ao inicio">&uarr;</a>
+                <span>Loxja <small>café</small></span></a><p>&copy; 2026 Loxja Café. Todos os direitos reservados.</p>
+            <a href="#inicio" class="back-top" aria-label="Voltar ao início">&uarr;</a>
         </footer>
     </body>
 </html>
