@@ -4,27 +4,6 @@ require_once __DIR__ . "/Connection.php";
 require_once __DIR__ . "/Class/Client/ClientDB.php";
 require_once __DIR__ . "/Validation.php";
 
-function connectToDatabase()
-{
-    $pdo = Connection::conectar();
-    return $pdo;
-}
-
-function disconnectFromDatabase($pdo)
-{
-    $pdo = null;
-}
-
-function getPassword(Client $client)
-{
- //retorna a senha do banco de dados do cliente
-    $id = $client->getId();
-    global $pdo;
-    $smt = $pdo->prepare("SELECT clt_password FROM Client WHERE clt_id = :id");
-    $smt->execute(['id' => $id]);
-    return $smt->fetchColumn();
-}
-
 function ClientSession($cliente)
 {
     $_SESSION["client_object"] = $cliente;
@@ -46,7 +25,7 @@ if (!Validation::isValidPassword($password) || !Validation::isValidEmail($login)
     exit();
 }
 
-$pdo = connectToDatabase();
+$pdo = Connection::conectar();
 //                                                                                              ___________
 $clientDB = new ClientDB($pdo);
 //pega o cliente pelo email                                                                     \_supreme_I______
@@ -59,7 +38,7 @@ if (is_null($cliente)) {//                                                      
 }//                                                                                              /  I  \
 //                                                                                                 / \
 //verifica se a senha está correta                                                                /   \
-if (!password_verify($password, getPassword($cliente))) {//                                        /     \
+if (!$clientDB->isRightPassword($login, $password)) {//                                        /     \
     header("Location: ../Public/Login/index.php?error=invalid_password");//                  ===============
     exit();//                                                                                    O      O
 }
@@ -67,8 +46,7 @@ if (!password_verify($password, getPassword($cliente))) {//                     
 //da uma sessao ao cliente
 ClientSession($cliente);
 
-//disconecta do banco de dados
-disconnectFromDatabase($pdo);
+$pdo = null;
 
 if ($cliente->isAdmin()) {
     header("Location: ../Public/Administration/index.php");

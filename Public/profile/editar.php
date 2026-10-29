@@ -32,6 +32,12 @@ if (!$client) {
 $nome  = trim($_POST['nome']  ?? '');
 $email = trim($_POST['email'] ?? '');
 $senha = trim($_POST['senha'] ?? '');
+$isImageOnlyUpdate = ($_POST['action'] ?? '') === 'upload_image';
+
+if ($isImageOnlyUpdate) {
+    $nome = $client->getName();
+    $email = $client->getEmail();
+}
 
 if (strlen($nome) < 3) {
     $_SESSION['erro'] = 'O nome precisa ter ao menos 3 caracteres.';
@@ -45,7 +51,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     exit;
 }
 
-if (strlen($senha) < 6) {
+if (!$isImageOnlyUpdate && strlen($senha) < 6) {
     $_SESSION['erro'] = 'A senha precisa ter ao menos 6 caracteres.';
     header('Location: index.php');
     exit;
@@ -105,14 +111,22 @@ try {
         $client->setImageFilename($imageFilename);
     }
 
+    if ($isImageOnlyUpdate && $uploadedImagePath === null) {
+        throw new RuntimeException('Escolha uma imagem antes de enviar.');
+    }
+
     $pdo->beginTransaction();
     $clientDB->updateClient($client);
-    $clientDB->changeClientPasswordById($senha, $client->getId());
+    if (!$isImageOnlyUpdate) {
+        $clientDB->changeClientPasswordById($senha, $client->getId());
+    }
     $pdo->commit();
     $saved = true;
 
     $_SESSION['client_object'] = $client;
-    $_SESSION['msg'] = 'Dados atualizados com sucesso!';
+    $_SESSION['msg'] = $isImageOnlyUpdate
+        ? 'Foto de perfil atualizada com sucesso!'
+        : 'Dados atualizados com sucesso!';
 
     if ($oldImageFilename !== null && $oldImageFilename !== $client->getImageFilename()) {
         $oldImagePath = __DIR__ . '/../images/client/' . $oldImageFilename;

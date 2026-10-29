@@ -1,5 +1,8 @@
 <?php
     require_once __DIR__ . "/../../bootstrap.php";
+    require_once __DIR__ . "/../theme-toggle.php";
+    require_once __DIR__ . '/layout.php';
+    $tema = currentTheme();
     if(!isset($_SESSION['client_object'])) {
         header("Location: ../Login/index.php?error=not_logged_in");
         exit();
@@ -10,7 +13,7 @@
     }*/
 ?>
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="<?= htmlspecialchars($tema, ENT_QUOTES, 'UTF-8') ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,21 +23,8 @@
     <link href="index_style.css" rel="stylesheet">
 </head>
 <body class="admin-page">
-    <header class="site-header">
-        <nav class="topbar" aria-label="Navegação administrativa">
-            <a class="brand" href="../index.php#inicio" aria-label="Loxja Café, início">
-                <img src="../logo.png" alt="" class="brand-mark">
-                <span>Loxja <small>café</small></span>
-            </a>
-            <ul class="nav-links">
-                <li><a href="../index.php">Loja</a></li>
-                <li><a href="index.php">Administração</a></li>
-                <li><a href="edit-product.php">Editar produtos</a></li>
-            </ul>
-        </nav>
-    </header>
-    <main class="admin-form-page">
-        <p class="eyebrow">Área administrativa</p>
+    <?php renderAdminLayoutStart($tema, 'add-product'); ?>
+        <p class="admin-eyebrow">Catálogo</p>
         <h1>Adicionar produto</h1>
         <form class="admin-form" action="../../Src/addProduct.php" method="POST" enctype="multipart/form-data">
         <label for="name">Nome</label>
@@ -57,7 +47,6 @@
 
         <button type="submit">Adicionar Produto</button>
         </form>
-        <a class="admin-back-link" href="index.php">Voltar à administração</a>
-    </main>
+    <?php renderAdminLayoutEnd(); ?>
 </body>
 </html>

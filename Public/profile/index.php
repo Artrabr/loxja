@@ -3,40 +3,12 @@ require_once __DIR__ . '/../../Src/Class/Client/Client.php';
 require_once __DIR__ . '/../../Src/Connection.php';
 require_once __DIR__ . '/../../Src/Class/Client/ClientDB.php';
 require_once __DIR__ . '/../../Src/Validation.php';
-
-function getPassword(Client $client)
-{
-   
-    $id = $client->getId();
-    global $pdo;
-    $smt = $pdo->prepare("SELECT clt_password FROM Client WHERE clt_id = :id");
-    $smt->execute(['id' => $id]);
-    return $smt->fetchColumn();
-}
+require_once __DIR__ . '/../theme-toggle.php';
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_tema'])) {
-    $temaAtual = $_COOKIE['tema'] ?? 'light';
-    $temaNovo  = ($temaAtual === 'dark') ? 'light' : 'dark';
-
-    setcookie('tema', $temaNovo, [
-        'expires'  => time() + 60 * 60 * 24 * 365,
-        'path'     => '/',
-        'httponly' => true,
-        'samesite' => 'Lax',
-    ]);
-
-    $returnQuery = (string)($_POST['return_query'] ?? '');
-    $path        = strtok($_SERVER['REQUEST_URI'], '?');
-    $location    = $path . ($returnQuery !== '' ? '?' . $returnQuery : '');
-
-    header('Location: ' . $location);
-    exit;
-}
-
-$tema = $_COOKIE['tema'] ?? 'light';
+$tema = currentTheme();
 
 if (!isset($_SESSION['client_object'])) {
     header('Location: ../Login/index.php?error=not_logged');
@@ -63,6 +35,7 @@ if (!$client) {
     <link href="../MVP.css" rel="stylesheet">
     <link href="../style_index.css" rel="stylesheet">
     <link href="profilestyle.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css">
     
 </head>
 <body class="client-page">
@@ -77,23 +50,19 @@ if (!$client) {
                 <li><a href="../Client/index.php">Informações técnicas</a></li>
                 <li><a href="../salesReport/index.php">Relatório de vendas</a></li>
             </ul>
-            <form method="post"
-                  action="<?= htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES) ?>"
-                  class="theme-toggle-form">
-                <input type="hidden" name="return_query"
-                       value="<?= htmlspecialchars($_SERVER['QUERY_STRING'] ?? '', ENT_QUOTES) ?>">
-                <button type="submit" name="toggle_tema" class="theme-toggle"
-                        aria-label="<?= $tema === 'dark' ? 'Ativar modo claro' : 'Ativar modo escuro' ?>"
-                        title="<?= $tema === 'dark' ? 'Modo claro' : 'Modo escuro' ?>">
-                    <?= $tema === 'dark' ? '☀️' : '🌙' ?>
-                </button>
-            </form>
+            <?php renderThemeToggle($tema); ?>
         </nav>
     </header>
 
     <main>
         <section>
-            <img src="<?= htmlspecialchars($client->getImage(), ENT_QUOTES, 'UTF-8') ?>" alt="Foto de perfil" class="profile-pic-hero">
+            <button type="button" class="profile-photo-trigger" id="open-profile-photo"
+                    aria-label="Alterar foto de perfil" aria-haspopup="dialog">
+                <img src="<?= htmlspecialchars($client->getImage(), ENT_QUOTES, 'UTF-8') ?>" alt="" class="profile-pic-hero">
+                <span class="profile-photo-trigger-label" aria-hidden="true">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </span>
+            </button>
             <h1>Bem-vindo, <?= htmlspecialchars($client->getName()) ?>!</h1>
             <p>Esta é a sua área exclusiva para gerenciar seus dados cadastrais.</p>
             <a href="deleteSession.php" class="btn-logout-link">Sair da conta</a>
@@ -120,9 +89,6 @@ if (!$client) {
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" value="<?= htmlspecialchars($client->getEmail()) ?>" required>
 
-                <label for="imagem">Foto de perfil (JPG, PNG ou WebP; até 5 MB)</label>
-                <input type="file" id="imagem" name="imagem" accept="image/jpeg,image/png,image/webp">
-
                 <label for="senha">Senha</label>
                 <input type="password" id="senha" name="senha" required>
 
@@ -130,5 +96,44 @@ if (!$client) {
             </form>
         </section>
     </main>
+    <dialog class="profile-photo-dialog" id="profile-photo-dialog" aria-labelledby="profile-photo-title">
+        <form method="post" action="editar.php" enctype="multipart/form-data" class="profile-photo-form">
+            <button type="button" class="profile-photo-close" id="close-profile-photo"
+                    aria-label="Fechar janela">×</button>
+            <div class="profile-photo-heading">
+                <span class="profile-photo-heading-icon" aria-hidden="true">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </span>
+                <div>
+                    <h2 id="profile-photo-title">Alterar foto de perfil</h2>
+                    <p id="profile-photo-requirements">Escolha uma imagem nítida em JPG, PNG ou WebP. O arquivo deve ter no máximo 5 MB.</p>
+                </div>
+            </div>
+            <div class="profile-photo-upload">
+                <input id="profile-photo-file" type="file" name="imagem"
+                       accept="image/jpeg,image/png,image/webp" aria-describedby="profile-photo-requirements profile-photo-filename" required>
+                <label for="profile-photo-file" class="profile-photo-file-button">
+                    <i class="fa-solid fa-arrow-up-from-bracket" aria-hidden="true"></i>
+                    Selecionar imagem
+                </label>
+                <span id="profile-photo-filename" class="profile-photo-filename" role="status">Nenhuma imagem selecionada</span>
+            </div>
+            <input type="hidden" name="action" value="upload_image">
+            <button type="submit" class="profile-photo-submit">Enviar foto</button>
+        </form>
+    </dialog>
+    <script>
+        const photoDialog = document.getElementById('profile-photo-dialog');
+        document.getElementById('open-profile-photo').addEventListener('click', () => photoDialog.showModal());
+        document.getElementById('close-profile-photo').addEventListener('click', () => photoDialog.close());
+        document.getElementById('profile-photo-file').addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            document.getElementById('profile-photo-filename').textContent =
+                file ? file.name : 'Nenhuma imagem selecionada';
+        });
+        photoDialog.addEventListener('click', (event) => {
+            if (event.target === photoDialog) photoDialog.close();
+        });
+    </script>
 </body>
 </html>

@@ -1,7 +1,7 @@
 :root {
     --client-line: rgba(47, 42, 36, 0.14);
     --client-focus: #8f6541;
-    --client-paper: #fffdf7;
+    --client-paper: var(--white);
 }
 
 .client-page {
@@ -83,7 +83,7 @@
     padding: 11px 14px;
     border: 1px solid var(--client-line);
     border-radius: 8px;
-    background: #fff;
+    background: var(--white);
     color: var(--ink);
     font: inherit;
     transition: border-color 160ms ease, box-shadow 160ms ease;
@@ -184,4 +184,95 @@
     color: #c62828;
     font-weight: bold;
     margin-bottom: 15px;
+}
+
+.client-page form.theme-toggle-form {
+    display: inline-flex;
+    grid-template-columns: none;
+    grid-column: auto;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    box-sizing: border-box;
+    flex: 0 0 auto;
+    width: auto;
+    max-width: none;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    text-align: initial;
+}
+
+.client-page form.theme-toggle-form .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 44px;
+    height: 44px;
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--caramel);
+    border-radius: 50%;
+    background: var(--white);
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 1.2rem;
+    font-weight: 400;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: none;
+    filter: none;
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.client-page form.theme-toggle-form .theme-toggle:hover,
+.client-page form.theme-toggle-form .theme-toggle:focus {
+    background: var(--white);
+    color: var(--ink);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+    filter: none;
+}
+
+.client-page form.theme-toggle-form .theme-toggle:focus-visible {
+    outline: 2px solid var(--caramel);
+    outline-offset: 3px;
+}
+
+.client-page form.theme-toggle-form .theme-toggle:active {
+    transform: translateY(0);
+    box-shadow: none;
+    filter: none;
+}
+
+
+html[data-theme="dark"] .client-page form input[type="text"] {
+    background: #2f2b25;
+    color: var(--ink);
+}
+
+html[data-theme="dark"] .client-page form input[type="text"]:focus {
+    box-shadow: 0 0 0 3px rgba(212, 163, 115, 0.22);
+}
+html[data-theme="dark"] {
+    --client-line:  rgba(237, 232, 220, 0.14);
+    --client-focus: #d4a373;
+    --client-paper: #24211d;
+}
+
+html[data-theme="dark"] .msg-success {
+    color: #86c986;
+}
+
+html[data-theme="dark"] .msg-error {
+    color: #f08a8a;
+}
+
+html[data-theme="dark"] .client-page form button:focus-visible {
+    outline: 3px solid rgba(212, 163, 115, 0.32);
 }
