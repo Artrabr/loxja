@@ -1,7 +1,7 @@
 :root {
     --checkout-line: rgba(47, 42, 36, 0.14);
     --checkout-focus: #8f6541;
-    --checkout-paper: #fffdf7;
+    --checkout-paper: var(--white);
     --checkout-danger: #b23a3a;
     --checkout-danger-bg: #fbeaea;
     --checkout-success: #4a7c4a;
@@ -166,7 +166,7 @@
     padding: 12px 14px;
     border: 1px solid var(--checkout-line);
     border-radius: 10px;
-    background: #fff;
+    background: var(--white);
     font-weight: normal;
     cursor: pointer;
     transition: border-color 160ms ease, box-shadow 160ms ease;
@@ -256,6 +256,13 @@
     color: var(--checkout-success);
     font-weight: 700;
     text-decoration: underline;
+}
+
+html[data-theme="dark"] {
+    --checkout-line: rgba(237, 232, 220, 0.14);
+    --checkout-focus: #d4a373;
+    --checkout-danger-bg: rgba(178, 58, 58, 0.18);
+    --checkout-success-bg: rgba(74, 124, 74, 0.18);
 }
 
 @media (max-width: 860px) {

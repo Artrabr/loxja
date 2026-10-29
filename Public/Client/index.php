@@ -1,6 +1,8 @@
 <?php
     require_once __DIR__ . "/../../Src/Class/Client/Client.php";
     require_once __DIR__ . "/../../bootstrap.php";
+    require_once __DIR__ . "/../theme-toggle.php";
+    $tema = currentTheme();
 
     if (!isset($_SESSION['client_object'])) {
         header("Location: ../Login/index.php?error=not_logged_in");
@@ -14,7 +16,7 @@
     $id = $cliente_obj->getId();
 ?>
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="<?= htmlspecialchars($tema, ENT_QUOTES, 'UTF-8') ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,6 +37,7 @@
                 <li><a href="../Client/index.php" aria-current="page">Informações técnicas</a></li>
                 <li><a href="../salesReport/index.php">Relatório de vendas</a></li>
             </ul>
+            <?php renderThemeToggle($tema); ?>
         </nav>
     </header>
     <main>

@@ -1,7 +1,7 @@
 :root {
     --client-line: rgba(47, 42, 36, 0.14);
     --client-focus: #8f6541;
-    --client-paper: #fffdf7;
+    --client-paper: var(--white);
 }
 
 .client-page {
@@ -83,7 +83,7 @@
     padding: 11px 14px;
     border: 1px solid var(--client-line);
     border-radius: 8px;
-    background: #fff;
+    background: var(--white);
     color: var(--ink);
     font: inherit;
     transition: border-color 160ms ease, box-shadow 160ms ease;
@@ -184,4 +184,14 @@
     color: #c62828;
     font-weight: bold;
     margin-bottom: 15px;
+}
+
+html[data-theme="dark"] {
+    --client-line: rgba(237, 232, 220, 0.14);
+    --client-focus: #d4a373;
+}
+
+html[data-theme="dark"] .client-page form input[type="text"] {
+    background: var(--white);
+    color: var(--ink);
 }
