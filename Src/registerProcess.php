@@ -4,8 +4,6 @@ require_once __DIR__ . "/Connection.php";
 require_once __DIR__ . "/Class/Client/ClientDB.php";
 require_once __DIR__ . "/Validation.php";
 
-session_start();
-
 function connectToDatabase()
 {
     $pdo = Connection::conectar();
@@ -57,7 +55,6 @@ $db_client = new ClientDB($pdo);
 try {
     $client = $db_client->createClient($name, $email, $password);
 } catch (DuplicateEmail $e) {
-    disconnectFromDatabase($pdo);
     header("Location: ../Public/index.php?erro=usuarioexistente");
     exit();
 }

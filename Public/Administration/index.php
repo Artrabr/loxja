@@ -8,17 +8,7 @@ require_once __DIR__ . '/../../Src/Class/SaleReport/SaleReportDB.php';
 require_once __DIR__ . '/../../Src/Class/SaleReport/PaymentMethod.php';
 
 $tema = currentTheme();
-$client = $_SESSION['client_object'] ?? null;
-
-if (!$client instanceof Client) {
-    header('Location: ../Login/index.php?error=not_logged_in');
-    exit();
-}
-
-if (!$client->isAdmin()) {
-    http_response_code(403);
-    exit('Acesso restrito à administração.');
-}
+requireAdminAccess();
 
 $pdo = Connection::conectar();
 $saleReportDB = new SaleReportDB($pdo);

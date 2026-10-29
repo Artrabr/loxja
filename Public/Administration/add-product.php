@@ -1,16 +1,10 @@
 <?php
+    require_once __DIR__ . "/../../Src/Class/Client/Client.php";
     require_once __DIR__ . "/../../bootstrap.php";
     require_once __DIR__ . "/../theme-toggle.php";
     require_once __DIR__ . '/layout.php';
     $tema = currentTheme();
-    if(!isset($_SESSION['client_object'])) {
-        header("Location: ../Login/index.php?error=not_logged_in");
-        exit();
-    }
-    /*if(!isset($_SESSION['adm'] == true)) {                              ADICIONAR APÓS O SISTEMA DE LOGIN DE ADM FICAR PRONTO!!!!!!!!!!!!
-        header("Location: ../Login/index.php?error=notadm");
-        exit();
-    }*/
+    requireAdminAccess();
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR" data-theme="<?= htmlspecialchars($tema, ENT_QUOTES, 'UTF-8') ?>">

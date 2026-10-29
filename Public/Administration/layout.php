@@ -1,9 +1,22 @@
 <?php
 
+require_once __DIR__ . '/../../Src/Class/Client/Client.php';
+
+function requireAdminAccess(): void
+{
+    $client = $_SESSION['client_object'] ?? null;
+
+    if (!$client instanceof Client || !$client->isAdmin()) {
+        header('Location: ../index.php');
+        exit();
+    }
+}
+
 function renderAdminLayoutStart(string $theme, string $activePage): void
 {
     $navigation = [
         'dashboard' => ['index.php', 'Painel'],
+        'sales-report' => ['sales-report.php', 'Relatório de vendas'],
         'add-product' => ['add-product.php', 'Adicionar produto'],
         'edit-products' => ['edit-product.php', 'Editar produtos'],
     ];

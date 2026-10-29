@@ -7,6 +7,17 @@
   --admin-text: #19213a;
   --admin-muted: #65708b;
   --admin-border: #dce2f0;
+  --admin-button-text: #fff;
+  --admin-shadow: rgba(32, 48, 91, 0.08);
+  --admin-table-head: rgba(66, 99, 235, 0.08);
+  --admin-table-row: rgba(66, 99, 235, 0.04);
+  --admin-focus: rgba(66, 99, 235, 0.16);
+  --admin-hover: rgba(230, 73, 151, 0.08);
+  --admin-active-border: rgba(255, 131, 186, 0.3);
+  --admin-sidebar-muted: #aeb9d6;
+  --admin-sidebar-text: #e1e7f6;
+  --admin-sidebar-hover: rgba(255, 255, 255, 0.08);
+  --admin-table-heading-text: #fff;
   min-height: 100vh;
   margin: 0;
   display: flex;
@@ -35,7 +46,7 @@
   padding: 12px 32px;
   border-bottom: 1px solid var(--admin-border);
   background: var(--admin-surface);
-  box-shadow: 0 4px 18px rgba(32, 48, 91, 0.06);
+  box-shadow: 0 4px 18px var(--admin-shadow);
   text-align: left;
 }
 
@@ -110,12 +121,12 @@
   min-height: 0;
   padding: 30px 18px;
   background: #182443;
-  color: #fff;
+  color: var(--admin-sidebar-text);
 }
 
 .admin-sidebar-label {
   margin: 0 12px 16px;
-  color: #aeb9d6;
+  color: var(--admin-sidebar-muted);
   font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.14em;
@@ -136,7 +147,7 @@
   padding: 0 14px;
   border: 1px solid transparent;
   border-radius: 11px;
-  color: #e1e7f6;
+  color: var(--admin-sidebar-text);
   font-size: 0.94rem;
   font-weight: 650;
   text-decoration: none;
@@ -148,25 +159,19 @@
 .admin-store-link:hover,
 .admin-store-link:focus-visible {
   border-color: rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--admin-sidebar-hover);
   color: #fff;
 }
 
 .admin-sidebar nav a[aria-current="page"] {
-  border-color: rgba(255, 131, 186, 0.3);
+  border-color: var(--admin-active-border);
   background: linear-gradient(110deg, var(--admin-blue), var(--admin-pink));
-  color: #fff;
+  color: var(--admin-button-text);
 }
 
 .admin-store-link {
   margin-top: auto;
-  border-color: rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.06);
-}
-
-.admin-store-link:hover,
-.admin-store-link:focus-visible {
-  background: rgba(255, 255, 255, 0.12);
+  text-decoration: none;
 }
 
 .admin-content {
@@ -200,11 +205,13 @@
   box-sizing: border-box;
   width: 100%;
   margin: 0;
+  margin-right: auto;
+  margin-left: auto;
   padding: clamp(24px, 4vw, 40px);
   border: 1px solid var(--admin-border);
   border-radius: 20px;
   background: var(--admin-surface);
-  box-shadow: 0 16px 40px rgba(32, 48, 91, 0.08);
+  box-shadow: 0 16px 40px var(--admin-shadow);
 }
 
 .admin-metrics {
@@ -223,14 +230,17 @@
   border: 1px solid var(--admin-border);
   border-radius: 16px;
   background: var(--admin-surface);
-  box-shadow: 0 12px 30px rgba(32, 48, 91, 0.06);
+  box-shadow: 0 12px 30px var(--admin-shadow);
 }
 
 .admin-metric-card {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: 8px;
   border-top: 3px solid var(--admin-blue);
+  text-align: center;
 }
 
 .admin-metric-card:nth-child(even) {
@@ -263,6 +273,22 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px;
   margin-bottom: 22px;
+}
+
+.admin-report-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.admin-stat-list,
+.admin-product-ranking {
+  width: min(100%, 520px);
+  margin-right: auto;
+  margin-left: auto;
+  text-align: left;
 }
 
 .admin-report-card h2,
@@ -376,6 +402,7 @@
 
 .admin-section-heading {
   margin-bottom: 20px;
+  text-align: center;
 }
 
 .admin-section-heading .admin-eyebrow {
@@ -418,7 +445,7 @@
 }
 
 .admin-sales-table th {
-  background: rgba(66, 99, 235, 0.08);
+  background: var(--admin-table-head);
   color: var(--admin-blue-deep);
   font-size: 0.78rem;
   font-weight: 800;
@@ -430,7 +457,7 @@
 }
 
 .admin-sales-table tbody tr:nth-child(even) td {
-  background: rgba(66, 99, 235, 0.025);
+  background: var(--admin-table-row);
 }
 
 .admin-form button,
@@ -444,7 +471,7 @@
   border: 1px solid var(--admin-blue);
   border-radius: 10px;
   background: linear-gradient(115deg, var(--admin-blue), var(--admin-pink));
-  color: #fff;
+  color: var(--admin-button-text);
   font: inherit;
   font-weight: 750;
   text-decoration: none;
@@ -454,7 +481,7 @@
 
 .admin-form button:hover,
 .edit-products td button:hover {
-  color: #fff;
+  color: var(--admin-button-text);
   filter: brightness(0.94);
   transform: translateY(-1px);
 }
@@ -464,6 +491,75 @@
   grid-template-columns: minmax(0, 1fr);
   gap: 10px;
   max-width: 820px;
+}
+
+.admin-form.admin-sales-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: center;
+  gap: 12px;
+  max-width: none;
+  margin: 0 0 22px;
+}
+
+.admin-sales-filter-field {
+  display: grid;
+  flex: 0 1 190px;
+  gap: 6px;
+}
+
+.admin-form.admin-sales-filter .admin-sales-filter-field label {
+  margin: 0;
+}
+
+.admin-sales-filter-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+}
+
+.admin-form.admin-sales-filter .admin-sales-filter-actions button {
+  min-width: 0;
+  margin: 0;
+}
+
+.admin-sales-filter-actions .admin-clear-filter {
+  box-sizing: border-box;
+  min-height: 44px;
+  padding: 0 12px;
+  font-size: 0.88rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.admin-sales-filter-actions a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--admin-border);
+  border-radius: 10px;
+  background: var(--admin-surface);
+  color: var(--admin-muted);
+  font-weight: 700;
+  text-decoration: none;
+  transition: border-color 160ms ease, background-color 160ms ease, color 160ms ease;
+}
+
+.admin-sales-filter-actions a:hover,
+.admin-sales-filter-actions a:focus-visible {
+  border-color: var(--admin-pink);
+  background: var(--admin-hover);
+  color: var(--admin-pink);
+}
+
+html[data-theme="dark"] .admin-sales-filter-actions a:hover,
+html[data-theme="dark"] .admin-sales-filter-actions a:focus-visible {
+  background: var(--admin-hover);
 }
 
 .admin-form label {
@@ -500,7 +596,7 @@
 .admin-form textarea:focus,
 .edit-products td input:focus {
   border-color: var(--admin-blue);
-  outline: 3px solid rgba(66, 99, 235, 0.16);
+  outline: 3px solid var(--admin-focus);
   outline-offset: 1px;
 }
 
@@ -518,7 +614,7 @@
   border: 0;
   border-radius: 8px;
   background: linear-gradient(110deg, var(--admin-blue), var(--admin-pink));
-  color: #fff;
+  color: var(--admin-button-text);
   font: inherit;
   font-size: 0.86rem;
   font-weight: 750;
@@ -533,7 +629,7 @@
 
 .admin-form input[type="file"]:focus-visible {
   border-color: var(--admin-blue);
-  outline: 3px solid rgba(66, 99, 235, 0.16);
+  outline: 3px solid var(--admin-focus);
   outline-offset: 2px;
 }
 
@@ -557,7 +653,7 @@
   border-spacing: 0;
   border-radius: 14px;
   background: var(--admin-surface);
-  box-shadow: 0 16px 40px rgba(32, 48, 91, 0.08);
+  box-shadow: 0 16px 40px var(--admin-shadow);
   text-align: left;
   white-space: normal;
 }
@@ -572,13 +668,13 @@
 }
 
 .edit-products .admin-content th {
-  background: #253b9b;
-  color: #fff;
+  background: var(--admin-blue-deep);
+  color: var(--admin-table-heading-text);
   font-size: 0.84rem;
 }
 
 .edit-products .admin-content tr:nth-child(even) td {
-  background: rgba(66, 99, 235, 0.04);
+  background: var(--admin-table-row);
 }
 
 .edit-products .admin-content td form {
@@ -631,18 +727,41 @@
 }
 
 html[data-theme="dark"] .admin-page {
-  --admin-bg: #101629;
-  --admin-surface: #19223a;
-  --admin-text: #f5f7ff;
-  --admin-muted: #b7c0d8;
-  --admin-border: #34405d;
-  background: var(--admin-bg);
+  --admin-blue: #70c6bd;
+  --admin-blue-deep: #b6e9e3;
+  --admin-pink: #d6a86f;
+  --admin-bg: #111923;
+  --admin-surface: #1c2832;
+  --admin-text: #e9f1f0;
+  --admin-muted: #a9bbb9;
+  --admin-border: #34464c;
+  --admin-button-text: #14211f;
+  --admin-shadow: rgba(0, 0, 0, 0.22);
+  --admin-table-head: rgba(112, 198, 189, 0.13);
+  --admin-table-row: rgba(112, 198, 189, 0.045);
+  --admin-focus: rgba(112, 198, 189, 0.24);
+  --admin-hover: rgba(214, 168, 111, 0.12);
+  --admin-active-border: rgba(112, 198, 189, 0.4);
+  --admin-sidebar-muted: #9fbfbb;
+  --admin-sidebar-text: #d7e8e5;
+  --admin-sidebar-hover: rgba(112, 198, 189, 0.1);
+  --admin-table-heading-text: #d7e8e5;
+  --caramel: var(--admin-blue);
+  --white: var(--admin-surface);
+  --ink: var(--admin-text);
+  --muted: var(--admin-muted);
+  --sage: var(--admin-border);
+  --shadow: 0 18px 45px var(--admin-shadow);
   color: var(--admin-text);
 }
 
+html[data-theme="dark"] body.admin-page {
+  background-color: var(--admin-bg);
+}
+
 html[data-theme="dark"] .admin-header {
-  border-bottom-color: #293653;
-  background: #0b1120;
+  border-bottom-color: var(--admin-border);
+  background: #151f27;
 }
 
 html[data-theme="dark"] .admin-header-title,
@@ -650,12 +769,21 @@ html[data-theme="dark"] .admin-content > h1 {
   color: var(--admin-text);
 }
 
-html[data-theme="dark"] .admin-content a {
-  color: #a9bcff;
+html[data-theme="dark"] .admin-page .admin-content a:not(.admin-clear-filter) {
+  color: var(--admin-blue);
+}
+
+html[data-theme="dark"] .admin-page .admin-content .admin-sales-filter-actions .admin-clear-filter {
+  color: var(--admin-muted);
+}
+
+html[data-theme="dark"] .admin-page .admin-content .admin-sales-filter-actions .admin-clear-filter:hover,
+html[data-theme="dark"] .admin-page .admin-content .admin-sales-filter-actions .admin-clear-filter:focus-visible {
+  color: var(--admin-pink);
 }
 
 html[data-theme="dark"] .admin-sidebar {
-  background: #0b1120;
+  background: #151f27;
 }
 
 html[data-theme="dark"] .admin-metric-card,
@@ -667,27 +795,49 @@ html[data-theme="dark"] .edit-products .admin-content > table {
 }
 
 html[data-theme="dark"] .admin-sales-table th {
-  background: #253761;
-  color: #e4eaff;
+  background: var(--admin-table-head);
+  color: #c4eee9;
 }
 
 html[data-theme="dark"] .admin-sales-table tbody tr:nth-child(even) td {
-  background: rgba(255, 255, 255, 0.035);
+  background: var(--admin-table-row);
 }
 
 html[data-theme="dark"] .admin-form input,
 html[data-theme="dark"] .admin-form textarea,
 html[data-theme="dark"] .edit-products td input {
-  background: #101629;
+  border-color: var(--admin-border);
+  background: #151f27;
   color: var(--admin-text);
 }
 
+html[data-theme="dark"] .admin-page button:hover:not(:disabled),
+html[data-theme="dark"] .admin-page input[type="submit"]:hover:not(:disabled) {
+  background: linear-gradient(115deg, var(--admin-blue), var(--admin-pink));
+  color: var(--admin-button-text);
+}
+
+html[data-theme="dark"] .admin-page button:focus-visible,
+html[data-theme="dark"] .admin-page input[type="submit"]:focus-visible {
+  outline: 3px solid var(--admin-focus);
+  outline-offset: 3px;
+}
+
+html[data-theme="dark"] .admin-page .admin-header .theme-toggle:hover:not(:disabled),
+html[data-theme="dark"] .admin-page .admin-header .theme-toggle:focus-visible {
+  border-color: var(--admin-border);
+  background: var(--admin-surface);
+  color: var(--admin-text);
+  transform: translateY(-1px);
+}
+
 html[data-theme="dark"] .edit-products .admin-content th {
-  background: #253761;
+  background: #263f42;
+  color: var(--admin-table-heading-text);
 }
 
 html[data-theme="dark"] .edit-products .admin-content tr:nth-child(even) td {
-  background: rgba(255, 255, 255, 0.035);
+  background: var(--admin-table-row);
 }
 
 @media (max-width: 760px) {
