@@ -76,22 +76,38 @@ if (!is_null($shoppingCart)) {
 ?>
 
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Carrinho de compras</title>
+        <title>Carrinho | Loxja Café</title>
         <link href="../MVP.css" rel="stylesheet">
         <link href="../theme.css" rel="stylesheet">
+        <link href="../Finalization/checkout.css" rel="stylesheet">
         <link href="ShoppingCart.css" rel="stylesheet">
     </head>
-        <body class="scroll">
+        <body class="checkout-page cart-page">
+            <header class="site-header" id="inicio">
+                <nav class="topbar" aria-label="Navegação principal">
+                    <a class="brand" href="../index.php#inicio" aria-label="Loxja Café, início">
+                        <img src="../logo.png" alt="" class="brand-mark">
+                        <span>Loxja <small>café</small></span>
+                    </a>
+                    <ul class="nav-links">
+                        <li><a href="../index.php#produtos">Produtos</a></li>
+                        <li><a href="../profile/index.php">Perfil</a></li>
+                        <li><a href="index.php" aria-current="page">Carrinho</a></li>
+                    </ul>
+                </nav>
+            </header>
 
             <?php if ($hasShoppingCart) : ?>
-                <main>
+                <main class="cart-page-main">
+                    <h1>Seu carrinho</h1>
+                    <p class="checkout-subtitle">Revise os itens e as quantidades antes de finalizar sua compra.</p>
 
-                    <form class="shopping_cart" id="shopping_cart" method="post" action="../Finalization">
-
+                    <form class="shopping_cart checkout-card" id="shopping_cart" method="post" action="../Finalization">
+                        <h2>Itens do carrinho</h2>
                         <?php foreach ($products as $product) :
                             {
                             $item = $product->getProduct();
@@ -102,7 +118,7 @@ if (!is_null($shoppingCart)) {
                                 <div class="cart_item_info">
                                 <img src="<?= $item->getImage() ?>" alt="<?= htmlspecialchars($item->getName())?>">
                                 <p><?= htmlspecialchars($item->getName()); ?></p>
-                                <p class="price"><b><span class="price_full"><?= htmlspecialchars(number_format($item->getPrice() * $product->getAmount(), 2))?></span> R$</b></p>
+                                <p class="price"><b>R$ <span class="price_full"><?= htmlspecialchars(number_format($item->getPrice() * $product->getAmount(), 2, '.', ''))?></span></b></p>
                                 </div>
 
                                 <div class="cart_item_actions">
@@ -138,11 +154,14 @@ if (!is_null($shoppingCart)) {
                     <!-- DONE: adicionar animações de hover -->
                     <!-- DONE: limitar o numero de compra para o numero de estoque -->
                     <!-- TODO: Adicionar o preço do produto -->
-                    <aside class="resume">
+                    <aside class="resume checkout-card">
                         <div class="resume_text_group">
-                            <h1>Loxja</h1>
-                            <h2>Preço final: <span id="preco_final"></span> R$</h2>
-                            <button type="submit" form="shopping_cart">Comprar</button>
+                            <h2>Resumo do pedido</h2>
+                            <div class="checkout-total-row">
+                                <span>Total</span>
+                                <span>R$ <span id="preco_final">0.00</span></span>
+                            </div>
+                            <button type="submit" class="checkout-submit" form="shopping_cart">Finalizar compra</button>
                         </div>
                     </aside>
 
@@ -150,31 +169,26 @@ if (!is_null($shoppingCart)) {
 
                 <script src="script.js"></script>
             <?php else : ?>
-                <main>
+                <main class="cart-page-main">
+                    <h1>Seu carrinho</h1>
+                    <p class="checkout-subtitle">Revise os itens e as quantidades antes de finalizar sua compra.</p>
 
-                    <form class="shopping_cart" id="shopping_cart" method="post" action="">
-
-                        <div class="cart_item_wrapper">
-
-                        </div>
-
-                    </form>
-
-                    <!-- DONE: change this so it goes beneath instead of in the side -->
-                    <!-- TODO: Adicionar link de href na imagem que te leva para a pagina do produto -->
-                    <!-- DONE: adicionar animações de hover -->
-                    <!-- DONE: limitar o numero de compra para o numero de estoque -->
-                    <!-- TODO: Adicionar o preço do produto -->
-                    <aside class="resume">
-                        <div class="resume_text_group">
-                            <h1>Loxja</h1>
-                            <h2>Preço final: <span id="preco_final"></span>0 R$</h2>
-                            <button type="submit" form="shopping_cart">Comprar</button>
-                        </div>
-                    </aside>
+                    <section class="checkout-card cart-empty">
+                        <h2>Seu carrinho está vazio</h2>
+                        <p class="checkout-empty">Escolha seus cafés e doces favoritos para começar.</p>
+                        <a class="checkout-submit cart-continue" href="../index.php#produtos">Ver produtos</a>
+                    </section>
 
                 </main>
 
             <?php endif; ?>
+            <footer>
+                <a class="brand footer-brand" href="../index.php#inicio">
+                    <span class="brand-mark"><img src="../logo.png" alt="" class="brand-mark"></span>
+                    <span>Loxja <small>café</small></span>
+                </a>
+                <p>&copy; 2026 Loxja Café. Todos os direitos reservados.</p>
+                <a href="#inicio" class="back-top" aria-label="Voltar ao início">&uarr;</a>
+            </footer>
         </body>
 </html>
