@@ -15,9 +15,9 @@
     grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
     align-items: start;
     gap: clamp(32px, 6vw, 88px);
-    max-width: 1180px;
+    max-width: var(--page-width);
     margin: 0 auto;
-    padding: 72px 28px 96px;
+    padding: 64px var(--page-gutter) 80px;
 }
 
 .client-page main > section:first-of-type {
@@ -27,8 +27,8 @@
 .client-page main > section:first-of-type h1 {
     max-width: 500px;
     margin-bottom: 20px;
-    font-size: 3.25rem;
-    line-height: 1.05;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: var(--heading-line-height);
 }
 
 .client-page main > section:first-of-type p,
@@ -128,7 +128,7 @@
     .client-page main {
         grid-template-columns: minmax(0, 1fr);
         gap: 28px;
-        padding: 48px 24px 64px;
+        padding: 48px 20px 64px;
     }
 
     .client-page main > section:first-of-type {
@@ -148,7 +148,7 @@
 
 @media (max-width: 480px) {
     .client-page main {
-        padding: 36px 18px 48px;
+        padding: 40px 20px 60px;
     }
 
     .client-page main > section:first-of-type h1 {

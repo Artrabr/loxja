@@ -22,18 +22,26 @@ $pdo = null;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relatório de vendas</title>
+    <title>Relatório de vendas | Loxja Café</title>
+    <link href="../MVP.css" rel="stylesheet">
+    <link href="../style_index.css" rel="stylesheet">
+    <link href="salesReport.css" rel="stylesheet">
 </head>
 <body>
-    <header id="inicio">
-        <nav aria-label="Navegação da área do cliente">
-            <a href="../index.php">Loxja Café</a>
-            <a href="../profile/index.php">Perfil</a>
-            <a href="../Client/index.php">Informações Técnicas</a>
-            <a href="index.php" aria-current="page">Relatório de vendas</a>
+    <header class="site-header" id="inicio">
+        <nav class="topbar" aria-label="Navegação da área do cliente">
+            <a class="brand" href="../index.php#inicio" aria-label="Loxja Café, início">
+                <img src="../logo.png" alt="" class="brand-mark">
+                <span>Loxja <small>café</small></span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="../profile/index.php">Perfil</a></li>
+                <li><a href="../Client/index.php">Informações técnicas</a></li>
+                <li><a href="index.php" aria-current="page">Relatório de vendas</a></li>
+            </ul>
         </nav>
     </header>
-    <main>
+    <main class="sales-report-page">
         <h1>Relatório de vendas</h1>
         <p>Confira o histórico das suas compras.</p>
 

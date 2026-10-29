@@ -7,46 +7,43 @@ require_once __DIR__ . '/../../Src/Connection.php';
 ?>
 
 <!DOCTYPE html>
-<html lang="pt-br" color-mode="user">
+<html lang="pt-BR" data-theme="<?= htmlspecialchars($_COOKIE['tema'] ?? 'light', ENT_QUOTES, 'UTF-8') ?>">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title></title>
+    <title>Painel de administração | Loxja Café</title>
     <link href="../MVP.css" rel="stylesheet">
     <link href="../theme.css" rel="stylesheet">
     <link href="index_style.css" rel="stylesheet">
   </head>
   <body>
 
-    <header>
-      <h1>Loxja - Painel de Administração</h1>
+    <header class="site-header">
+      <nav class="topbar" aria-label="Navegação administrativa">
+        <a class="brand" href="../index.php#inicio" aria-label="Loxja Café, início">
+          <img src="../logo.png" alt="" class="brand-mark">
+          <span>Loxja <small>café</small></span>
+        </a>
+        <ul class="nav-links">
+          <li><a href="../index.php">Loja</a></li>
+          <li><a href="index.php" aria-current="page">Administração</a></li>
+          <li><a href="add-product.php">Adicionar produto</a></li>
+          <li><a href="edit-product.php">Editar produtos</a></li>
+        </ul>
+      </nav>
     </header>
 
-    <main>
-      <!-- <section> -->
-      <!--   <header> -->
-      <!--     <h1>Gerenciar produtos</h1> -->
-      <!--   </header> -->
-      <!--   <a href=""> -->
-      <!--     <aside> -->
-      <!--       <h2> Criar Produto</h2> -->
-      <!--     </aside> -->
-      <!--   </a> -->
-      <!--   <a href=""> -->
-      <!--     <aside> -->
-      <!--       <h2> Editar Produto</h2> -->
-      <!--     </aside> -->
-      <!--   </a> -->
-      <!-- </section> -->
-      <section>
-        <header>
-          <h1>Gerenciar Produtos</h1>
+    <main class="admin-dashboard">
+      <section class="admin-dashboard-section">
+        <header class="admin-page-heading">
+          <p class="eyebrow">Área administrativa</p>
+          <h1>Gerenciar produtos</h1>
         </header>
         <nav class="full-width-nav">
           <ul>
-            <li><a href="add-product.php"><b>Adicionar Produto</b></a></li>
-            <li><a href="edit-product.php"><b>Editar Produto</b></a></li>
-            <li><a href="../../Public/index.php"><b>Ir á loja</b></a></li>
+            <li><a href="add-product.php"><b>Adicionar produto</b></a></li>
+            <li><a href="edit-product.php"><b>Editar produtos</b></a></li>
+            <li><a href="../index.php"><b>Voltar à loja</b></a></li>
           </ul>
         </nav>
       </section>
@@ -55,7 +52,7 @@ require_once __DIR__ . '/../../Src/Connection.php';
     <footer>
       <hr>
       <p>
-        <small>&copy; 2026 Loxja.</small>
+        <small>&copy; 2026 Loxja Café.</small>
       </p>
     </footer>
 

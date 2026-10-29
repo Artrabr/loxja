@@ -69,7 +69,14 @@ class SaleReportDB
         int $productId,
         int $amount,
         string $method,
-        float $price 
+        float $price                                    
+        /*
+        O preço do produto muda com o tempo. 
+        Se você só tivesse pdt_id e calculasse 
+        o total usando o preço atual da tabela
+        product, um pedido de 6 meses atrás passaria
+        a mostrar o valor de hoje
+        */
     ): bool
     //adiciona no banco e
     //retorna um booleano true se der tudo certo

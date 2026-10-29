@@ -41,17 +41,17 @@ $error = $_GET['error'] ?? null;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Area do cliente</title>
+    <title>Área do cliente | Loxja Café</title>
     <link href="../MVP.css" rel="stylesheet">
     <link href="../style_index.css" rel="stylesheet">
     <link href="client.css" rel="stylesheet">
 </head>
 <body class="client-page">
     <header class="site-header" id="inicio">
-        <nav class="topbar" aria-label="Navegacao principal">
-            <a class="brand" href="../index.php#inicio" aria-label="Loxja Cafe, inicio">
+        <nav class="topbar" aria-label="Navegação principal">
+            <a class="brand" href="../index.php#inicio" aria-label="Loxja Café, início">
                 <img src="../logo.png" alt="" class="brand-mark">
-                <span>Loxja <small>cafe</small></span>
+                <span>Loxja <small>café</small></span>
             </a>
             <a href="../profile/index.php">Perfil</a>
             <a href="../Client/index.php">Informações Técnicas</a>
@@ -72,7 +72,7 @@ $error = $_GET['error'] ?? null;
     <main>
          
         <section>
-            <h1>Bem-vindo à área do cliente!</h1>
+            <h1>Bem-vindo à área do cliente</h1>
             <p>Esta é a área exclusiva para clientes cadastrados</p>
         </section>
 
@@ -154,9 +154,9 @@ $error = $_GET['error'] ?? null;
             <span class="brand-mark">
                 <img src="../logo.png" alt="" class="brand-mark">
             </span>
-            <span>Loxja <small>cafe</small></span>
+            <span>Loxja <small>café</small></span>
         </a>
-        <p>&copy; 2026 Loxja Cafe. Todos os direitos reservados.</p>
+        <p>&copy; 2026 Loxja Café. Todos os direitos reservados.</p>
         <a href="#inicio" class="back-top" aria-label="Voltar ao inicio">&uarr;</a>
     </footer>
 </body>

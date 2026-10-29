@@ -60,8 +60,6 @@ if (!$client) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meu Perfil - Loxja Café</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-
     <link href="../MVP.css" rel="stylesheet">
     <link href="../style_index.css" rel="stylesheet">
     <link href="profilestyle.css" rel="stylesheet">
@@ -69,24 +67,27 @@ if (!$client) {
 </head>
 <body class="client-page">
     <header class="site-header" id="inicio">
-        <nav class="topbar" aria-label="Navegacao principal">
-            <a class="brand" href="../index.php" aria-label="Loxja Cafe, inicio">
-                <img src="../logo.png" alt="Loxja Cafe" class="brand-mark">
-                <span>Loxja <small>cafe</small></span>
+        <nav class="topbar" aria-label="Navegação principal">
+            <a class="brand" href="../index.php" aria-label="Loxja Café, início">
+                <img src="../logo.png" alt="" class="brand-mark">
+                <span>Loxja <small>café</small></span>
             </a>
-            <a href="../profile/index.php">Perfil</a>
-            <a href="../Client/index.php">Informações Técnicas</a>
+            <ul class="nav-links">
+                <li><a href="../profile/index.php" aria-current="page">Perfil</a></li>
+                <li><a href="../Client/index.php">Informações técnicas</a></li>
+                <li><a href="../salesReport/index.php">Relatório de vendas</a></li>
+            </ul>
             <form method="post"
-              action="<?= htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES) ?>"
-              class="theme-toggle-form">
-            <input type="hidden" name="return_query"
-                   value="<?= htmlspecialchars($_SERVER['QUERY_STRING'] ?? '', ENT_QUOTES) ?>">
-            <button type="submit" name="toggle_tema" class="theme-toggle"
-                    aria-label="<?= $tema === 'dark' ? 'Ativar modo claro' : 'Ativar modo escuro' ?>"
-                    title="<?= $tema === 'dark' ? 'Modo claro' : 'Modo escuro' ?>">
-                <?= $tema === 'dark' ? '☀️' : '🌙' ?>
-            </button>
-        </form>
+                  action="<?= htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES) ?>"
+                  class="theme-toggle-form">
+                <input type="hidden" name="return_query"
+                       value="<?= htmlspecialchars($_SERVER['QUERY_STRING'] ?? '', ENT_QUOTES) ?>">
+                <button type="submit" name="toggle_tema" class="theme-toggle"
+                        aria-label="<?= $tema === 'dark' ? 'Ativar modo claro' : 'Ativar modo escuro' ?>"
+                        title="<?= $tema === 'dark' ? 'Modo claro' : 'Modo escuro' ?>">
+                    <?= $tema === 'dark' ? '☀️' : '🌙' ?>
+                </button>
+            </form>
         </nav>
     </header>
 

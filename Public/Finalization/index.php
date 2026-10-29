@@ -143,7 +143,7 @@ $pdo = null;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Confirmar</title>
+    <title>Finalizar compra | Loxja Café</title>
     <link href="../MVP.css" rel="stylesheet">
     <link href="../style_index.css" rel="stylesheet">
     <link href="checkout.css" rel="stylesheet">
@@ -163,10 +163,11 @@ $pdo = null;
     </form>
 
     <header class="site-header" id="inicio">
-        <nav class="topbar" aria-label="Navegacao principal">
-            <a class="brand" href="../index.php#inicio" aria-label="Loxja Cafe, inicio">
-            <img src="../logo.png" alt="Loxja Cafe" class="brand-mark">
-            <span>Loxja <small>cafe</small></span></a>
+        <nav class="topbar" aria-label="Navegação principal">
+            <a class="brand" href="../index.php#inicio" aria-label="Loxja Café, início">
+                <img src="../logo.png" alt="" class="brand-mark">
+                <span>Loxja <small>café</small></span>
+            </a>
             <ul class="nav-links">
                 <li><a href="../index.php#produtos">Produtos</a></li>
                 <li><a href="../index.php#sobre">Sobre</a></li>
@@ -176,13 +177,13 @@ $pdo = null;
                 if(isset($_SESSION['client_object'])){
             ?> 
                 <a href="../profile/index.php">
-                    <img src="../perfilsemfoto.png" alt="Loxja Cafe" class="brand-mark">
+                    <img src="<?= htmlspecialchars($_SESSION['client_object']->getImage(), ENT_QUOTES, 'UTF-8') ?>"
+                         alt="Foto de perfil" class="profile-avatar">
                 </a>
-                
-            <?php //                       ^  trocar pela foto de perfil
+            <?php
                 } else {
             ?>
-                <a class='login-button' href='Login/index.php'>Login</a>
+                <a class="login-button" href="../Login/index.php">Entrar</a>
                 <?php
             }
             ?>
@@ -190,7 +191,7 @@ $pdo = null;
     </header>
 
     <main>
-        <h1>Finalização de Compra</h1>
+        <h1>Finalização da compra</h1>
         <p class="checkout-subtitle">
             Revise seus itens, confirme o endereço, e escolha um método de pagamento.
         </p>
@@ -198,7 +199,7 @@ $pdo = null;
         <?php if ($orderPlaced): ?>
             <section class="checkout-success" role="status">
                 <h2>Pedido feito com sucesso!</h2>
-                <p>Obrigado por comprar na Café Loxja!</p>
+                <p>Obrigado por comprar na Loxja Café!</p>
                 <p><a href="../index.php#inicio">Continuar comprando</a></p>
             </section>
         <?php else: ?>
@@ -259,7 +260,7 @@ $pdo = null;
                     </section>
 
                     <section class="checkout-card checkout-payment">
-                        <h2>Método de Pagamento</h2>
+                        <h2>Método de pagamento</h2>
                         <form method="POST" action="">
                             <?php foreach ($paymentMethods as $value => $label): ?>
                                 <label class="checkout-method">
@@ -283,10 +284,10 @@ $pdo = null;
             <span class="brand-mark">
                 <img src="../logo.png" alt="" class="brand-mark">
             </span>
-            <span>Loxja <small>cafe</small></span>
+            <span>Loxja <small>café</small></span>
         </a>
-        <p>&copy; 2026 Loxja Cafe. Todos os direitos reservados.</p>
-        <a href="#inicio" class="back-top" aria-label="Back to top">&uarr;</a>
+            <p>&copy; 2026 Loxja Café. Todos os direitos reservados.</p>
+            <a href="#inicio" class="back-top" aria-label="Voltar ao início">&uarr;</a>
     </footer>
 </body>
 </html>

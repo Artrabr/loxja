@@ -13,6 +13,13 @@ class SaleReport
     private Product $product;
     private string $method;
     private float $price;
+    /*
+        O preço do produto muda com o tempo. 
+        Se você só tivesse pdt_id e calculasse 
+        o total usando o preço atual da tabela
+        product, um pedido de 6 meses atrás passaria
+        a mostrar o valor de hoje
+    */
     private string $date;
     private int $amount;
 
