@@ -5,16 +5,6 @@ require_once __DIR__ . '/../../Src/Class/Client/ClientDB.php';
 require_once __DIR__ . '/../../Src/Validation.php';
 require_once __DIR__ . '/../theme-toggle.php';
 
-function getPassword(Client $client)
-{
-   
-    $id = $client->getId();
-    global $pdo;
-    $smt = $pdo->prepare("SELECT clt_password FROM Client WHERE clt_id = :id");
-    $smt->execute(['id' => $id]);
-    return $smt->fetchColumn();
-}
-
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -45,6 +35,7 @@ if (!$client) {
     <link href="../MVP.css" rel="stylesheet">
     <link href="../style_index.css" rel="stylesheet">
     <link href="profilestyle.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css">
     
 </head>
 <body class="client-page">
@@ -68,7 +59,9 @@ if (!$client) {
             <button type="button" class="profile-photo-trigger" id="open-profile-photo"
                     aria-label="Alterar foto de perfil" aria-haspopup="dialog">
                 <img src="<?= htmlspecialchars($client->getImage(), ENT_QUOTES, 'UTF-8') ?>" alt="" class="profile-pic-hero">
-                <span class="profile-photo-trigger-label">Alterar foto</span>
+                <span class="profile-photo-trigger-label" aria-hidden="true">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </span>
             </button>
             <h1>Bem-vindo, <?= htmlspecialchars($client->getName()) ?>!</h1>
             <p>Esta é a sua área exclusiva para gerenciar seus dados cadastrais.</p>
@@ -107,11 +100,24 @@ if (!$client) {
         <form method="post" action="editar.php" enctype="multipart/form-data" class="profile-photo-form">
             <button type="button" class="profile-photo-close" id="close-profile-photo"
                     aria-label="Fechar janela">×</button>
-            <h2 id="profile-photo-title">Alterar foto de perfil</h2>
-            <p>Envie uma imagem nítida nos formatos JPG, PNG ou WebP, com no máximo 5 MB.</p>
-            <label for="profile-photo-file">Escolha uma foto</label>
-            <input id="profile-photo-file" type="file" name="imagem"
-                   accept="image/jpeg,image/png,image/webp" required>
+            <div class="profile-photo-heading">
+                <span class="profile-photo-heading-icon" aria-hidden="true">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </span>
+                <div>
+                    <h2 id="profile-photo-title">Alterar foto de perfil</h2>
+                    <p id="profile-photo-requirements">Escolha uma imagem nítida em JPG, PNG ou WebP. O arquivo deve ter no máximo 5 MB.</p>
+                </div>
+            </div>
+            <div class="profile-photo-upload">
+                <input id="profile-photo-file" type="file" name="imagem"
+                       accept="image/jpeg,image/png,image/webp" aria-describedby="profile-photo-requirements profile-photo-filename" required>
+                <label for="profile-photo-file" class="profile-photo-file-button">
+                    <i class="fa-solid fa-arrow-up-from-bracket" aria-hidden="true"></i>
+                    Selecionar imagem
+                </label>
+                <span id="profile-photo-filename" class="profile-photo-filename" role="status">Nenhuma imagem selecionada</span>
+            </div>
             <input type="hidden" name="action" value="upload_image">
             <button type="submit" class="profile-photo-submit">Enviar foto</button>
         </form>
@@ -120,6 +126,11 @@ if (!$client) {
         const photoDialog = document.getElementById('profile-photo-dialog');
         document.getElementById('open-profile-photo').addEventListener('click', () => photoDialog.showModal());
         document.getElementById('close-profile-photo').addEventListener('click', () => photoDialog.close());
+        document.getElementById('profile-photo-file').addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            document.getElementById('profile-photo-filename').textContent =
+                file ? file.name : 'Nenhuma imagem selecionada';
+        });
         photoDialog.addEventListener('click', (event) => {
             if (event.target === photoDialog) photoDialog.close();
         });

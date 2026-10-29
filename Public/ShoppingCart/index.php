@@ -101,11 +101,7 @@ if (!is_null($shoppingCart)) {
 ?>
 
 <!DOCTYPE html>
-<<<<<<< HEAD
-<html lang="pt-BR" data-theme="<?= htmlspecialchars($tema) ?>">
-=======
 <html lang="pt-BR" data-theme="<?= htmlspecialchars($tema, ENT_QUOTES, 'UTF-8') ?>">
->>>>>>> 2b7e666df98d8bf05cabedbc0ad0678266aed534
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -116,22 +112,6 @@ if (!is_null($shoppingCart)) {
         <link href="ShoppingCart.css" rel="stylesheet">
         
     </head>
-<<<<<<< HEAD
-   
-        <body class="scroll">
-            
-            <form method="post"
-          action="<?= htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES) ?>"
-          class="theme-toggle-form">
-        <input type="hidden" name="return_query"
-               value="<?= htmlspecialchars($_SERVER['QUERY_STRING'] ?? '', ENT_QUOTES) ?>">
-        <button type="submit" name="toggle_tema" class="theme-toggle"
-                aria-label="<?= $tema === 'dark' ? 'Ativar modo claro' : 'Ativar modo escuro' ?>"
-                title="<?= $tema === 'dark' ? 'Modo claro' : 'Modo escuro' ?>">
-            <?= $tema === 'dark' ? '☀️' : '🌙' ?>
-        </button>
-    </form>
-=======
         <body class="checkout-page cart-page">
             <header class="site-header" id="inicio">
                 <nav class="topbar" aria-label="Navegação principal">
@@ -147,7 +127,6 @@ if (!is_null($shoppingCart)) {
                     <?php renderThemeToggle($tema); ?>
                 </nav>
             </header>
->>>>>>> 2b7e666df98d8bf05cabedbc0ad0678266aed534
 
             <?php if ($hasShoppingCart) : ?>
                 <main class="cart-page-main">

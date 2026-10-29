@@ -30,7 +30,7 @@ function renderThemeToggle(string $theme): void
         <button type="submit" name="toggle_tema" class="theme-toggle"
                 aria-label="<?= $isDark ? 'Ativar modo claro' : 'Ativar modo escuro' ?>"
                 title="<?= $isDark ? 'Modo claro' : 'Modo escuro' ?>">
-            <?= $isDark ? '☀️' : '🌙' ?>
+            <?= $isDark ? '🌙' : '☀️' ?>
         </button>
     </form>
     <?php

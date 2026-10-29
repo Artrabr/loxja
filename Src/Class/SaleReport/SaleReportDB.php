@@ -118,6 +118,93 @@ class SaleReportDB
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getAdminSummary(): array
+    {
+        $stmt = $this->pdo->query("
+            SELECT
+                COUNT(*) AS sale_count,
+                COALESCE(SUM(saleReport_amount), 0) AS items_sold,
+                COALESCE(SUM(saleReport_price * saleReport_amount), 0) AS revenue,
+                COUNT(DISTINCT clt_id) AS customer_count,
+                COALESCE(SUM(
+                    CASE
+                        WHEN saleReport_created_at >= DATE_SUB(CURRENT_TIMESTAMP, INTERVAL 30 DAY)
+                        THEN saleReport_price * saleReport_amount
+                        ELSE 0
+                    END
+                ), 0) AS revenue_last_30_days,
+                COALESCE(SUM(
+                    CASE
+                        WHEN saleReport_created_at >= DATE_SUB(CURRENT_TIMESTAMP, INTERVAL 30 DAY)
+                        THEN 1
+                        ELSE 0
+                    END
+                ), 0) AS sales_last_30_days
+            FROM saleReport
+        ");
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getAdminPaymentMethodStats(): array
+    {
+        $stmt = $this->pdo->query("
+            SELECT
+                saleReport_method AS method,
+                COUNT(*) AS sale_count,
+                COALESCE(SUM(saleReport_amount), 0) AS items_sold,
+                COALESCE(SUM(saleReport_price * saleReport_amount), 0) AS revenue
+            FROM saleReport
+            GROUP BY saleReport_method
+            ORDER BY sale_count DESC, revenue DESC
+        ");
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getAdminTopProducts(int $limit = 5): array
+    {
+        $stmt = $this->pdo->prepare("
+            SELECT
+                p.pdt_name AS product_name,
+                COALESCE(SUM(sr.saleReport_amount), 0) AS items_sold,
+                COALESCE(SUM(sr.saleReport_price * sr.saleReport_amount), 0) AS revenue
+            FROM saleReport sr
+            INNER JOIN Product p ON p.pdt_id = sr.pdt_id
+            GROUP BY sr.pdt_id, p.pdt_name
+            ORDER BY items_sold DESC, revenue DESC
+            LIMIT :limit
+        ");
+        $stmt->bindValue(':limit', max(1, min($limit, 20)), PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getAdminRecentSales(int $limit = 10): array
+    {
+        $stmt = $this->pdo->prepare("
+            SELECT
+                sr.saleReport_id AS sale_id,
+                c.clt_name AS customer_name,
+                p.pdt_name AS product_name,
+                sr.saleReport_amount AS amount,
+                sr.saleReport_method AS method,
+                sr.saleReport_price AS unit_price,
+                sr.saleReport_price * sr.saleReport_amount AS total,
+                sr.saleReport_created_at AS created_at
+            FROM saleReport sr
+            INNER JOIN Client c ON c.clt_id = sr.clt_id
+            INNER JOIN Product p ON p.pdt_id = sr.pdt_id
+            ORDER BY sr.saleReport_created_at DESC, sr.saleReport_id DESC
+            LIMIT :limit
+        ");
+        $stmt->bindValue(':limit', max(1, min($limit, 50)), PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function getOrdersInThisRange(string $start, string $end, int $clientId = null): array
     //retorna os valores do periodo inicial até o periodo final. caso o id nao for informado retornar todos os pedidos
     //porem se o id do cliente for informado retornar os pedidos que possuam o id

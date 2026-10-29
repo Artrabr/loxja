@@ -37,6 +37,7 @@ require_once __DIR__ . "/../../Src/Class/ShoppingCart/ShoppingCart.php";
 require_once __DIR__ . "/../../Src/Class/ShoppingCart/ShoppingCartDB.php";
 require_once __DIR__ . "/../../Src/Class/ClientAddress/ClientAddressDB.php";
 require_once __DIR__ . "/../../Src/Class/SaleReport/SaleReportDB.php";
+require_once __DIR__ . "/../../Src/Class/SaleReport/PaymentMethod.php";
 require_once __DIR__ . "/../../Src/Class/Product/ProductDB.php";
 
 $client   = $_SESSION['client_object'];
@@ -50,13 +51,7 @@ $addressDB = new ClientAddressDB($pdo);
 $cart    = $cartDB->getShoppingCartByClientId($clientId);
 $address = $addressDB->getAddressByClientID($clientId);
 
-$paymentMethods = [
-    'credit_card' => 'Cartão de Crédito',
-    'debit_card'  => 'Cartão de Débito',
-    'pix'         => 'Pix',
-    'cash'        => 'Dinheiro',
-    'boleto'      => 'Boleto',
-];
+$paymentMethods = PaymentMethod::options();
 
 $errors      = [];
 $orderPlaced = false;
@@ -104,11 +99,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $reportDB->addSaleReport(
                     $clientId,
                     $product->getId(),
+                    (int) $amount,
                     $selectedMethod,
-                    $product->getPrice(),
-                    $amount,
-                    'completed',
-                    $now
+                    (float) $product->getPrice()
                 );
 
                 $productDB->decreaseStock($product->getId(), $amount);
@@ -141,11 +134,7 @@ $canSubmit = !$orderPlaced && !empty($cartItems) && $address !== null;
 $pdo = null;
 ?>
 <!DOCTYPE html>
-<<<<<<< HEAD
-<html lang="pt-BR" data-theme="<?= htmlspecialchars($tema) ?>">
-=======
 <html lang="pt-BR" data-theme="<?= htmlspecialchars($tema, ENT_QUOTES, 'UTF-8') ?>">
->>>>>>> 2b7e666df98d8bf05cabedbc0ad0678266aed534
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -155,18 +144,6 @@ $pdo = null;
     <link href="checkout.css" rel="stylesheet">
 </head>
 <body class="checkout-page">
-
-     <form method="post"
-          action="<?= htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES) ?>"
-          class="theme-toggle-form">
-        <input type="hidden" name="return_query"
-               value="<?= htmlspecialchars($_SERVER['QUERY_STRING'] ?? '', ENT_QUOTES) ?>">
-        <button type="submit" name="toggle_tema" class="theme-toggle"
-                aria-label="<?= $tema === 'dark' ? 'Ativar modo claro' : 'Ativar modo escuro' ?>"
-                title="<?= $tema === 'dark' ? 'Modo claro' : 'Modo escuro' ?>">
-            <?= $tema === 'dark' ? '☀️' : '🌙' ?>
-        </button>
-    </form>
 
     <header class="site-header" id="inicio">
         <nav class="topbar" aria-label="Navegação principal">

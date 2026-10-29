@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . "/../../bootstrap.php";
 require_once __DIR__ . "/../theme-toggle.php";
+require_once __DIR__ . '/layout.php';
 $tema = currentTheme();
 
 if(!isset($_SESSION['client_object'])) {
@@ -27,22 +28,8 @@ require_once __DIR__ . "/../../Src/Class/Product/ProductDB.php";
     <link href="index_style.css" rel="stylesheet">
 </head>
 <body class="edit-products admin-page">
-    <header class="site-header">
-        <nav class="topbar" aria-label="Navegação administrativa">
-            <a class="brand" href="../index.php#inicio" aria-label="Loxja Café, início">
-                <img src="../logo.png" alt="" class="brand-mark">
-                <span>Loxja <small>café</small></span>
-            </a>
-            <ul class="nav-links">
-                <li><a href="../index.php">Loja</a></li>
-                <li><a href="index.php">Administração</a></li>
-                <li><a href="add-product.php">Adicionar produto</a></li>
-            </ul>
-            <?php renderThemeToggle($tema); ?>
-        </nav>
-    </header>
-    <main>
-        <p class="eyebrow">Área administrativa</p>
+    <?php renderAdminLayoutStart($tema, 'edit-products'); ?>
+        <p class="admin-eyebrow">Catálogo</p>
         <h1>Editar produtos</h1>
         <?php
             $pdo = Connection::conectar();
@@ -87,7 +74,6 @@ require_once __DIR__ . "/../../Src/Class/Product/ProductDB.php";
                 <?php endforeach; ?>
             </tbody>
         </table>
-        <p><a href="index.php">Voltar à administração</a></p>
-    </main>
+    <?php renderAdminLayoutEnd(); ?>
 </body>
 </html>
