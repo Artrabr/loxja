@@ -27,6 +27,8 @@ $error = $_GET['error'] ?? null;
 require_once __DIR__ . "/../../Src/Class/Client/Client.php";
 require_once __DIR__ . "/../../Src/Connection.php";
 require_once __DIR__ . "/../../bootstrap.php";
+require_once __DIR__ . "/../theme-toggle.php";
+$tema = currentTheme();
 require_once __DIR__ . "/../../Src/Class/ShoppingCart/ShoppingCartDB.php";
 require_once __DIR__ . "/../../Src/Class/Product/ProductDB.php";
 require_once __DIR__ . "/../../Src/Class/Product/Product.php";
@@ -99,7 +101,11 @@ if (!is_null($shoppingCart)) {
 ?>
 
 <!DOCTYPE html>
+<<<<<<< HEAD
 <html lang="pt-BR" data-theme="<?= htmlspecialchars($tema) ?>">
+=======
+<html lang="pt-BR" data-theme="<?= htmlspecialchars($tema, ENT_QUOTES, 'UTF-8') ?>">
+>>>>>>> 2b7e666df98d8bf05cabedbc0ad0678266aed534
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -110,6 +116,7 @@ if (!is_null($shoppingCart)) {
         <link href="ShoppingCart.css" rel="stylesheet">
         
     </head>
+<<<<<<< HEAD
    
         <body class="scroll">
             
@@ -124,6 +131,23 @@ if (!is_null($shoppingCart)) {
             <?= $tema === 'dark' ? '☀️' : '🌙' ?>
         </button>
     </form>
+=======
+        <body class="checkout-page cart-page">
+            <header class="site-header" id="inicio">
+                <nav class="topbar" aria-label="Navegação principal">
+                    <a class="brand" href="../index.php#inicio" aria-label="Loxja Café, início">
+                        <img src="../logo.png" alt="" class="brand-mark">
+                        <span>Loxja <small>café</small></span>
+                    </a>
+                    <ul class="nav-links">
+                        <li><a href="../index.php#produtos">Produtos</a></li>
+                        <li><a href="../profile/index.php">Perfil</a></li>
+                        <li><a href="index.php" aria-current="page">Carrinho</a></li>
+                    </ul>
+                    <?php renderThemeToggle($tema); ?>
+                </nav>
+            </header>
+>>>>>>> 2b7e666df98d8bf05cabedbc0ad0678266aed534
 
             <?php if ($hasShoppingCart) : ?>
                 <main class="cart-page-main">

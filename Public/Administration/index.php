@@ -1,5 +1,7 @@
 <?php
 session_start();
+require_once __DIR__ . '/../theme-toggle.php';
+$tema = currentTheme();
 // TODO: verificar se o usuário tem permissão de administrador.
 
 require_once __DIR__ . '/../../Src/Class/ClientAddress/ClientAddressDB.php';
@@ -7,7 +9,7 @@ require_once __DIR__ . '/../../Src/Connection.php';
 ?>
 
 <!DOCTYPE html>
-<html lang="pt-BR" data-theme="<?= htmlspecialchars($_COOKIE['tema'] ?? 'light', ENT_QUOTES, 'UTF-8') ?>">
+<html lang="pt-BR" data-theme="<?= htmlspecialchars($tema, ENT_QUOTES, 'UTF-8') ?>">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -30,6 +32,7 @@ require_once __DIR__ . '/../../Src/Connection.php';
           <li><a href="add-product.php">Adicionar produto</a></li>
           <li><a href="edit-product.php">Editar produtos</a></li>
         </ul>
+        <?php renderThemeToggle($tema); ?>
       </nav>
     </header>
 

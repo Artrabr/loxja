@@ -24,6 +24,8 @@ $error = $_GET['error'] ?? null;
 
     require_once __DIR__ . "/../../Src/Class/Client/Client.php";
     require_once __DIR__ . "/../../bootstrap.php";
+    require_once __DIR__ . "/../theme-toggle.php";
+    $tema = currentTheme();
 
     if (!isset($_SESSION['client_object'])) {
         header("Location: ../Login/index.php?error=not_logged_in");
@@ -37,7 +39,11 @@ $error = $_GET['error'] ?? null;
     $id = $cliente_obj->getId();
 ?>
 <!DOCTYPE html>
+<<<<<<< HEAD
 <html lang="pt-BR" data-theme="<?= htmlspecialchars($tema) ?>">
+=======
+<html lang="pt-BR" data-theme="<?= htmlspecialchars($tema, ENT_QUOTES, 'UTF-8') ?>">
+>>>>>>> 2b7e666df98d8bf05cabedbc0ad0678266aed534
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -53,6 +59,7 @@ $error = $_GET['error'] ?? null;
                 <img src="../logo.png" alt="" class="brand-mark">
                 <span>Loxja <small>café</small></span>
             </a>
+<<<<<<< HEAD
             <a href="../profile/index.php">Perfil</a>
             <a href="../Client/index.php">Informações Técnicas</a>
             <a href="../salesReport/index.php">Relatório de vendas</a>
@@ -67,6 +74,14 @@ $error = $_GET['error'] ?? null;
             <?= $tema === 'dark' ? '☀️' : '🌙' ?>
         </button>
     </form>
+=======
+            <ul class="nav-links">
+                <li><a href="../profile/index.php">Perfil</a></li>
+                <li><a href="../Client/index.php" aria-current="page">Informações técnicas</a></li>
+                <li><a href="../salesReport/index.php">Relatório de vendas</a></li>
+            </ul>
+            <?php renderThemeToggle($tema); ?>
+>>>>>>> 2b7e666df98d8bf05cabedbc0ad0678266aed534
         </nav>
     </header>
     <main>
