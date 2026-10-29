@@ -122,6 +122,6 @@ class SaleReportDB
     //retorna os valores do periodo inicial até o periodo final. caso o id nao for informado retornar todos os pedidos
     //porem se o id do cliente for informado retornar os pedidos que possuam o id
     {
-
+    
     }
 }
