@@ -118,6 +118,7 @@ class SaleReportDB
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+//=============---------vibecodado, responsavel verificar e apresentar relatorio-------------------------==================//
     public function getAdminSummary(): array
     {
         $stmt = $this->pdo->query("
@@ -204,11 +205,87 @@ class SaleReportDB
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+//=============------------------------------------feito pelo igor---------------------------------==================//
 
-    public function getOrdersInThisRange(string $start, string $end, int $clientId = null): array
+    public function formatDate(string $data): string
+    //se nao tem nada setado retorna '';
+    {
+        $dataFormat = '';
+        if(!isset($data)){
+            return $dataFormat;
+        }
+
+        if(!is_string($data)){
+            try{
+                $data = (string)$data;
+            }catch(Exception $e){
+                echo "Ocorreu um erro: " . $e->getMessage();
+            }
+        }
+
+        try{
+            $date = new DateTime($data);
+            $dataFormat = $date->format('d/m/Y');
+        } catch (Exception $e) {
+            throw new InvalidArgumentException("Data inválida: " . $data, 0, $e);
+        }
+        
+        return $dataFormat;
+    }
+
+    public function getOrdersInThisRange(string $start, string $end, ?int $clientId = null): array
     //retorna os valores do periodo inicial até o periodo final. caso o id nao for informado retornar todos os pedidos
     //porem se o id do cliente for informado retornar os pedidos que possuam o id
     {
-    
+        if(!isset($start)){
+            $start = new DateTime();
+        }
+
+        if(!isset($end)){
+            $end = new DateTime();
+        }
+
+        $endDate = formatDate($end);
+        $startDate = formatDate($start);
+
+        if ($startDate === false || $endDate === false) {
+            throw new InvalidArgumentException('Não foi possível converter as datas informadas.');
+        }
+
+        if ($startDate > $endDate) {
+            throw new InvalidArgumentException('A data inicial não pode ser posterior à data final.');
+        }
+
+        $sql = "
+            SELECT
+                DATE_FORMAT(sr.saleReport_created_at, '%Y-%m-%d %H:%i') AS order_group,
+                MAX(sr.saleReport_created_at) AS full_date,
+                sr.saleReport_method,
+                NULL AS saleReport_status,
+                SUM(sr.saleReport_price * sr.saleReport_amount) AS order_total,
+                COUNT(sr.saleReport_id) AS item_count
+            FROM saleReport sr
+            WHERE sr.saleReport_created_at >= :startDate
+                AND sr.saleReport_created_at < :endDate
+        ";
+        $params = [
+            ':startDate' => $startDate, //ja formatado na linha 248
+            ':endDate' => $endDate
+        ];
+
+        if ($clientId !== null) { //evitar erro de digitacao
+            $sql .= " AND sr.clt_id = :clientId"; //junta com o antigo
+            $params[':clientId'] = $clientId;  
+        }
+
+        $sql .= "
+            GROUP BY order_group, sr.saleReport_method
+            ORDER BY full_date DESC
+        ";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
