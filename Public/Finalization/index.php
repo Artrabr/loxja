@@ -1,4 +1,27 @@
 <?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_tema'])) {
+    $temaAtual = $_COOKIE['tema'] ?? 'light';
+    $temaNovo  = ($temaAtual === 'dark') ? 'light' : 'dark';
+
+    setcookie('tema', $temaNovo, [
+        'expires'  => time() + 60 * 60 * 24 * 365,
+        'path'     => '/',
+        'httponly' => true,
+        'samesite' => 'Lax',
+    ]);
+
+    $returnQuery = (string)($_POST['return_query'] ?? '');
+    $path        = strtok($_SERVER['REQUEST_URI'], '?');
+    $location    = $path . ($returnQuery !== '' ? '?' . $returnQuery : '');
+
+    header('Location: ' . $location);
+    exit;
+}
+
+$tema  = $_COOKIE['tema'] ?? 'light';
+$error = $_GET['error'] ?? null;
+
+
 require_once __DIR__ . "/../../Src/Class/Client/Client.php";
 require_once __DIR__ . "/../../bootstrap.php";
 
@@ -116,7 +139,7 @@ $canSubmit = !$orderPlaced && !empty($cartItems) && $address !== null;
 $pdo = null;
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR" data-theme="<?= htmlspecialchars($tema) ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -126,6 +149,19 @@ $pdo = null;
     <link href="checkout.css" rel="stylesheet">
 </head>
 <body class="checkout-page">
+
+     <form method="post"
+          action="<?= htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES) ?>"
+          class="theme-toggle-form">
+        <input type="hidden" name="return_query"
+               value="<?= htmlspecialchars($_SERVER['QUERY_STRING'] ?? '', ENT_QUOTES) ?>">
+        <button type="submit" name="toggle_tema" class="theme-toggle"
+                aria-label="<?= $tema === 'dark' ? 'Ativar modo claro' : 'Ativar modo escuro' ?>"
+                title="<?= $tema === 'dark' ? 'Modo claro' : 'Modo escuro' ?>">
+            <?= $tema === 'dark' ? '☀️' : '🌙' ?>
+        </button>
+    </form>
+
     <header class="site-header" id="inicio">
         <nav class="topbar" aria-label="Navegacao principal">
             <a class="brand" href="../index.php#inicio" aria-label="Loxja Cafe, inicio">
