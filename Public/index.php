@@ -114,6 +114,19 @@
                     <li><a href="#contato">Contato</a></li>
                 </ul>
                 <?php renderThemeToggle($tema); ?>
+                <div class="header-actions">
+                    <a class="cart-link" href="ShoppingCart/index.php"
+                        aria-label="Carrinho de compras<?= $cartItemCount > 0 ? ', ' . $cartItemCount . ' itens' : '' ?>">
+                        <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false">
+                            <path d="M3 4h2l2.2 11.2a2 2 0 0 0 2 1.6h8.9a2 2 0 0 0 1.9-1.4L22 9H6"></path>
+                            <circle cx="10" cy="20" r="1.2"></circle>
+                            <circle cx="18" cy="20" r="1.2"></circle>
+                        </svg>
+                        <span class="cart-label">Carrinho</span>
+                        <?php if ($cartItemCount > 0): ?>
+                            <span class="cart-count"><?= (int)$cartItemCount ?></span>
+                        <?php endif; ?>
+                    </a>
                 <?php
                     $email = '';
                     if(isset($_SESSION['client_object'])){
@@ -121,7 +134,7 @@
                         $imageUrl = $_SESSION['client_object']->getImage();
                     
                 ?> 
-                    <a href="profile/index.php">
+                    <a class="profile-link" href="profile/index.php">
                         <img src="<?= htmlspecialchars($imageUrl, ENT_QUOTES, 'UTF-8') ?>" alt="Foto de perfil" class="profile-avatar">
                     </a>
                 <?php
@@ -130,9 +143,10 @@
                     <a class="login-button" href="Login/index.php">Entrar</a>
                 <?php
                 }
-
-                if ($client instanceof Client && $client->isAdmin()) {
                 ?>
+                </div>
+
+                <?php if ($client instanceof Client && $client->isAdmin()) { ?>
                     <a href="./Administration/index.php" rel="admin">Administração</a>
                 <?php } ?>
             </nav>

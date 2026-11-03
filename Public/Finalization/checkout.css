@@ -192,11 +192,15 @@
     border: 1px solid var(--caramel);
     border-radius: 10px;
     background: var(--caramel);
-    color: var(--white);
+    color: var(--button-text);
     font: inherit;
     font-weight: 700;
     cursor: pointer;
     transition: background-color 160ms ease, transform 160ms ease;
+}
+
+.checkout-page a.checkout-submit {
+    color: var(--button-text);
 }
 
 .checkout-submit:hover:not(:disabled) {
@@ -297,22 +301,20 @@ html[data-theme="dark"] {
 
 
 .theme-toggle-form {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1000;
-
     display: inline-flex;
     width: auto;
     max-width: none;
     min-width: 0;
-    margin: 0;
+    margin: 0 0 0 auto;
     padding: 0;
     border: 0;
     border-radius: 0;
     background: transparent;
     box-shadow: none;
     text-align: initial;
+    position: static;
+    inset: auto;
+    z-index: auto;
 }
 
 .theme-toggle-form .theme-toggle {

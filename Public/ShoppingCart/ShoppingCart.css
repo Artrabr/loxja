@@ -8,11 +8,12 @@
     box-sizing: border-box;
     display: grid;
     flex: 1;
-    grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
     align-content: start;
     align-items: start;
     gap: 0 24px;
     width: 100%;
+    min-width: 0;
     max-width: var(--page-width);
     margin: 0 auto;
     padding: 64px var(--page-gutter) 80px;
@@ -224,6 +225,11 @@
 
 .cart-empty {
     grid-column: 1 / -1;
+    min-width: 0;
+    max-width: 100%;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
 }
 
 .cart-empty .checkout-empty {
@@ -323,22 +329,20 @@
 }
 
 .theme-toggle-form {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1000;
-
     display: inline-flex;
     width: auto;
     max-width: none;
     min-width: 0;
-    margin: 0;
+    margin: 0 0 0 auto;
     padding: 0;
     border: 0;
     border-radius: 0;
     background: transparent;
     box-shadow: none;
     text-align: initial;
+    position: static;
+    inset: auto;
+    z-index: auto;
 }
 
 .theme-toggle-form .theme-toggle {

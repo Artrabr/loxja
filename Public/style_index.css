@@ -202,19 +202,12 @@ footer {
 	}
 }
 
-.cart-link {
-	color: var(--ink);
-	text-decoration: none;
-	font-weight: 700;
-	white-space: nowrap;
-}
-
-.cart-link span {
+.cart-link .cart-count {
 	display: inline-grid;
 	place-items: center;
 	width: 22px;
 	height: 22px;
-	margin-left: 5px;
+	margin-left: -5px;
 	border-radius: 50%;
 	background: var(--caramel);
 	color: var(--white);
@@ -223,12 +216,15 @@ footer {
 
 .hero {
 	display: grid;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 	min-height: 500px;
 	background: var(--sand);
 }
 
 .hero-copy {
+	box-sizing: border-box;
+	width: 100%;
+	min-width: 0;
 	max-width: 590px;
 	padding: 90px 60px 80px 28px;
 	justify-self: end;
@@ -254,7 +250,7 @@ p {
 h1 {
 	max-width: 570px;
 	margin-bottom: 22px;
-	font-size: clamp(2.8rem, 5vw, 5rem);
+	font-size: clamp(2.8rem, 5vw, 4.5rem);
 	line-height: .98;
 }
 
@@ -276,7 +272,11 @@ h2 {
 	margin-top: 20px;
 	padding: 14px 22px;
 	background: var(--caramel);
-	color: var(--white);
+	color: var(--button-text);
+}
+
+body a.primary-button {
+	color: var(--button-text);
 }
 
 .hero-art {
@@ -462,8 +462,8 @@ footer p {
 		flex-direction: column;
 	}
 
-	.cart-link {
-		align-self: flex-end;
+	.header-actions {
+		margin-left: auto;
 	}
 
 	.hero {
@@ -473,6 +473,10 @@ footer p {
 	.hero-copy {
 		justify-self: stretch;
 		padding: 70px 28px 55px;
+	}
+
+	.hero-copy h1 {
+		font-size: clamp(2.35rem, 9vw, 3.5rem);
 	}
 
 	.hero-art {
