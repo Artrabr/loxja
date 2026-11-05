@@ -27,6 +27,8 @@ function renderThemeToggle(string $theme): void
     $isDark = $theme === 'dark';
     ?>
     <form method="post" action="<?= $action ?>" class="theme-toggle-form">
+        <input type="hidden" name="return_query"
+               value="<?= htmlspecialchars((string) ($_SERVER['QUERY_STRING'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
         <button type="submit" name="toggle_tema" class="theme-toggle"
                 aria-label="<?= $isDark ? 'Ativar modo claro' : 'Ativar modo escuro' ?>"
                 title="<?= $isDark ? 'Modo claro' : 'Modo escuro' ?>">

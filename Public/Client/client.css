@@ -124,6 +124,39 @@
     outline-offset: 3px;
 }
 
+.client-page .return-to-checkout {
+    display: inline-flex;
+    grid-column: 1 / -1;
+    align-items: center;
+    justify-content: center;
+    justify-self: end;
+    box-sizing: border-box;
+    min-height: 46px;
+    margin: 0;
+    padding: 11px 20px;
+    border: 1px solid var(--caramel);
+    border-radius: 8px;
+    background: var(--caramel);
+    color: #fff;
+    font: inherit;
+    font-weight: 700;
+    line-height: 1;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color 160ms ease, transform 160ms ease;
+}
+
+.client-page .return-to-checkout:hover {
+    background: #b98253;
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+.client-page .return-to-checkout:focus-visible {
+    outline: 3px solid rgba(143, 101, 65, 0.32);
+    outline-offset: 3px;
+}
+
 @media (max-width: 760px) {
     .client-page main {
         grid-template-columns: minmax(0, 1fr);
@@ -275,4 +308,17 @@ html[data-theme="dark"] .msg-error {
 
 html[data-theme="dark"] .client-page form button:focus-visible {
     outline: 3px solid rgba(212, 163, 115, 0.32);
+}
+
+html[data-theme="dark"] .client-page .return-to-checkout:hover {
+    background: #e0a172;
+}
+
+html[data-theme="dark"] .client-page .return-to-checkout,
+html[data-theme="dark"] .client-page .return-to-checkout:hover {
+    color: var(--button-text);
+}
+
+html[data-theme="dark"] .client-page .return-to-checkout:focus-visible {
+    outline-color: rgba(212, 163, 115, 0.32);
 }

@@ -26,6 +26,7 @@ $error = $_GET['error'] ?? null;
     require_once __DIR__ . "/../../bootstrap.php";
     require_once __DIR__ . "/../theme-toggle.php";
     $tema = currentTheme();
+    $fromCheckout = isset($_GET['refer']) && $_GET['refer'] === 'checkout';
 
     if (!isset($_SESSION['client_object'])) {
         header("Location: ../Login/index.php?error=not_logged_in");
@@ -138,6 +139,9 @@ $error = $_GET['error'] ?? null;
                     <?php endif; ?>
                      required>
                     <button type="submit">Atualizar informações</button>
+                    <?php if ($fromCheckout): ?>
+                        <a class="return-to-checkout" href="../Finalization/index.php">Voltar para o checkout</a>
+                    <?php endif; ?>
                 </form>
             </div>
         <!----------------------------------  NAO OUSE TOCAR NO CODIGO A CIMA -------------------------->

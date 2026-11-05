@@ -234,7 +234,7 @@ $pdo = null;
                         <?php if ($address === null): ?>
                             <p class="checkout-empty">
                                 Você não adicionou um endereço ainda...
-                                <a href="../Client/index.php">Adicione um endereço</a> antes de confirmar.
+                                <a href="../Client/index.php?refer=checkout">Adicione um endereço</a> antes de confirmar.
                             </p>
                         <?php else: ?>
                             <p><?= htmlspecialchars($address->getFull()) ?></p>
