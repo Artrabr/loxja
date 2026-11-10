@@ -38,6 +38,38 @@ $error = $_GET['error'] ?? null;
 
     $cliente_obj = $_SESSION["client_object"];
     $id = $cliente_obj->getId();
+    
+    function consultarCep($cep) {
+        $cleanCEP = preg_replace('/[^0-9]/', '', $cep);
+
+        if(strlen($cleanCEP) !== 8) {
+            return ['error' => true, 'message' => 'CEP inválido'];
+        }
+
+        $url = "https://viacep.com.br/ws/{$cleanCEP}/json/";
+
+        $context = stream_context_create([
+            'http' => [
+                'timeout'       => 5,
+                'ignore_errors' => true,
+            ]
+        ]);
+
+        $answer = @file_get_contents($url, false, $context);
+
+        if($answer === false) {
+            return ['error' => true, 'message' => 'Não foi possível conectar à API'];
+        }
+
+        $data = json_decode($answer, true);
+
+        if(!is_array($data) || isset($data['error']) && $data['error'] === true){
+            return ['error' => true, 'message' => 'CEP não encontrado'];
+        }
+
+        return $data;
+    }
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR" data-theme="<?= htmlspecialchars($tema, ENT_QUOTES, 'UTF-8') ?>">
@@ -157,5 +189,62 @@ $error = $_GET['error'] ?? null;
         <p>&copy; 2026 Loxja Café. Todos os direitos reservados.</p>
         <a href="#inicio" class="back-top" aria-label="Voltar ao inicio">&uarr;</a>
     </footer>
+    <script>
+    (() => {
+        const cepInput = document.getElementById('cep');
+        if (!cepInput) return;
+
+        const fields = {
+            road:         document.getElementById('road'),
+            neighborhood: document.getElementById('neighborhood'),
+            city:         document.getElementById('city'),
+            state:        document.getElementById('state'),
+            country:      document.getElementById('country'),
+        };
+
+        // evita refetch do CEP que já veio do banco no carregamento da página
+        let lastCep = cepInput.value.replace(/\D/g, '');
+        let isLoading = false;
+
+        async function buscarCep() {
+            const digits = cepInput.value.replace(/\D/g, '');
+            if (digits.length !== 8 || digits === lastCep || isLoading) return;
+
+            isLoading = true;
+            cepInput.setAttribute('aria-busy', 'true');
+
+            try {
+                const res = await fetch(`https://viacep.com.br/ws/${digits}/json/`);
+                const dados = await res.json();
+
+                if (dados.erro) {
+                    lastCep = '';
+                    console.warn('CEP não encontrado:', digits);
+                    return;
+                }
+
+                if (dados.logradouro) fields.road.value         = dados.logradouro;
+                if (dados.bairro)     fields.neighborhood.value = dados.bairro;
+                if (dados.localidade) fields.city.value         = dados.localidade;
+                if (dados.uf)         fields.state.value        = dados.uf;
+                fields.country.value = 'Brasil'; // ViaCEP é só Brasil
+
+                lastCep = digits;
+            } catch (err) {
+                console.error('Erro ao buscar CEP:', err);
+                lastCep = '';
+            } finally {
+                isLoading = false;
+                cepInput.removeAttribute('aria-busy');
+            }
+        }
+
+        cepInput.addEventListener('input', () => {
+            if (cepInput.value.replace(/\D/g, '').length === 8) buscarCep();
+        });
+
+        cepInput.addEventListener('blur', buscarCep);
+    })();
+    </script>
 </body>
 </html>
